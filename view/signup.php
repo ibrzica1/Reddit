@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="reddit-container">
-        <form class="reddit-form" method="POST" action="decisionMaker.php">
+        <form class="reddit-form" method="POST" action="../decisionMaker.php">
             <input type="hidden" name="signup">
             
             <div class="form-header">

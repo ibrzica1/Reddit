@@ -2,11 +2,7 @@
 
 require_once "vendor/autoload.php";
 
-use Reddit\models\User;
-use Reddit\models\Db;
 
-$user = new User();
-$db = new Db();
 
 ?>
 
@@ -21,7 +17,17 @@ $db = new Db();
 
 <body>
   
-  
+  <div class="header-container">
+    <div class="buttons-container">
+      <div class="login-container">
+      <a href="view/login.php">Login</a>
+    </div>
+    <div class="signup-container">
+      <a href="view/signup.php">Signup</a>
+    </div>
+  </div>
+    
+  </div>
 
 
 </body>
