@@ -1,0 +1,15 @@
+{
+    "name": "predator/reddit",
+    "autoload": {
+        "psr-4": {
+            "Reddit\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ibrzica1",
+            "email": "igorbrzica1@gmail.com"
+        }
+    ],
+    "require": {}
+}
