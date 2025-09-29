@@ -1,0 +1,122 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #DAE0E6; 
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: #1A1A1B;
+}
+
+.reddit-container {
+    padding: 24px;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.1); 
+    width: 100%;
+    max-width: 380px; 
+    box-sizing: border-box; 
+}
+
+.reddit-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-header {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.form-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1A1A1B;
+}
+
+.form-header p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #787C7E;
+}
+
+.form-header a {
+    color: #0079D3; 
+    text-decoration: none;
+}
+
+.form-header a:hover {
+    text-decoration: underline;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #EDEFF1; 
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box; 
+    color: #1A1A1B;
+    background-color: #F6F7F8; 
+}
+
+.input-group input::placeholder {
+    color: #878A8C;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #0079D3; 
+    background-color: #FFFFFF;
+}
+
+.reddit-btn-primary {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #FF4500; 
+    color: white;
+    border: none;
+    border-radius: 9999px; 
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 8px;
+}
+
+.reddit-btn-primary:hover {
+    background-color: #E44917; 
+}
+
+.reddit-btn-primary:active {
+    transform: scale(0.99);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: #787C7E;
+}
+
+.form-footer a {
+    color: #0079D3; 
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .reddit-container {
+        margin: 15px;
+        padding: 20px;
+    }
+}
