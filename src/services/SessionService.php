@@ -22,4 +22,15 @@ class SessionService
     $_SESSION[$key] = $value;
     return $this;
   }
+
+  public function displayMessage(): string
+  {
+    if(isset($_SESSION["message"]))
+    {
+      $message = htmlspecialchars($_SESSION["message"]);
+      unset($_SESSION["message"]); 
+      return $message;
+    }
+    return "";
+  }
 }

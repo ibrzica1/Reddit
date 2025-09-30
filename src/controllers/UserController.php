@@ -9,6 +9,8 @@ class UserController extends User
 {
   public function signup(array $data)
   {
+    $session = new SessionService();
+
     if(!isset($data['username']))
     {
       die("Niste prosledili username");
@@ -31,7 +33,10 @@ class UserController extends User
 
     if($this->existsUsername($data['username']))
     {
-      die("Username already exists");
+      $message = "Username already exists";
+      $session->setSession("message",$message);
+      header("Location: view/signup.php");
+      exit();
     }
 
   }

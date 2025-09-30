@@ -1,3 +1,12 @@
+<?php
+
+require_once "../vendor/autoload.php";
+
+use Reddit\services\SessionService;
+$session = new SessionService();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +21,9 @@
     
 </head>
 <body>
+    <div>
+        <p class="message"><?=$session->displayMessage()?></p>
+    </div>
     <div class="reddit-container">
         <form class="reddit-form" method="POST" action="../decisionMaker.php">
             <input type="hidden" name="signup">
