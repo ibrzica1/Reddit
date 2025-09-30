@@ -67,5 +67,13 @@ class UserController extends User
       exit();
     }
 
+    if(!$this->checkPassword($data['password']))
+    {
+      $message = "Password must contain special character, number, uppercase and lowercase letter";
+      $session->setSession("message",$message);
+      header("Location: view/signup.php");
+      exit();
+    }
+
   }
 }
