@@ -43,4 +43,16 @@ class User extends Db
   {
     return strlen($password) < 6;
   }
+
+  public function registerUser(string $username, string $email, string $password): void
+  {
+    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password)
+    VALUES (:username, :email, :password)");
+    $stmt->bindParam(':username',$username);
+    $stmt->bindParam(':email',$email);
+    $password = password_hash($password,PASSWORD_BCRYPT);
+    $stmt->bindParam(':password',$password);
+
+    $stmt->execute();
+  }
 }

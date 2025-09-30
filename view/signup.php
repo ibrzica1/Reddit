@@ -21,9 +21,10 @@ $session = new SessionService();
     
 </head>
 <body>
-    <div>
+    <div class="message-container">
         <p class="message"><?=$session->displayMessage()?></p>
     </div>
+    
     <div class="reddit-container">
         <form class="reddit-form" method="POST" action="../decisionMaker.php">
             <input type="hidden" name="signup">
@@ -36,7 +37,7 @@ $session = new SessionService();
             <div class="input-group">
                 <input type="text" name="username" placeholder="Username" required>
             </div>
-
+            
             <div class="input-group">
                 <input type="email" name="email" placeholder="Email" required>
             </div>
@@ -52,4 +53,9 @@ $session = new SessionService();
             <button type="submit" class="reddit-btn-primary">Continue</button>
             
             <div class="form-footer">
-                <p>Already a Redditor?
+                <p>Already a Redditor? <a href="index.php">Log In</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
