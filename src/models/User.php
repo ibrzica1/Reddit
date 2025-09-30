@@ -38,4 +38,9 @@ class User extends Db
     return preg_match('/[^A-Za-z0-9]/', $password) && preg_match('/[0-9]/', $password) && 
     preg_match('/[A-Z]/', $password) && preg_match('/[a-z]/', $password);
   }
+
+  public function lengthPassword(string $password): bool
+  {
+    return strlen($password) < 6;
+  }
 }

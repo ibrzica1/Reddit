@@ -75,5 +75,13 @@ class UserController extends User
       exit();
     }
 
+    if($this->lengthPassword($data['password']))
+    {
+      $message = "Password length cant be smaller than 6 characters";
+      $session->setSession("message",$message);
+      header("Location: view/signup.php");
+      exit();
+    }
+
   }
 }
