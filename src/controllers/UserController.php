@@ -59,5 +59,13 @@ class UserController extends User
       exit();
     }
 
+    if($this->existsEmail($data['email']))
+    {
+      $message = "Email already exists";
+      $session->setSession("message",$message);
+      header("Location: view/signup.php");
+      exit();
+    }
+
   }
 }

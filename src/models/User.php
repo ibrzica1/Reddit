@@ -21,7 +21,15 @@ class User extends Db
 
   public function usernameLength(string $username): bool
   {
-    
     return strlen($username) > 2 && strlen($username) < 16;
+  }
+
+  public function existsEmail(string $email): bool
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM user WHERE email = :email ");
+    $stmt->bindParam(':email',$email);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
   }
 }
