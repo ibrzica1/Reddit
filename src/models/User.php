@@ -18,4 +18,10 @@ class User extends Db
 
     return $stmt->rowCount() > 0;
   }
+
+  public function usernameLength(string $username): bool
+  {
+    
+    return strlen($username) > 2 && strlen($username) < 16;
+  }
 }
