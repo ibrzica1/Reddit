@@ -24,6 +24,10 @@
             <div class="input-group">
                 <input type="text" name="username" placeholder="Username" required>
             </div>
+
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
             
             <div class="input-group">
                 <input type="password" name="password" placeholder="Password" required>

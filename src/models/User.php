@@ -10,5 +10,12 @@ class User extends Db
   public $email;
   public $password;
 
-  
+  public function existsUsername(string $username): bool
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM user WHERE username = :username ");
+    $stmt->bindParam(':username',$username);
+    $stmt->execute();
+
+    return $stmt->rowCount() > 0;
+  }
 }
