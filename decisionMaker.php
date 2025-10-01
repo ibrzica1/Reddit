@@ -7,6 +7,12 @@ use Reddit\controllers\UserController;
 
 $session = new SessionService();
 
+if(isset($_POST['login']))
+{
+  $userController = new UserController();
+  $userController->login($_POST);
+}
+
 if(isset($_POST['signup']))
 {
   $userController = new UserController();

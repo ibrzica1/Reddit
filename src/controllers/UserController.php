@@ -7,7 +7,13 @@ use Reddit\services\SessionService;
 
 class UserController extends User
 {
-  public function signup(array $data)
+
+  public function login(array $data): void
+  {
+    
+  }
+
+  public function signup(array $data): void
   {
     $session = new SessionService();
 
