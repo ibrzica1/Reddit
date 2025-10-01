@@ -4,6 +4,7 @@ namespace Reddit\controllers;
 
 use Reddit\models\User;
 use Reddit\services\SessionService;
+use Reddit\services\MailService;
 
 class UserController extends User
 {
@@ -153,6 +154,9 @@ class UserController extends User
     $session->setSession("user_id",$user['id']);
     $session->setSession("user_name",$user['username']);
     $session->setSession("logged",true);
+
+    $mailer = new MailService();
+    $mailer->welcomeMail('test@inbox.mailtrap.io',$username);
 
     header('Location: index.php');
   }
