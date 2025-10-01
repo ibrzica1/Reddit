@@ -22,9 +22,7 @@ $session = new SessionService();
 </head>
 <body>
     <div class="message-container">
-        <?php if($session->displayMessage()): ?>
-            <p class="message"><?=$session->displayMessage()?></p>
-        <?php endif; ?>
+      <p class="message"><?=$session->displayMessage()?></p>
     </div>
     
     <div class="reddit-container">

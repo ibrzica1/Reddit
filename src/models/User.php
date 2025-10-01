@@ -56,7 +56,7 @@ class User extends Db
     $stmt->execute();
   }
 
-  public function getUser(string $username): array
+  public function getUser(string $username): mixed
   {
     $stmt = $this->connection->prepare("SELECT * FROM user WHERE username = :username");
     $stmt->bindParam(':username',$username);

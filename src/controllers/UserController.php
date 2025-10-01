@@ -10,7 +10,52 @@ class UserController extends User
 
   public function login(array $data): void
   {
-    
+    $session = new SessionService();
+
+    $username = $data['username'];
+    $password = $data['password'];
+
+    if(!isset($username))
+    {
+      $message = "You didnt send confim username";
+      $session->setSession("message",$message);
+      header("Location: view/login.php");
+      exit();
+    }
+
+    if(!isset($password))
+    {
+      $message = "You didnt send password";
+      $session->setSession("message",$message);
+      header("Location: view/login.php");
+      exit();
+    }
+
+    $user = $this->getUser($username);
+
+    if(empty($user))
+    {
+      $message = "Username doesnt exists";
+      $session->setSession("message",$message);
+      header("Location: view/login.php");
+      exit();
+    }
+
+    $dbPassword = $user['password'];
+
+    if(!password_verify($password,$dbPassword))
+    {
+      $message = "Password doesnt match";
+      $session->setSession("message",$message);
+      header("Location: view/login.php");
+      exit();
+    }
+
+    $session->setSession("user_id",$user['id']);
+    $session->setSession("user_name",$user['username']);
+    $session->setSession("logged",true);
+
+    header('Location: index.php');
   }
 
   public function signup(array $data): void
@@ -109,6 +154,6 @@ class UserController extends User
     $session->setSession("user_name",$user['username']);
     $session->setSession("logged",true);
 
-    var_dump($_SESSION);
+    header('Location: index.php');
   }
 }
