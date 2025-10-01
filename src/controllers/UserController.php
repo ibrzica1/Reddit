@@ -97,6 +97,12 @@ class UserController extends User
     }
 
     $this->registerUser($username,$email,$password);
+    $user = $this->getUser($username);
+    
+    $session->setSession("user_id",$user['id']);
+    $session->setSession("user_name",$user['username']);
+    $session->setSession("logged",true);
 
+    var_dump($_SESSION);
   }
 }

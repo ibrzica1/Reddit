@@ -55,4 +55,13 @@ class User extends Db
 
     $stmt->execute();
   }
+
+  public function getUser(string $username): array
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM user WHERE username = :username");
+    $stmt->bindParam(':username',$username);
+    $stmt->execute();
+
+    return $stmt->fetch();
+  }
 }

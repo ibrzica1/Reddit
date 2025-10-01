@@ -43,11 +43,11 @@ $session = new SessionService();
             </div>
             
             <div class="input-group">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="password" placeholder="Password" required>
             </div>
             
             <div class="input-group">
-                <input type="password" name="password_confirm" placeholder="Confirm Password" required>
+                <input type="text" name="password_confirm" placeholder="Confirm Password" required>
             </div>
             
             <button type="submit" class="reddit-btn-primary">Continue</button>
