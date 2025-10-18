@@ -1,18 +1,9 @@
 {
-    "name": "predator/reddit",
+    "name": "admin/reddit",
     "autoload": {
         "psr-4": {
-            "Reddit\\": "src/"
+            "Admin\\Reddit\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "ibrzica1",
-            "email": "igorbrzica1@gmail.com"
-        }
-    ],
-    "require": {
-        "phpmailer/phpmailer": "^6.11",
-        "vlucas/phpdotenv": "^5.6"
-    }
+    "require": {}
 }
