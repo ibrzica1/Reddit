@@ -2,8 +2,14 @@
     "name": "admin/reddit",
     "autoload": {
         "psr-4": {
-            "Admin\\Reddit\\": "src/"
+            "Reddit\\": "src/"
         }
     },
+    "authors": [
+        {
+            "name": "ibrzica1",
+            "email": "igorbrzica1@gmail.com"
+        }
+    ],
     "require": {}
 }
