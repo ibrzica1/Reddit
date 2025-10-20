@@ -2,7 +2,9 @@
 
 require_once "vendor/autoload.php";
 
+use Reddit\services\SessionService;
 
+$session = new SessionService();
 
 ?>
 
@@ -28,6 +30,9 @@ require_once "vendor/autoload.php";
         <input type="text" placeholder="Search Reddit">
     </div>
     
+    <?php if($session->sessionExists("user_id")): ?>
+      
+    <?php else: ?>
     <div class="buttons-container">
         <div class="login-container">
             <a href="view/login.php">Log In</a>
@@ -36,6 +41,7 @@ require_once "vendor/autoload.php";
             <a href="view/signup.php">Sign Up</a>
         </div>
     </div>
+    <?php endif; ?>
   </div>
     
 </body>

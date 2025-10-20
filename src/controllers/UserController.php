@@ -54,7 +54,6 @@ class UserController extends User
 
     $session->setSession("user_id",$user['id']);
     $session->setSession("user_name",$user['username']);
-    $session->setSession("logged",true);
 
     header('Location: index.php');
   }

@@ -33,4 +33,13 @@ class SessionService
     }
     return "";
   }
+
+  public function sessionExists($value)
+  {
+    if(isset($_SESSION[$value]))
+    {
+      return true;
+    }
+    return false;
+  }
 }
