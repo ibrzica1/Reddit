@@ -15,6 +15,7 @@ $session = new SessionService();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style/header.css">
 </head>
 
@@ -30,8 +31,18 @@ $session = new SessionService();
         <input type="text" placeholder="Search Reddit">
     </div>
     
-    <?php if($session->sessionExists("user_id")): ?>
-      
+    <?php if($session->sessionExists("username")): ?>
+      <div class="buttons-container">
+            <a href="view/createPost.php" class="create-post-btn" title="Create Post">
+                <img class='plus-icon' src="images/icons/plus.png">
+                <p>Create</p>
+            </a>
+            <div class="user-dropdown">
+                <div class="user-info">
+                    <img class="user-avatar" src="images/avatars/avatarBlue.webp">
+                </div>
+            </div>
+        </div>
     <?php else: ?>
     <div class="buttons-container">
         <div class="login-container">

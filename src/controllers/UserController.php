@@ -53,7 +53,7 @@ class UserController extends User
     }
 
     $session->setSession("user_id",$user['id']);
-    $session->setSession("user_name",$user['username']);
+    $session->setSession("username",$user['username']);
 
     header('Location: index.php');
   }
@@ -151,7 +151,7 @@ class UserController extends User
     $user = $this->getUser($username);
     
     $session->setSession("user_id",$user['id']);
-    $session->setSession("user_name",$user['username']);
+    $session->setSession("username",$user['username']);
     $session->setSession("logged",true);
 
     $mailer = new MailService();
