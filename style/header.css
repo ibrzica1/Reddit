@@ -9,7 +9,7 @@ background-color: #DAE0E6;
 display: flex;
 align-items: center;
 justify-content: space-between;
-height: 48px;
+height: 58px;
 padding: 0 16px;
 background-color: #FFFFFF;
 border-bottom: 1px solid #EDEFF1;
@@ -37,20 +37,21 @@ align-items: center;
 flex-grow: 1;
 max-width: 600px;
 background-color: #F6F7F8;
-border-radius: 4px;
+border-radius: 20px;
 border: 1px solid transparent;
 padding: 0 10px;
 transition: border 0.1s ease-in-out, background-color 0.1s ease-in-out;
 height: 36px;
 margin: 0 16px;
+background-color: rgb(225, 231, 233);
 }
 
 .search-container:hover {
-background-color: #EBECEE;
+background-color: rgb(225, 231, 233);
 }
 
 .search-container:focus-within {
-background-color: #FFFFFF;
+background-color: rgb(225, 231, 233);
 border: 1px solid #0079D3;
 }
 
@@ -58,12 +59,13 @@ border: 1px solid #0079D3;
 height: 18px;
 width: 18px;
 opacity: 0.6;
+background-color: rgb(225, 231, 233);
 }
 
 .search-container input {
 border: none;
 outline: none;
-background: transparent;
+background-color: rgb(225, 231, 233);
 flex-grow: 1;
 padding: 0 8px;
 font-size: 14px;
@@ -72,6 +74,7 @@ height: 100%;
 }
 
 .buttons-container {
+position: relative;
 display: flex;
 align-items: center;
 flex-shrink: 0;
@@ -115,18 +118,19 @@ flex-direction: row;
 align-items: center;
 gap: 4px;
 text-decoration: none;
-color: #FFFFFF;
-background-color: #0079D3;
-border: 1px solid #0079D3;
-padding: 6px 10px;
+color: #ffffff;
+background-color: #ffffff;
+border: 1px solid #ffffff;
+padding: 10px 12px;
 border-radius: 9999px;
 font-size: 14px;
 font-weight: 700;
 transition: background-color 0.1s ease-in-out;
+
 }
 
 .create-post-btn:hover {
-background-color: #00609D;
+background-color: rgb(225, 231, 233);
 }
 
 .plus-icon {
@@ -138,69 +142,111 @@ flex-shrink: 0;
 .create-post-btn p {
 margin: 0;
 font-size: 14px;
-font-weight: 700;
-color: white;
+font-weight: 600;
+color: rgb(0, 0, 0);
+margin-left: 10px
 }
 
-.user-dropdown {
-position: relative;
-cursor: pointer;
-padding: 4px 8px 4px 4px;
-border-radius: 4px;
-transition: background-color 0.2s;
+.notifications-container {
 display: flex;
 align-items: center;
-gap: 8px;
-min-width: 100px;
-border: 1px solid transparent;
+justify-content: center;
+height: 40px;
+width: 40px;
+border-radius: 20px;
 }
 
-.user-dropdown:hover {
-background-color: #F6F7F8;
-border: 1px solid #EDEDED;
+.notifications-container:hover {
+background-color: rgb(225, 231, 233);
+}
+
+.notifications-container img{
+width: 20px;
+height: 20px;
 }
 
 .user-info {
+position: relative;
 display: flex;
 align-items: center;
+justify-content: center;
+height: 40px;
+width: 40px;
+border-radius: 20px;
 gap: 8px;
 }
 
+.user-info:hover {
+    background-color: rgb(225, 231, 233);
+    cursor: pointer;
+}
+
+.green-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background-color: rgb(121, 196, 8);
+    left: 6px;
+    bottom: 6px;
+}
+
 .user-avatar {
-width: 24px;
-height: 24px;
-border-radius: 4px;
+width: 30px;
+height: 30px;
+border-radius: 20px;
 object-fit: cover;
 }
 
-.username-text {
-font-size: 12px;
-font-weight: 500;
-color: #1A1A1B;
-margin: 0;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+.menu-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    height: 140px;
+    width: 190px;
+    left: 0;
+    top: 60px;
+    background-color: white;
+    padding: 14px 10px;
+    border-radius: 10px;
+    display: none;
+    box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.2);
 }
 
-.dropdown-icon {
-color: #878A8C;
-font-size: 12px;
-margin-left: auto;
+.edit-container img,
+.logout-container img {
+    width: 18px;
+    height: 18px;
 }
 
-.logout-link {
-text-decoration: none;
-color: #0079D3;
-padding: 6px 12px;
-border-radius: 9999px;
-font-size: 14px;
-font-weight: 700;
-transition: background-color 0.1s ease-in-out;
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.profile-container h3{
+    font-size: 14px;
+    margin: 0;
+}
+.profile-container p{
+    font-size: 14px;
+    margin: 0;
 }
 
-.logout-link:hover {
-background-color: #EAF5FF;
+.edit-container,
+.logout-container {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-left: 6px
+}
+.edit-container:hover,
+.logout-container:hover,
+.profile-container:hover{
+    background-color: rgb(225, 231, 233);
+    cursor: pointer;
 }
 
 @media (max-width: 800px) {
