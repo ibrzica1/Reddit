@@ -27,7 +27,6 @@ body {
 
 .message {
     display: inline-block;
-    padding: 10px 15px;
     background-color: #FF4500;
     color: white;
     border-radius: 4px;

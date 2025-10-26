@@ -219,6 +219,10 @@ body {
 #userMenu.active {
     display: block;
 }
+#userMenu a {
+    text-decoration: none;
+    color: black;
+}
 
 .edit-container img,
 .logout-container img {
