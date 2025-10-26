@@ -22,10 +22,32 @@ header("Location: ../index.php");
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../style/login.css">
-   
+    <link rel="stylesheet" href="../style/login.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../style/header.css?v=<?php echo time(); ?>">
 </head>
 <body>
+
+<div class="header-container">
+    <a class="logo-container" href="../index.php">
+        <img src="../images/reddit.png" alt="Reddit Logo" class="reddit-logo">
+    </a>
+    
+    <div class="search-container">
+        <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
+        <input type="text" placeholder="Search Reddit">
+    </div>
+    
+    <div class="buttons-container">
+        <div class="login-container">
+            <a href="../view/login.php">Log In</a>
+        </div>
+        <div class="signup-container">
+            <a href="../view/signup.php">Sign Up</a>
+        </div>
+    </div>
+</div>
+
+<div class="main-content-wrapper">
     <div class="message-container">
       <p class="message"><?=$session->displayMessage()?></p>
     </div>
@@ -54,5 +76,8 @@ header("Location: ../index.php");
             </div>
         </form>
     </div>
+</div>
+
+
 </body>
 </html>
