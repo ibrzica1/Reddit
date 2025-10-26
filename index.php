@@ -48,7 +48,7 @@ $session = new SessionService();
                     
                 </div>
                 <div class="menu-container" id="userMenu">
-                        <div class="profile-container">
+                        <a class="profile-container" href="view/profile.php">
                             <div class="avatar-container">
                                 <img class="user-avatar" src="images/avatars/avatarBlue.webp">
                             </div>
@@ -56,7 +56,7 @@ $session = new SessionService();
                                 <h3>View Profile</h3>
                                 <p>u/<?= $session->getFromSession("username") ?></p>
                             </div>
-                        </div>
+                        </a>
                         <div class="edit-container">
                             <img src="images/icons/shirt.png">
                             <p>Edit Avatar</p>
