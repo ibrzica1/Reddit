@@ -159,4 +159,6 @@ class UserController extends User
 
     header('Location: index.php');
   }
+
+  
 }

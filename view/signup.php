@@ -5,6 +5,11 @@ require_once "../vendor/autoload.php";
 use Reddit\services\SessionService;
 $session = new SessionService();
 
+if($session->sessionExists("username"))
+{
+header("Location: ../index.php");
+} 
+
 ?>
 
 <!DOCTYPE html>

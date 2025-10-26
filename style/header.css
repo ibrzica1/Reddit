@@ -198,7 +198,7 @@ border-radius: 20px;
 object-fit: cover;
 }
 
-.menu-container {
+#userMenu {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -211,6 +211,9 @@ object-fit: cover;
     border-radius: 10px;
     display: none;
     box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.2);
+}
+#userMenu.active {
+  display: block;
 }
 
 .edit-container img,

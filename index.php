@@ -6,6 +6,8 @@ use Reddit\services\SessionService;
 
 $session = new SessionService();
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,10 +61,10 @@ $session = new SessionService();
                             <img src="images/icons/shirt.png">
                             <p>Edit Avatar</p>
                         </div>
-                        <div class="logout-container">
+                        <a class="logout-container" href="src/controllers/Logout.php">
                             <img src="images/icons/house-door.png">
                             <p>Log Out</p>
-                        </div>
+                        </a>
                     </div>
         </div>
     <?php else: ?>

@@ -42,4 +42,11 @@ class SessionService
     }
     return false;
   }
+
+  public function logout()
+  {
+    session_destroy();
+    
+  }
+
 }
