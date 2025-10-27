@@ -3,6 +3,7 @@
 require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
+use Reddit\models\User;
 $session = new SessionService();
 
 if(!$session->sessionExists("username"))
@@ -10,6 +11,13 @@ if(!$session->sessionExists("username"))
     header("Location: ../index.php");
 }
 
+$user = new User();
+
+// Retrieve user data (using placeholders for now)
+$username = $session->getFromSession("username");
+$karma = 4567; 
+$accountAge = "3 years"; 
+$bio = "This is a brief bio of the user. I love cats, pizza, and coding!";
 
 ?>
 <!DOCTYPE html>
@@ -19,6 +27,7 @@ if(!$session->sessionExists("username"))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
 <link rel="stylesheet" href="../style/header.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../style/profile.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -66,9 +75,87 @@ if(!$session->sessionExists("username"))
                         </a>
                     </div>
         </div>
-    
   </div>
-    
+<div class="profile-page-container">
+    <div class="profile-header">
+        <div class="banner"></div>
+        <div class="profile-card">
+            <img src="../images/avatars/avatarBlue.webp" alt="Avatar" class="profile-avatar"> 
+            
+            <div class="profile-info-content">
+                <div class="username-section">
+                    <h1>u/<?= $username ?></h1>
+                    <p class="display-name">
+                        <img src="../images/icons/cake.png" alt="Cake Day" class="cake-icon">
+                        User since: <?php echo $accountAge; ?>
+                    </p>
+                </div>
+                <button class="edit-profile-btn">Edit Profile</button>
+            </div>
+            
+            <p class="bio"><?= $bio ?></p>
+            
+            <div class="karma-info">
+                <div>
+                    <strong><img src="../images/icons/karma.png" alt="Karma"> KARMA</strong>
+                    <p><?= number_format($karma) ?></p>
+                </div>
+            </div>
+
+            <button class="new-post-btn">Create Post</button>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <main class="main-content">
+            <nav class="profile-nav">
+                <a href="#" class="active">POSTS</a>
+                <a href="#">COMMENTS</a>
+                <a href="#">ABOUT</a>
+                <a href="#">SAVED</a>
+            </nav>
+            
+            <div class="post-item">
+                <div class="upvote-area">
+                    <span class="up-arrow">▲</span>
+                    <span class="score">42</span>
+                    <span class="down-arrow">▼</span>
+                </div>
+                <div class="post-content">
+                    <h3>Title of the Posted Content</h3>
+                    <p class="post-meta">Posted 2h ago in <a href="#">r/mySubreddit</a></p>
+                    <p>This is a short excerpt of the post body or image preview.</p>
+                    <div class="post-actions">
+                        <a href="#"><img src="../images/icons/comment.png" alt="Comments"> 12 Comments</a>
+                        <a href="#"><img src="../images/icons/share.png" alt="Share"> Share</a>
+                        <a href="#"><img src="../images/icons/save.png" alt="Save"> Save</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-item no-content">
+                <p>No more posts to display.</p>
+            </div>
+
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="sidebar-card about-user">
+                <h4>About User</h4>
+                <p>This is a short, public note about the user. The user is verified and active.</p>
+                <a href="#">Add social links</a>
+            </div>
+            <div class="sidebar-card rules">
+                <h4>Rules and Info</h4>
+                <ul>
+                    <li><a href="#">Code of Conduct</a></li>
+                    <li><a href="#">Content Submission</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
 <script type="module">
     import { toggleMenu } from "../script/tools.js";
     const  menu = document.getElementById("userInfo");
@@ -76,5 +163,4 @@ if(!$session->sessionExists("username"))
 </script>
 
 </body>
-
 </html>
