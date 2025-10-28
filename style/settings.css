@@ -1,0 +1,36 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.field {
+   
+}
+
+.inline-form {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+    
+    gap: 10px; 
+    
+    margin: 0;
+    padding: 0;
+}
+
+.inline-form p {
+    margin: 0; 
+    white-space: nowrap; 
+}
+
+.inline-form input {
+    flex-grow: 1; 
+    padding: 5px;
+}

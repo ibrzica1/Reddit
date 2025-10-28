@@ -76,6 +76,7 @@ $bio = "This is a brief bio of the user. I love cats, pizza, and coding!";
                     </div>
         </div>
   </div>
+
 <div class="profile-page-container">
     <div class="profile-header">
         <div class="banner"></div>
@@ -90,14 +91,17 @@ $bio = "This is a brief bio of the user. I love cats, pizza, and coding!";
                         User since: <?php echo $accountAge; ?>
                     </p>
                 </div>
-                <button class="edit-profile-btn">Edit Profile</button>
+                <a href="settings.php">
+                    <button class="edit-profile-btn">Edit Profile</button>
+                </a>
+                
             </div>
             
             <p class="bio"><?= $bio ?></p>
             
             <div class="karma-info">
                 <div>
-                    <strong><img src="../images/icons/karma.png" alt="Karma"> KARMA</strong>
+                    <strong>KARMA</strong>
                     <p><?= number_format($karma) ?></p>
                 </div>
             </div>
