@@ -75,7 +75,7 @@ $user = new User();
     <div class="fields-container">
         <div class="form">
                 <p>Username</p>
-                <button id="edit-btn" data-target="username-form">Edit</button>
+                <button class="edit-btn" data-target="username-form">Edit</button>
         </div>
         <form action="" method="post" id="username-form">
             <p>New Username</p>
@@ -84,7 +84,7 @@ $user = new User();
         </form>
         <div class="form">
                 <p>Email</p>
-                <button id="edit-btn"  data-target="email-form">Edit</button>
+                <button class="edit-btn"  data-target="email-form">Edit</button>
         </div>
         <form action="" method="post" id="email-form">
             <p>New Email</p>
@@ -93,16 +93,20 @@ $user = new User();
         </form>
         <div class="form">
                 <p>Password</p>
-                <button id="edit-btn"  data-target="password-form">Edit</button>
+                <button class="edit-btn"  data-target="password-form">Edit</button>
         </div>
         <form action="" method="post" id="password-form">
+            <p>OldPassword</p>
+            <input type="text">
             <p>New Password</p>
+            <input type="text">
+            <p>Repeat Password</p>
             <input type="text">
             <button>Submit</button>
         </form>
         <div class="form">
                 <p>Bio</p>
-                <button id="edit-btn"  data-target="bio-form">Edit</button>
+                <button class="edit-btn"  data-target="bio-form">Edit</button>
         </div>
         <form action="" method="post" id="bio-form">
             <p>New Bio</p>
@@ -122,22 +126,26 @@ $user = new User();
     const menu = document.getElementById("userInfo");
     menu.addEventListener('click', toggleMenu);
 
-    const editBtn = document.getElementById("edit-btn");
-    editBtn.addEventListener('click', ()=>{
-        const targetFormId = editBtn.getAttribute('data-target');
+    const editBtn = document.querySelectorAll(".edit-btn");
+
+    editBtn.forEach(button => {
+      button.addEventListener('click', ()=>{
+        const targetFormId = button.getAttribute('data-target');
         const targetForm = document.getElementById(targetFormId);
 
         if (targetForm) {
                 if (targetForm.style.display === "none" || targetForm.style.display === "") {
                     targetForm.style.display = "flex"; 
-                    editBtn.textContent = "Cancel"; 
+                    button.textContent = "Cancel"; 
                 } else {
                     targetForm.style.display = "none"; 
-                    editBtn.textContent = "Edit";
+                    button.textContent = "Edit";
                 }
             }
     });
 
+});
+    
 
 </script>
 </body>
