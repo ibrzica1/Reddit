@@ -253,7 +253,92 @@ class UserController extends User
       header("Location: view/settings.php");
       exit();
     }
-    
   }
   
+  public function changePassword($oldPass, $newPass, $confirmPass)
+  {
+    $session = new SessionService();
+    $id = $session->getFromSession("user_id");
+    $username = $session->getFromSession("username");
+
+    if(!isset($oldPass))
+    {
+      $message = "You didnt send old password";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+    if(!isset($newPass))
+    {
+      $message = "You didnt send new password";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+    if(!isset($confirmPass))
+    {
+      $message = "You didnt send confirm password";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+   
+    $user = $this->getUser($username);
+
+    $dbPassword = $user['password'];
+
+    if(!password_verify($oldPass,$dbPassword))
+    {
+      $message = "Old password doesnt match";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if(!$this->checkPassword($newPass))
+    {
+      $message = "Password must contain special character, number, uppercase and lowercase letter";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if($this->lengthPassword($newPass))
+    {
+      $message = "Password length cant be smaller than 6 characters";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if($newPass !== $confirmPass)
+    {
+      $message = "New password and confirm password doesnt match";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    $beforePass = $this->getUserAtribute('password', $id);
+    $password = password_hash($newPass,PASSWORD_BCRYPT);
+    
+    $this->updateUser('password', $password, $id);
+
+    $afterPass = $this->getUserAtribute('password', $id);
+
+    if($beforePass[0] !== $afterPass[0])
+    {
+      $message = "Password was succesfully changed";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+    else
+    {
+      $message = "Password was not succesfully changed";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+  }
 }

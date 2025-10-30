@@ -98,13 +98,13 @@ $user = new User();
                 <p>Password</p>
                 <button class="edit-btn"  data-target="password-form">Edit</button>
         </div>
-        <form action="" method="post" id="password-form">
+        <form action="../decisionMaker.php" method="post" id="password-form">
             <p>OldPassword</p>
-            <input type="text" name="password">
+            <input type="text" name="old-password">
             <p>New Password</p>
-            <input type="text">
+            <input type="text" name="new-password">
             <p>Repeat Password</p>
-            <input type="text">
+            <input type="text" name="confirm-password">
             <button>Submit</button>
         </form>
         <div class="form">

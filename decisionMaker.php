@@ -35,9 +35,16 @@ if(isset($_POST['email']))
   $userController->changeEmail($email);
 }
 
-if(isset($_POST['password']))
+if(isset($_POST['old-password']) 
+&& isset($_POST['new-password'])
+&& isset($_POST['confirm-password']))
 {
-  
+  $oldPass = $_POST['old-password'];
+  $newPass = $_POST['new-password'];
+  $confirmPass = $_POST['confirm-password'];
+
+  $userController = new UserController();
+  $userController->changePassword($oldPass, $newPass, $confirmPass);
 }
 
 if(isset($_POST['bio']))
