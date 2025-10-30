@@ -76,15 +76,13 @@ class User extends Db
     return $stmt->fetch();
   }
 
-  public function updateUser(string $username, int $id): void
+  public function updateUser(string $atribute, string $value, int $id): void
   {
     $stmt = $this->connection->prepare("UPDATE user 
-    SET username = :username
+    SET $atribute = :atribute
     WHERE id = :id");
-    $stmt->bindParam(':username',$username);
+    $stmt->bindParam(':atribute',$value);
     $stmt->bindParam(':id',$id);
     $stmt->execute();
-
-
   }
 }

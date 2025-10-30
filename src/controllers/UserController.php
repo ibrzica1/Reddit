@@ -191,7 +191,7 @@ class UserController extends User
 
     $oldUsername = $this->getUserAtribute('username',$id);
 
-    $this->updateUser($username, $id);
+    $this->updateUser('username', $username, $id);
 
     $newUsername = $this->getUserAtribute('username',$id);
     
@@ -206,6 +206,49 @@ class UserController extends User
     else
     {
       $message = "Username was not succesfully changed";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+  }
+
+  public function changeEmail(string $email): void
+  {
+    $session = new SessionService();
+    $id = $session->getFromSession("user_id");
+
+    if(!isset($email))
+    {
+      $message = "You didnt send email";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if($this->existsEmail($email))
+    {
+      $message = "Email already exists";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    $oldEmail = $this->getUserAtribute('email',$id);
+
+    $this->updateUser('email', $email, $id);
+    
+    $newEmail = $this->getUserAtribute('email',$id);
+
+    if($oldEmail[0] !== $newEmail[0])
+    {
+      $message = "Email was succesfully changed";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+    else
+    {
+      $message = "Email was not succesfully changed";
       $session->setSession("message",$message);
       header("Location: view/settings.php");
       exit();

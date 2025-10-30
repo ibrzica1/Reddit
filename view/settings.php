@@ -89,7 +89,7 @@ $user = new User();
                 <p>Email</p>
                 <button class="edit-btn"  data-target="email-form">Edit</button>
         </div>
-        <form action="" method="post" id="email-form">
+        <form action="../decisionMaker.php" method="post" id="email-form">
             <p>New Email</p>
             <input type="text" name="email">
             <button>Submit</button>

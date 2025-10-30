@@ -29,7 +29,10 @@ if(isset($_POST['username']))
 
 if(isset($_POST['email']))
 {
-  
+  $email = $_POST['email'];
+
+  $userController = new UserController();
+  $userController->changeEmail($email);
 }
 
 if(isset($_POST['password']))
