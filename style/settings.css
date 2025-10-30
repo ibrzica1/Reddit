@@ -98,3 +98,20 @@ form button {
 form button:hover {
   background-color: #1484d6;
 }
+
+.message-container {
+   margin-bottom: 20px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+        
+.message {
+  display: inline-block;
+  background-color: #FF4500;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

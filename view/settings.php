@@ -71,15 +71,18 @@ $user = new User();
 </div>
 
 <div class="main-container">
+    <div class="message-container">
+      <p class="message"><?=$session->displayMessage()?></p>
+    </div>
     <h1>Settings</h1>
     <div class="fields-container">
         <div class="form">
                 <p>Username</p>
                 <button class="edit-btn" data-target="username-form">Edit</button>
         </div>
-        <form action="" method="post" id="username-form">
+        <form action="../decisionMaker.php" method="post" id="username-form">
             <p>New Username</p>
-            <input type="text">
+            <input type="text" name="username">
             <button>Submit</button>
         </form>
         <div class="form">
@@ -88,7 +91,7 @@ $user = new User();
         </div>
         <form action="" method="post" id="email-form">
             <p>New Email</p>
-            <input type="text">
+            <input type="text" name="email">
             <button>Submit</button>
         </form>
         <div class="form">
@@ -97,7 +100,7 @@ $user = new User();
         </div>
         <form action="" method="post" id="password-form">
             <p>OldPassword</p>
-            <input type="text">
+            <input type="text" name="password">
             <p>New Password</p>
             <input type="text">
             <p>Repeat Password</p>
@@ -110,7 +113,7 @@ $user = new User();
         </div>
         <form action="" method="post" id="bio-form">
             <p>New Bio</p>
-            <input type="text">
+            <input type="text" name="bio">
             <button>Submit</button>
         </form>
         <div class="form">

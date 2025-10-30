@@ -64,4 +64,27 @@ class User extends Db
 
     return $stmt->fetch();
   }
+
+  public function getUserAtribute(string $atribute, int $id): mixed
+  {
+    $stmt = $this->connection->prepare(
+      "SELECT $atribute FROM user WHERE id = :id"
+    );
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    return $stmt->fetch();
+  }
+
+  public function updateUser(string $username, int $id): void
+  {
+    $stmt = $this->connection->prepare("UPDATE user 
+    SET username = :username
+    WHERE id = :id");
+    $stmt->bindParam(':username',$username);
+    $stmt->bindParam(':id',$id);
+    $stmt->execute();
+
+
+  }
 }

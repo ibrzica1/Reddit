@@ -160,5 +160,57 @@ class UserController extends User
     header('Location: index.php');
   }
 
+  public function changeUsername(string $username): void
+  {
+    $session = new SessionService();
+    $id = $session->getFromSession("user_id");
+
+    if(!isset($username))
+    {
+      $message = "You didnt send username";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if($this->existsUsername($username))
+    {
+      $message = "Username already exists";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if(!$this->usernameLength($username))
+    {
+      $message = "Username length cant be smaller then 3 or longer than 15 characters";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    $oldUsername = $this->getUserAtribute('username',$id);
+
+    $this->updateUser($username, $id);
+
+    $newUsername = $this->getUserAtribute('username',$id);
+    
+    if($oldUsername[0] !== $newUsername[0])
+    {
+      $message = "Username was succesfully changed";
+      $session->setSession("message",$message);
+      $session->setSession("username",$username);
+      header("Location: view/settings.php");
+      exit();
+    }
+    else
+    {
+      $message = "Username was not succesfully changed";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+    
+  }
   
 }
