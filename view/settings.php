@@ -112,8 +112,9 @@ $user = new User();
                 <button class="edit-btn"  data-target="bio-form">Edit</button>
         </div>
         <form action="" method="post" id="bio-form">
-            <p>New Bio</p>
-            <input type="text" name="bio">
+            <p>New Bio (<span class="letters">235</span> Letters)</p>
+            <textarea name="bio" id="bioId" rows="4"
+            placeholder="Enter your Bio"></textarea>
             <button>Submit</button>
         </form>
         <div class="form">
@@ -130,6 +131,8 @@ $user = new User();
     menu.addEventListener('click', toggleMenu);
 
     const editBtn = document.querySelectorAll(".edit-btn");
+    const bio = document.getElementById("bioId");
+    const letters = document.querySelector(".letters");
 
     editBtn.forEach(button => {
       button.addEventListener('click', ()=>{
@@ -145,10 +148,23 @@ $user = new User();
                     button.textContent = "Edit";
                 }
             }
+        });
     });
 
-});
+    bio.addEventListener('keydown', ()=>{
+        let maxLetters = 235;
+        let used = bio.value.length;
+        let remaining = maxLetters - used;
+        letters.innerHTML = remaining;
+    });
     
+   bio.addEventListener('input', () => {
+        const maxLetters = 280;
+        if (bio.value.length > maxLetters) {
+            bio.value = bio.value.slice(0, maxLetters);
+        }
+        letters.textContent = maxLetters - bio.value.length;
+    });
 
 </script>
 </body>
