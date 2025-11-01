@@ -115,3 +115,33 @@ form button:hover {
   font-weight: 700;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.avatar-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, auto);   
+  gap: 15px;                             
+  justify-items: center;                
+  align-items: center;                   
+  margin-top: 15px;
+}
+
+.image-wrapper{
+  position: relative;
+  width: 90px;
+  height: 110px;
+  border-radius: 8px;
+}
+
+.image-wrapper img{
+  width: 90px;
+  height: 110px;
+  border-radius: 8px;
+}
+
+.image-wrapper input{
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  z-index: 1;
+}

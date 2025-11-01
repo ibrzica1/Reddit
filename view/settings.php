@@ -119,8 +119,44 @@ $user = new User();
         </form>
         <div class="form">
                 <p>Avatar</p>
-                <button id="edit-btn" value="avatar">Edit</button>
+                <button class="edit-btn"  data-target="avatar-form">Edit</button>
         </div>
+        <form action="" method="post" id="avatar-form">
+            <div class="avatar-grid">
+                <div class="image-wrapper">
+                <img src="../images/avatars/avatarBlue.webp">
+                <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarGreen.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarGreenBlue.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarLightBlue.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarOrange.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarPink.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarPurple.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+                <div class="image-wrapper">
+                    <img src="../images\avatars\avatarYellow.webp">
+                    <input type="checkbox" name="" id="">
+                </div>
+            </div>
+        </form>
         
     </div>
 </div>
