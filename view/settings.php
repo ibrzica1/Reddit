@@ -123,37 +123,37 @@ $user = new User();
         </div>
         <form action="" method="post" id="avatar-form">
             <div class="avatar-grid">
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="blue">
                 <img src="../images/avatars/avatarBlue.webp">
-                <input type="checkbox" name="" id="">
+                <input type="checkbox" name="" id="blue">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="green">
                     <img src="../images\avatars\avatarGreen.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="green">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="greenBlue">
                     <img src="../images\avatars\avatarGreenBlue.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="greenBlue">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="lightBlue">
                     <img src="../images\avatars\avatarLightBlue.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="lightBlue">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="orange">
                     <img src="../images\avatars\avatarOrange.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="orange">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="pink">
                     <img src="../images\avatars\avatarPink.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="pink">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="purple">
                     <img src="../images\avatars\avatarPurple.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="purple">
                 </div>
-                <div class="image-wrapper">
+                <div class="image-wrapper" data-target="yellow">
                     <img src="../images\avatars\avatarYellow.webp">
-                    <input type="checkbox" name="" id="">
+                    <input type="checkbox" name="" id="yellow">
                 </div>
             </div>
         </form>
@@ -169,6 +169,32 @@ $user = new User();
     const editBtn = document.querySelectorAll(".edit-btn");
     const bio = document.getElementById("bioId");
     const letters = document.querySelector(".letters");
+    const images = document.querySelectorAll(".image-wrapper");
+    let checkboxes = [];
+
+    images.forEach(image => {
+        const avatarColor = image.getAttribute('data-target');
+        const avatarCheckbox = document.getElementById(avatarColor);
+
+        checkboxes.push(avatarCheckbox);
+    });
+
+    images.forEach(image => {
+        image.addEventListener('click', ()=>{
+            const avatarColor = image.getAttribute('data-target');
+            const avatarCheckbox = document.getElementById(avatarColor);
+
+            if(avatarCheckbox.checked)
+            {
+              checkboxes.forEach(cb => cb.checked = false);
+            }
+            else
+            {
+              checkboxes.forEach(cb => cb.checked = false);
+              avatarCheckbox.checked = true;
+            }
+        });
+    })
 
     editBtn.forEach(button => {
       button.addEventListener('click', ()=>{
