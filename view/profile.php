@@ -52,13 +52,13 @@ $bio = $user->getUserAtribute('bio',$id);
             </a>
                 <div class="user-info" id="userInfo">
                     <div class="green-dot"></div>
-                    <img class="user-avatar" src="../images/avatars/avatarBlue.webp">
+                    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                     
                 </div>
                 <div class="menu-container" id="userMenu">
                         <a class="profile-container" href="profile.php">
                             <div class="avatar-container">
-                                <img class="user-avatar" src="../images/avatars/avatarBlue.webp">
+                                <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                             </div>
                             <div class="info-container">
                                 <h3>View Profile</h3>
@@ -81,7 +81,7 @@ $bio = $user->getUserAtribute('bio',$id);
     <div class="profile-header">
         <div class="banner"></div>
         <div class="profile-card">
-            <img src="../images/avatars/avatarBlue.webp" alt="Avatar" class="profile-avatar"> 
+            <img src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp" alt="Avatar" class="profile-avatar"> 
             
             <div class="profile-info-content">
                 <div class="username-section">

@@ -44,13 +44,13 @@ $session = new SessionService();
             </a>
                 <div class="user-info" id="userInfo">
                     <div class="green-dot"></div>
-                    <img class="user-avatar" src="images/avatars/avatarBlue.webp">
+                    <img class="user-avatar" src="images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                     
                 </div>
                 <div class="menu-container" id="userMenu">
                         <a class="profile-container" href="view/profile.php">
                             <div class="avatar-container">
-                                <img class="user-avatar" src="images/avatars/avatarBlue.webp">
+                                <img class="user-avatar" src="images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                             </div>
                             <div class="info-container">
                                 <h3>View Profile</h3>

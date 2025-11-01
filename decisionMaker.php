@@ -54,3 +54,11 @@ if(isset($_POST['bio']))
   $userController = new UserController();
   $userController->changeBio($bio);
 }
+
+if(isset($_POST['avatar']))
+{
+  $avatar = $_POST['avatar'];
+
+  $userController = new UserController();
+  $userController->changeAvatar($avatar);
+}

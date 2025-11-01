@@ -10,6 +10,7 @@ class User extends Db
   public $email;
   public $password;
   public $bio;
+  public $avatar;
 
   public function existsUsername(string $username): bool
   {
@@ -50,15 +51,27 @@ class User extends Db
     return strlen($bio) < 236;
   }
 
-  public function registerUser(string $username, string $email, string $password, string $bio): void
+  public function existsAvatar(string $avatar): bool
   {
-    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio)
-    VALUES (:username, :email, :password, :bio)");
+    $avatars = ["blue","green","greenBlue","lightBlue",
+    "orange","pink","purple","yellow"];
+
+    return in_array($avatar,$avatars)? true : false;
+  }
+
+  
+
+  public function registerUser(string $username, string $email, string $password, 
+  string $bio, string $avatar): void
+  {
+    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar)
+    VALUES (:username, :email, :password, :bio, :avatar)");
     $stmt->bindParam(':username',$username);
     $stmt->bindParam(':email',$email);
     $password = password_hash($password,PASSWORD_BCRYPT);
     $stmt->bindParam(':password',$password);
     $stmt->bindParam(':bio',$bio);
+    $stmt->bindParam(':avatar',$avatar);
 
     $stmt->execute();
   }

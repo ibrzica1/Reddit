@@ -46,12 +46,12 @@ $user = new User();
         </a>
         <div class="user-info" id="userInfo">
             <div class="green-dot"></div>
-            <img class="user-avatar" src="../images/avatars/avatarBlue.webp">
+            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
         </div>
         <div class="menu-container" id="userMenu">
             <a class="profile-container" href="profile.php">
                 <div class="avatar-container">
-                    <img class="user-avatar" src="../images/avatars/avatarBlue.webp">
+                    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                 </div>
                 <div class="info-container">
                     <h3>View Profile</h3>
@@ -121,43 +121,43 @@ $user = new User();
                 <p>Avatar</p>
                 <button class="edit-btn"  data-target="avatar-form">Edit</button>
         </div>
-        <form action="" method="post" id="avatar-form">
+        <form action="../decisionMaker.php" method="post" id="avatar-form">
             <div class="avatar-grid">
                 <div class="image-wrapper" data-target="blue">
                 <img src="../images/avatars/avatarBlue.webp">
-                <input type="checkbox" name="" id="blue">
+                <input type="checkbox" name="avatar" id="blue" value="blue">
                 </div>
                 <div class="image-wrapper" data-target="green">
                     <img src="../images\avatars\avatarGreen.webp">
-                    <input type="checkbox" name="" id="green">
+                    <input type="checkbox" name="avatar" id="green" value="green">
                 </div>
                 <div class="image-wrapper" data-target="greenBlue">
                     <img src="../images\avatars\avatarGreenBlue.webp">
-                    <input type="checkbox" name="" id="greenBlue">
+                    <input type="checkbox" name="avatar" id="greenBlue" value="greenBLue">
                 </div>
                 <div class="image-wrapper" data-target="lightBlue">
                     <img src="../images\avatars\avatarLightBlue.webp">
-                    <input type="checkbox" name="" id="lightBlue">
+                    <input type="checkbox" name="avatar" id="lightBlue" value="lightBlue">
                 </div>
                 <div class="image-wrapper" data-target="orange">
                     <img src="../images\avatars\avatarOrange.webp">
-                    <input type="checkbox" name="" id="orange">
+                    <input type="checkbox" name="avatar" id="orange" value="orange">
                 </div>
                 <div class="image-wrapper" data-target="pink">
                     <img src="../images\avatars\avatarPink.webp">
-                    <input type="checkbox" name="" id="pink">
+                    <input type="checkbox" name="avatar" id="pink" value="pink">
                 </div>
                 <div class="image-wrapper" data-target="purple">
                     <img src="../images\avatars\avatarPurple.webp">
-                    <input type="checkbox" name="" id="purple">
+                    <input type="checkbox" name="avatar" id="purple" value="purple">
                 </div>
                 <div class="image-wrapper" data-target="yellow">
                     <img src="../images\avatars\avatarYellow.webp">
-                    <input type="checkbox" name="" id="yellow">
+                    <input type="checkbox" name="avatar" id="yellow" value="yellow">
                 </div>
             </div>
+            <button>Submit</button>
         </form>
-        
     </div>
 </div>
 

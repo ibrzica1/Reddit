@@ -54,6 +54,7 @@ class UserController extends User
 
     $session->setSession("user_id",$user['id']);
     $session->setSession("username",$user['username']);
+    $session->setSession("avatar",$user['avatar']);
 
     header('Location: index.php');
   }
@@ -67,6 +68,7 @@ class UserController extends User
     $password = $data['password'];
     $confirmPassword = $data['password_confirm'];
     $bio = 'This is your bio';
+    $avatar = 'blue';
 
     if(!isset($username))
     {
@@ -148,12 +150,12 @@ class UserController extends User
       exit();
     }
 
-    $this->registerUser($username,$email,$password,$bio);
+    $this->registerUser($username,$email,$password,$bio,$avatar);
     $user = $this->getUser($username);
     
     $session->setSession("user_id",$user['id']);
-    $session->setSession("username",$user['username']);
-    $session->setSession("logged",true);
+    $session->setSession("username",$username);
+    $session->setSession("avatar",$avatar);
 
     $mailer = new MailService();
     $mailer->welcomeMail('test@inbox.mailtrap.io',$username);
@@ -365,6 +367,33 @@ class UserController extends User
     }
 
     $this->updateUser('bio', $bio, $id);
+    header("Location: view/settings.php");
+    exit();
+  }
+
+  public function changeAvatar($avatar)
+  {
+    $session = new SessionService();
+    $id = $session->getFromSession("user_id");
+
+    if(!isset($avatar))
+    {
+      $message = "You didnt send avatar value";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if(!$this->existsAvatar($avatar))
+    {
+      $message = "Avatar doesnt exists";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    $this->updateUser('avatar', $avatar, $id);
+    $session->setSession('avatar',$avatar);
     header("Location: view/settings.php");
     exit();
   }
