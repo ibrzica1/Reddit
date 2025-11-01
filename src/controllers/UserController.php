@@ -66,6 +66,7 @@ class UserController extends User
     $email = $data['email'];
     $password = $data['password'];
     $confirmPassword = $data['password_confirm'];
+    $bio = 'This is your bio';
 
     if(!isset($username))
     {
@@ -147,7 +148,7 @@ class UserController extends User
       exit();
     }
 
-    $this->registerUser($username,$email,$password);
+    $this->registerUser($username,$email,$password,$bio);
     $user = $this->getUser($username);
     
     $session->setSession("user_id",$user['id']);
@@ -340,5 +341,31 @@ class UserController extends User
       header("Location: view/settings.php");
       exit();
     }
+  }
+
+  public function changeBio($bio)
+  {
+    $session = new SessionService();
+    $id = $session->getFromSession("user_id");
+
+    if(!isset($bio))
+    {
+      $message = "You didnt send new bio";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    if(!$this->lengthBio($bio))
+    {
+      $message = "Bio cant be longer then 235 letters";
+      $session->setSession("message",$message);
+      header("Location: view/settings.php");
+      exit();
+    }
+
+    $this->updateUser('bio', $bio, $id);
+    header("Location: view/settings.php");
+    exit();
   }
 }

@@ -49,5 +49,8 @@ if(isset($_POST['old-password'])
 
 if(isset($_POST['bio']))
 {
-  
+  $bio = $_POST['bio'];
+
+  $userController = new UserController();
+  $userController->changeBio($bio);
 }

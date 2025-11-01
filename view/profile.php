@@ -13,11 +13,11 @@ if(!$session->sessionExists("username"))
 
 $user = new User();
 
-// Retrieve user data (using placeholders for now)
+$id = $session->getFromSession('user_id');
 $username = $session->getFromSession("username");
 $karma = 4567; 
 $accountAge = "3 years"; 
-$bio = "This is a brief bio of the user. I love cats, pizza, and coding!";
+$bio = $user->getUserAtribute('bio',$id);
 
 ?>
 <!DOCTYPE html>
@@ -97,7 +97,7 @@ $bio = "This is a brief bio of the user. I love cats, pizza, and coding!";
                 
             </div>
             
-            <p class="bio"><?= $bio ?></p>
+            <p class="bio"><?= $bio[0] ?></p>
             
             <div class="karma-info">
                 <div>

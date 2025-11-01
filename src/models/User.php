@@ -9,6 +9,7 @@ class User extends Db
   public $username;
   public $email;
   public $password;
+  public $bio;
 
   public function existsUsername(string $username): bool
   {
@@ -44,14 +45,20 @@ class User extends Db
     return strlen($password) < 6;
   }
 
-  public function registerUser(string $username, string $email, string $password): void
+  public function lengthBio(string $bio): bool
   {
-    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password)
-    VALUES (:username, :email, :password)");
+    return strlen($bio) < 236;
+  }
+
+  public function registerUser(string $username, string $email, string $password, string $bio): void
+  {
+    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio)
+    VALUES (:username, :email, :password, :bio)");
     $stmt->bindParam(':username',$username);
     $stmt->bindParam(':email',$email);
     $password = password_hash($password,PASSWORD_BCRYPT);
     $stmt->bindParam(':password',$password);
+    $stmt->bindParam(':bio',$bio);
 
     $stmt->execute();
   }

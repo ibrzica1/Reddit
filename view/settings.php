@@ -111,7 +111,7 @@ $user = new User();
                 <p>Bio</p>
                 <button class="edit-btn"  data-target="bio-form">Edit</button>
         </div>
-        <form action="" method="post" id="bio-form">
+        <form action="../decisionMaker.php" method="post" id="bio-form">
             <p>New Bio (<span class="letters">235</span> Letters)</p>
             <textarea name="bio" id="bioId" rows="4"
             placeholder="Enter your Bio"></textarea>
@@ -159,7 +159,7 @@ $user = new User();
     });
     
    bio.addEventListener('input', () => {
-        const maxLetters = 280;
+        const maxLetters = 235;
         if (bio.value.length > maxLetters) {
             bio.value = bio.value.slice(0, maxLetters);
         }
