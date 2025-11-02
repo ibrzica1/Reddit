@@ -82,7 +82,7 @@ $user = new User();
         </div>
         <form action="../decisionMaker.php" method="post" id="username-form">
             <p>New Username</p>
-            <input type="text" name="username">
+            <input type="text" name="username-update">
             <button>Submit</button>
         </form>
         <div class="form">
@@ -91,7 +91,7 @@ $user = new User();
         </div>
         <form action="../decisionMaker.php" method="post" id="email-form">
             <p>New Email</p>
-            <input type="text" name="email">
+            <input type="text" name="email-update">
             <button>Submit</button>
         </form>
         <div class="form">
@@ -113,7 +113,7 @@ $user = new User();
         </div>
         <form action="../decisionMaker.php" method="post" id="bio-form">
             <p>New Bio (<span class="letters">235</span> Letters)</p>
-            <textarea name="bio" id="bioId" rows="4"
+            <textarea name="bio-update" id="bioId" rows="4"
             placeholder="Enter your Bio"></textarea>
             <button>Submit</button>
         </form>
@@ -125,35 +125,35 @@ $user = new User();
             <div class="avatar-grid">
                 <div class="image-wrapper" data-target="blue">
                 <img src="../images/avatars/avatarBlue.webp">
-                <input type="checkbox" name="avatar" id="blue" value="blue">
+                <input type="checkbox" name="avatar-update" id="blue" value="blue">
                 </div>
                 <div class="image-wrapper" data-target="green">
                     <img src="../images\avatars\avatarGreen.webp">
-                    <input type="checkbox" name="avatar" id="green" value="green">
+                    <input type="checkbox" name="avatar-update" id="green" value="green">
                 </div>
                 <div class="image-wrapper" data-target="greenBlue">
                     <img src="../images\avatars\avatarGreenBlue.webp">
-                    <input type="checkbox" name="avatar" id="greenBlue" value="greenBLue">
+                    <input type="checkbox" name="avatar-update" id="greenBlue" value="greenBLue">
                 </div>
                 <div class="image-wrapper" data-target="lightBlue">
                     <img src="../images\avatars\avatarLightBlue.webp">
-                    <input type="checkbox" name="avatar" id="lightBlue" value="lightBlue">
+                    <input type="checkbox" name="avatar-update" id="lightBlue" value="lightBlue">
                 </div>
                 <div class="image-wrapper" data-target="orange">
                     <img src="../images\avatars\avatarOrange.webp">
-                    <input type="checkbox" name="avatar" id="orange" value="orange">
+                    <input type="checkbox" name="avatar-update" id="orange" value="orange">
                 </div>
                 <div class="image-wrapper" data-target="pink">
                     <img src="../images\avatars\avatarPink.webp">
-                    <input type="checkbox" name="avatar" id="pink" value="pink">
+                    <input type="checkbox" name="avatar-update" id="pink" value="pink">
                 </div>
                 <div class="image-wrapper" data-target="purple">
                     <img src="../images\avatars\avatarPurple.webp">
-                    <input type="checkbox" name="avatar" id="purple" value="purple">
+                    <input type="checkbox" name="avatar-update" id="purple" value="purple">
                 </div>
                 <div class="image-wrapper" data-target="yellow">
                     <img src="../images\avatars\avatarYellow.webp">
-                    <input type="checkbox" name="avatar" id="yellow" value="yellow">
+                    <input type="checkbox" name="avatar-update" id="yellow" value="yellow">
                 </div>
             </div>
             <button>Submit</button>

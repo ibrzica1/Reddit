@@ -19,17 +19,17 @@ if(isset($_POST['signup']))
   $userController->signup($_POST);
 }
 
-if(isset($_POST['username']))
+if(isset($_POST['username-update']))
 {
-  $username = $_POST['username'];
+  $username = $_POST['username-update'];
 
   $userController = new UserController();
   $userController->changeUsername($username);
 }
 
-if(isset($_POST['email']))
+if(isset($_POST['email-update']))
 {
-  $email = $_POST['email'];
+  $email = $_POST['email-update'];
 
   $userController = new UserController();
   $userController->changeEmail($email);
@@ -47,17 +47,17 @@ if(isset($_POST['old-password'])
   $userController->changePassword($oldPass, $newPass, $confirmPass);
 }
 
-if(isset($_POST['bio']))
+if(isset($_POST['bio-update']))
 {
-  $bio = $_POST['bio'];
+  $bio = $_POST['bio-update'];
 
   $userController = new UserController();
   $userController->changeBio($bio);
 }
 
-if(isset($_POST['avatar']))
+if(isset($_POST['avatar-update']))
 {
-  $avatar = $_POST['avatar'];
+  $avatar = $_POST['avatar-update'];
 
   $userController = new UserController();
   $userController->changeAvatar($avatar);
