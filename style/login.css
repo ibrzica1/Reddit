@@ -25,8 +25,8 @@ body {
         
         .message {
             display: inline-block;
-            background-color: #FF4500;
-            color: white;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
             border-radius: 4px;
             font-size: 14px;
             font-weight: 700;
