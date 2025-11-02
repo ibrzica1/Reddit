@@ -57,10 +57,10 @@ $session = new SessionService();
                                 <p>u/<?= $session->getFromSession("username") ?></p>
                             </div>
                         </a>
-                        <div class="edit-container">
+                        <a class="edit-container" href="view/editAvatar.php">
                             <img src="images/icons/shirt.png">
                             <p>Edit Avatar</p>
-                        </div>
+                        </a>
                         <a class="logout-container" href="src/controllers/Logout.php">
                             <img src="images/icons/house-door.png">
                             <p>Log Out</p>
