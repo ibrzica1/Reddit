@@ -22,6 +22,7 @@ $user = new User();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Avatar</title>
     <link rel="stylesheet" href="../style/header.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../style/editAvatar.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -68,11 +69,63 @@ $user = new User();
         </div>
     </div>
 </div>
+<div class="banner"></div>
+<div class="body-container">
+    <div class="form-container">
+        <form action="../decisionMaker.php" method="post">
+            <img src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp" class="selected-avatar">
+            <input type="hidden" value="" class="form-input" name="avatar-update">
+            <button type="submit">Change</button>
+        </form>
+    </div>
+
+    <div class="avatar-grid">
+        <div class="image-wrapper" data-target="blue">
+            <img src="../images/avatars/blue.webp">
+        </div>
+        <div class="image-wrapper" data-target="green">
+            <img src="../images\avatars\green.webp">
+        </div>
+        <div class="image-wrapper" data-target="greenBlue">
+            <img src="../images\avatars\greenBlue.webp">
+        </div>
+        <div class="image-wrapper" data-target="lightBlue">
+            <img src="../images\avatars\lightBlue.webp">
+        </div>
+        <div class="image-wrapper" data-target="orange">
+            <img src="../images\avatars\orange.webp">
+        </div>
+        <div class="image-wrapper" data-target="pink">
+            <img src="../images\avatars\pink.webp">
+        </div>
+        <div class="image-wrapper" data-target="purple">
+            <img src="../images\avatars\purple.webp">
+        </div>
+        <div class="image-wrapper" data-target="yellow">
+            <img src="../images\avatars\yellow.webp">
+        </div>
+    </div>
+</div>
 
 <script type="module">
     import { toggleMenu } from "../script/tools.js";
     const menu = document.getElementById("userInfo");
+    const avatarOptions = document.querySelectorAll(".image-wrapper");
+    const avatarSelected = document.querySelector(".selected-avatar");
+    const formInput = document.querySelector(".form-input");
+
     menu.addEventListener('click', toggleMenu);
+
+    avatarOptions.forEach(option => {
+        const avatarColor = option.getAttribute('data-target');
+
+        option.addEventListener('click',() => {
+            avatarSelected.src = `../images/avatars/${avatarColor}.webp`;
+            formInput.value = avatarColor;
+        });
+    });
+
+
 </script>
 </body>
 

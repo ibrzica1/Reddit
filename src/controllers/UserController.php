@@ -394,7 +394,7 @@ class UserController extends User
 
     $this->updateUser('avatar', $avatar, $id);
     $session->setSession('avatar',$avatar);
-    header("Location: view/settings.php");
+    header("Location: index.php");
     exit();
   }
 }
