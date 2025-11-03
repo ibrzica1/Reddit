@@ -108,11 +108,13 @@ $user = new User();
 </div>
 
 <script type="module">
-    import { toggleMenu } from "../script/tools.js";
+    import { toggleMenu, changeBanner } from "../script/tools.js?v=<?php echo time(); ?>";
     const menu = document.getElementById("userInfo");
     const avatarOptions = document.querySelectorAll(".image-wrapper");
     const avatarSelected = document.querySelector(".selected-avatar");
     const formInput = document.querySelector(".form-input");
+
+    changeBanner('<?=$session->getFromSession('avatar')?>');
 
     menu.addEventListener('click', toggleMenu);
 
@@ -122,6 +124,7 @@ $user = new User();
         option.addEventListener('click',() => {
             avatarSelected.src = `../images/avatars/${avatarColor}.webp`;
             formInput.value = avatarColor;
+            changeBanner(avatarColor);
         });
     });
 

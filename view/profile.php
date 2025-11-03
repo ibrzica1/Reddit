@@ -161,9 +161,11 @@ $bio = $user->getUserAtribute('bio',$id);
     </div>
 </div>
 <script type="module">
-    import { toggleMenu } from "../script/tools.js";
+    import { toggleMenu, changeBanner} from "../script/tools.js?v=<?php echo time(); ?>";
     const  menu = document.getElementById("userInfo");
     menu.addEventListener('click',toggleMenu);
+
+    changeBanner('<?=$session->getFromSession('avatar')?>');
 </script>
 
 </body>
