@@ -5,6 +5,7 @@ namespace Reddit\controllers;
 use Reddit\models\User;
 use Reddit\services\SessionService;
 use Reddit\services\MailService;
+use Reddit\services\TimeService;
 
 class UserController extends User
 {
@@ -62,6 +63,7 @@ class UserController extends User
   public function signup(array $data): void
   {
     $session = new SessionService();
+    $timeStamp = new TimeService();
 
     $username = $data['username'];
     $email = $data['email'];
@@ -69,6 +71,7 @@ class UserController extends User
     $confirmPassword = $data['password_confirm'];
     $bio = 'This is your bio';
     $avatar = 'blue';
+    $time = $timeStamp->time;
 
     if(!isset($username))
     {
@@ -150,7 +153,7 @@ class UserController extends User
       exit();
     }
 
-    $this->registerUser($username,$email,$password,$bio,$avatar);
+    $this->registerUser($username,$email,$password,$bio,$avatar,$time);
     $user = $this->getUser($username);
     
     $session->setSession("user_id",$user['id']);

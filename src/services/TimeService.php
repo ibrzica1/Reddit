@@ -4,11 +4,11 @@ namespace Reddit\services;
 
 class TimeService
 {
-    private $time;
+    public $time;
 
     public function __construct()
     {
-        $this->time = date('m/d/Y h:i:s a', time());
+        $this->time = date('Y-m-d H:i:s', time());
     }
 
     public function calculateTime(string $timeStamp)

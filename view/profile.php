@@ -3,8 +3,10 @@
 require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
+use Reddit\services\TimeService;
 use Reddit\models\User;
 $session = new SessionService();
+$time = new TimeService();
 
 if(!$session->sessionExists("username"))
 {
@@ -16,7 +18,8 @@ $user = new User();
 $id = $session->getFromSession('user_id');
 $username = $session->getFromSession("username");
 $karma = 4567; 
-$accountAge = "3 years"; 
+$timeCreated = $user->getUserAtribute('time',$id);
+$accountAge = $time->calculateTime($timeCreated[0]); 
 $bio = $user->getUserAtribute('bio',$id);
 
 ?>

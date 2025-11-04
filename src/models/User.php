@@ -11,6 +11,7 @@ class User extends Db
   public $password;
   public $bio;
   public $avatar;
+  public $time;
 
   public function existsUsername(string $username): bool
   {
@@ -62,16 +63,17 @@ class User extends Db
   
 
   public function registerUser(string $username, string $email, string $password, 
-  string $bio, string $avatar): void
+  string $bio, string $avatar, string $time): void
   {
-    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar)
-    VALUES (:username, :email, :password, :bio, :avatar)");
+    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time)
+    VALUES (:username, :email, :password, :bio, :avatar, :time)");
     $stmt->bindParam(':username',$username);
     $stmt->bindParam(':email',$email);
     $password = password_hash($password,PASSWORD_BCRYPT);
     $stmt->bindParam(':password',$password);
     $stmt->bindParam(':bio',$bio);
     $stmt->bindParam(':avatar',$avatar);
+    $stmt->bindParam(':time',$time);
 
     $stmt->execute();
   }
