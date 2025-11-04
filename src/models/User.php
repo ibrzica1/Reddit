@@ -63,10 +63,10 @@ class User extends Db
   
 
   public function registerUser(string $username, string $email, string $password, 
-  string $bio, string $avatar, string $time): void
+  string $bio, string $avatar, string $time, int $karma): void
   {
-    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time)
-    VALUES (:username, :email, :password, :bio, :avatar, :time)");
+    $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time, karma)
+    VALUES (:username, :email, :password, :bio, :avatar, :time, :karma)");
     $stmt->bindParam(':username',$username);
     $stmt->bindParam(':email',$email);
     $password = password_hash($password,PASSWORD_BCRYPT);
@@ -74,6 +74,7 @@ class User extends Db
     $stmt->bindParam(':bio',$bio);
     $stmt->bindParam(':avatar',$avatar);
     $stmt->bindParam(':time',$time);
+    $stmt->bindParam(':karma',$karma);
 
     $stmt->execute();
   }

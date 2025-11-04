@@ -17,10 +17,11 @@ $user = new User();
 
 $id = $session->getFromSession('user_id');
 $username = $session->getFromSession("username");
-$karma = 4567; 
 $timeCreated = $user->getUserAtribute('time',$id);
+$userKarma = $user->getUserAtribute('karma',$id);
 $accountAge = $time->calculateTime($timeCreated[0]); 
 $bio = $user->getUserAtribute('bio',$id);
+$karma = $userKarma[0];
 
 ?>
 <!DOCTYPE html>

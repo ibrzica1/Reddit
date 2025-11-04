@@ -72,6 +72,7 @@ class UserController extends User
     $bio = 'This is your bio';
     $avatar = 'blue';
     $time = $timeStamp->time;
+    $karma = 0;
 
     if(!isset($username))
     {
@@ -153,7 +154,7 @@ class UserController extends User
       exit();
     }
 
-    $this->registerUser($username,$email,$password,$bio,$avatar,$time);
+    $this->registerUser($username,$email,$password,$bio,$avatar,$time,$karma);
     $user = $this->getUser($username);
     
     $session->setSession("user_id",$user['id']);
