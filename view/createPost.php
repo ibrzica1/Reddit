@@ -74,6 +74,9 @@ if(!$session->sessionExists("username"))
         </div>
   </div>
 
+<div class="message-container">
+    <p class="message"><?=$session->displayMessage()?></p>
+</div>
 
 <div>
    <h2>Create Post</h2>
