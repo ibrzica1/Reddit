@@ -4,6 +4,7 @@ require_once "vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
+use Reddit\controllers\PostController;
 
 $session = new SessionService();
 
@@ -61,4 +62,13 @@ if(isset($_POST['avatar-update']))
 
   $userController = new UserController();
   $userController->changeAvatar($avatar);
+}
+
+if(isset($_POST['title']) && isset($_POST['text']))
+{
+  $title = $_POST['title'];
+  $text = $_POST['text'];
+
+  $postController = new PostController();
+  $postController->textPost($title, $text);
 }
