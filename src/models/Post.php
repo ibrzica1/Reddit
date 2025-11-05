@@ -11,5 +11,15 @@ class Post
     public $user_id;
     public $likes;
 
+    public function titleLength($title)
+    {
+        return strlen($title) >= 2 && strlen($title) <= 300;
+    }
+
+    public function textLength($text)
+    {
+        return strlen($text) >= 2 && strlen($text) <= 1000;
+    }
+
     
 }
