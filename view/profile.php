@@ -109,8 +109,10 @@ $karma = $userKarma[0];
                     <p><?= number_format($karma) ?></p>
                 </div>
             </div>
-
-            <button class="new-post-btn">Create Post</button>
+            <a href="createPost.php">
+                <button class="new-post-btn">Create Post</button>
+            </a>
+            
         </div>
     </div>
 
