@@ -34,4 +34,16 @@ class Post extends Db
 
         $stmt->execute();
     }
+
+    public function registerImagePost($title, $user_id, $time, $likes)
+    {
+        $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, time, likes)
+        VALUES (:title, :user_id, :time, :likes)");
+        $stmt->bindParam(':title',$title);
+        $stmt->bindParam(':user_id',$user_id);
+        $stmt->bindParam(':time',$time);
+        $stmt->bindParam(':likes',$likes);
+
+        $stmt->execute();
+    }
 }
