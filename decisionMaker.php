@@ -64,11 +64,20 @@ if(isset($_POST['avatar-update']))
   $userController->changeAvatar($avatar);
 }
 
-if(isset($_POST['title']) && isset($_POST['text']))
+if(isset($_POST['title']) && !empty(trim($_POST['text'])))
 {
   $title = $_POST['title'];
   $text = $_POST['text'];
 
   $postController = new PostController();
   $postController->textPost($title, $text);
+}
+
+if(isset($_POST['title']) && !empty($_FILES['image']['name'][0]))
+{
+  $title = $_POST['title'];
+  $images = $_FILES['image'];
+
+  $postController = new PostController();
+  $postController->imagePost($title, $images);
 }

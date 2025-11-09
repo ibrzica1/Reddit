@@ -12,7 +12,7 @@ class Image extends Db
 
     public function uploadImage(string $tmpName, string $name, int $postId, int $userId): void
     {
-        $finalPath = "../images/uploaded/$name";
+        $finalPath = __DIR__ . "/../../images/uploaded/$name";
 
         move_uploaded_file($tmpName, $finalPath);
         $stmt = $this->connection->prepare("INSERT INTO image (name,post_id,user_id) 
