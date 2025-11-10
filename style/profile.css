@@ -102,7 +102,7 @@
 }
 
 .edit-profile-btn:hover {
-    background-color: #F6F7F8;
+    background-color: rgb(225, 231, 233);
 }
 
 .bio {
@@ -158,6 +158,34 @@
     background-color: #005A9C;
 }
 
+.new-comm-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+    width: 200px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+    text-decoration: none;
+    border: 2px solid #0079D3;
+    color: #0079D3;
+    font-weight: bold;
+}
+
+.new-comm-btn:hover {
+    background-color: rgb(225, 231, 233);
+}
+
+.new-comm-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 20px;
+}
+
+.new-comm-btn p {
+
+}
 
 .profile-nav {
     background-color: #FFFFFF;
