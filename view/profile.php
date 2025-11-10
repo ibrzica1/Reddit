@@ -112,7 +112,7 @@ $karma = $userKarma[0];
             <a href="createPost.php">
                 <button class="new-post-btn">Create Post</button>
             </a>
-            <a href="" class="new-comm-btn">
+            <a href="createCommunity.php" class="new-comm-btn">
                 <img src="../images/icons/plus.png">
                 <p>Start a Community</p>
             </a>
