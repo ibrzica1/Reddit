@@ -70,18 +70,23 @@ if(!$session->sessionExists("username"))
 </div>
 
 <div class="body-container">
+
+    <div class="message-container">
+        <p class="message"><?=$session->displayMessage()?></p>
+    </div>
+
     <h2>Tell us about your community</h2>
     <h4>A name and description help people understand what your 
         community is all about.</h4>
     <div class="form-container">
-        <form action="" method="post">
+        <form action="../decisionMaker.php" method="post">
         <div class="input-container">
             <div class="name-container">
-                <input type="text" id="nameInput" placeholder="Community name">
+                <input type="text" name="name" id="nameInput" placeholder="Community name">
                 <p class="name-letters">21</p>
             </div>
             <div class="description-container">
-                <textarea name="" id="descriptionInput" rows="10"
+                <textarea name="description" id="descriptionInput" rows="10"
                 placeholder="Description"></textarea>
                 <p class="description-letters">0</p>
             </div>
