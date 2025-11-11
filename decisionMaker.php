@@ -2,6 +2,7 @@
 
 require_once "vendor/autoload.php";
 
+use Reddit\controllers\CommunityController;
 use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
 use Reddit\controllers\PostController;
@@ -80,4 +81,13 @@ if(isset($_POST['title']) && !empty($_FILES['image']['name'][0]))
 
   $postController = new PostController();
   $postController->imagePost($title, $images);
+}
+
+if(isset($_POST['name']) && isset($_POST['description']))
+{
+  $name = $_POST['name'];
+  $description = $_POST['description'];
+
+  $communityController = new CommunityController();
+  $communityController->createCommunity($name,$description);
 }
