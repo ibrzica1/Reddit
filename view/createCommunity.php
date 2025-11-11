@@ -77,11 +77,12 @@ if(!$session->sessionExists("username"))
         <form action="" method="post">
         <div class="input-container">
             <div class="name-container">
-                <input type="text">
+                <input type="text" id="nameInput" placeholder="Community name">
                 <p class="name-letters">21</p>
             </div>
             <div class="description-container">
-                <input type="text">
+                <textarea name="" id="descriptionInput" rows="10"
+                placeholder="Description"></textarea>
                 <p class="description-letters">0</p>
             </div>
         </div>
@@ -101,8 +102,45 @@ if(!$session->sessionExists("username"))
 
 <script type="module">
     import { toggleMenu} from "../script/tools.js?v=<?php echo time(); ?>";
-    const  menu = document.getElementById("userInfo");
+    const menu = document.getElementById("userInfo");
+    const nameInput = document.getElementById("nameInput");
+    const nameLetters = document.querySelector(".name-letters");
+    const descriptionInput = document.getElementById("descriptionInput");
+    const descriptionLetters = document.querySelector(".description-letters");
+    const namePreview = document.querySelector('.prw-name-span');
+    const descriptionPreview = document.querySelector('.prw-description');
     menu.addEventListener('click',toggleMenu);
+
+    descriptionInput.addEventListener('keydown', ()=>{
+        let used = descriptionInput.value.length;
+        descriptionLetters.innerHTML = used;
+        descriptionPreview.textContent = descriptionInput.value;
+    });
+
+    descriptionInput.addEventListener('input', ()=>{
+        const maxLetters = 500;
+        if (descriptionInput.value.length > maxLetters) {
+            descriptionInput.value = descriptionInput.value.slice(0, maxLetters);
+        }
+        descriptionLetters.textContent = maxLetters - descriptionInput.value.length;
+    });
+
+    nameInput.addEventListener('keydown', ()=>{
+        let maxLetters = 21;
+        let used = nameInput.value.length;
+        let remaining = maxLetters - used;
+        nameLetters.innerHTML = remaining;
+        namePreview.innerHTML = nameInput.value;
+    });
+
+    nameInput.addEventListener('input', ()=>{
+        const maxLetters = 21;
+        if (nameInput.value.length > maxLetters) {
+            nameInput.value = nameInput.value.slice(0, maxLetters);
+        }
+        nameLetters.textContent = maxLetters - nameInput.value.length;
+    });
+
 </script>
     
 </body>

@@ -50,7 +50,8 @@ body {
 }
 
 .name-container input,
-.description-container input {
+.description-container textarea {
+  font-family: Arial, Helvetica, sans-serif;
   padding: 14px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -60,7 +61,7 @@ body {
 }
 
 .name-container input:focus,
-.description-container input:focus {
+.description-container textarea:focus {
   border-color: #0079d3;
 }
 
@@ -100,6 +101,7 @@ button[type="submit"]:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 510px;
 }
 
 .preview-container p {
@@ -119,6 +121,9 @@ button[type="submit"]:hover {
 .prw-description {
   color: #666;
   font-size: 15px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 @media (max-width: 800px) {
