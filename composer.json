@@ -1,5 +1,5 @@
 {
-    "name": "admin/reddit",
+    "name": "user/reddit",
     "autoload": {
         "psr-4": {
             "Reddit\\": "src/"
