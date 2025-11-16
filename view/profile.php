@@ -125,30 +125,16 @@ $karma = $userKarma[0];
             <nav class="profile-nav">
                 <a href="#" class="active">POSTS</a>
                 <a href="#">COMMENTS</a>
-                <a href="#">ABOUT</a>
-                <a href="#">SAVED</a>
+                <form method="POST" action="../decisionMaker.php">
+                    <input type="hidden" name="community">
+                    <button type="submit">COMMUNITIES</button>
+                </form>
             </nav>
             
-            <div class="post-item">
-                <div class="upvote-area">
-                    <span class="up-arrow">▲</span>
-                    <span class="score">42</span>
-                    <span class="down-arrow">▼</span>
-                </div>
-                <div class="post-content">
-                    <h3>Title of the Posted Content</h3>
-                    <p class="post-meta">Posted 2h ago in <a href="#">r/mySubreddit</a></p>
-                    <p>This is a short excerpt of the post body or image preview.</p>
-                    <div class="post-actions">
-                        <a href="#"><img src="../images/icons/comment.png" alt="Comments"> 12 Comments</a>
-                        <a href="#"><img src="../images/icons/share.png" alt="Share"> Share</a>
-                        <a href="#"><img src="../images/icons/save.png" alt="Save"> Save</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="post-item no-content">
-                <p>No more posts to display.</p>
+            <div class="content-container">
+                <?php foreach($content as $item): ?>
+                <p><?=$item["name"]?></p>
+                <?php endforeach;?>
             </div>
 
         </main>

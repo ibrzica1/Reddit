@@ -10,6 +10,15 @@ class Community extends Db
     public $user_id;
     public $time;
 
+    public function getCommunity($userId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM community WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id',$userId);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
     public function nameLength($name)
     {
         return strlen($name) >= 3 && strlen($name) <= 21;

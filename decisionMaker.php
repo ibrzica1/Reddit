@@ -91,3 +91,11 @@ if(isset($_POST['name']) && isset($_POST['description']))
   $communityController = new CommunityController();
   $communityController->createCommunity($name,$description);
 }
+
+if(isset($_POST['community']))
+{
+  $community = $_POST['community'];
+
+  $profileController = new ProfileController();
+  $profileController->showProfile($community);
+}
