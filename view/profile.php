@@ -6,9 +6,11 @@ use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\User;
 use Reddit\models\Community;
+use Reddit\models\Image;
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
+$image = new Image();
 
 if(!$session->sessionExists("username"))
 {
@@ -135,12 +137,13 @@ $activeTab = $_GET['tab'] ?? 'posts';
                 <?php if($activeTab == "communities"): ?>
                     <?php $communities = $community->getCommunity($id); ?>
                     <?php foreach($communities as $community): ?>
+                        <?php $communityImg = $image->getCommunityImage($community['id']); ?>
                        <div class="community-card">
                 <div class="community-icon">
-                    <img src="" alt="">
+                    <img src='../images/community/<?=$communityImg['name']?>' alt="">
                 </div>
                 <div class="community-info">
-                    <p class="community-name">r/<?= $community['name'] ?></p>
+                    <a href="" class="community-name">r/<?= $community['name'] ?></a>
                     <p class="community-desc"><?= $community['description'] ?></p>
                     <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
                 </div>

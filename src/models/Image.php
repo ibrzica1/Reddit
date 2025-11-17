@@ -10,7 +10,14 @@ class Image extends Db
     const MAX_IMAGE_WIDTH = 2920;
     const MAX_IMAGE_HEIGHT = 2924;
 
-    
+    public function getCommunityImage(int $id)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM image WHERE community_id = :id");
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
 
     public function uploadImage(string $tmpName, string $name, int $postId, int $userId): void
     {
