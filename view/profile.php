@@ -5,8 +5,10 @@ require_once "../vendor/autoload.php";
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\User;
+use Reddit\models\Community;
 $session = new SessionService();
 $time = new TimeService();
+$community = new Community();
 
 if(!$session->sessionExists("username"))
 {
@@ -22,6 +24,7 @@ $userKarma = $user->getUserAtribute('karma',$id);
 $accountAge = $time->calculateTime($timeCreated[0]); 
 $bio = $user->getUserAtribute('bio',$id);
 $karma = $userKarma[0];
+$activeTab = $_GET['tab'] ?? 'posts';
 
 ?>
 <!DOCTYPE html>
@@ -125,16 +128,26 @@ $karma = $userKarma[0];
             <nav class="profile-nav">
                 <a href="#" class="active">POSTS</a>
                 <a href="#">COMMENTS</a>
-                <form method="POST" action="../decisionMaker.php">
-                    <input type="hidden" name="community">
-                    <button type="submit">COMMUNITIES</button>
-                </form>
+                <a href="profile.php?tab=communities">COMMUNITIES</a>
             </nav>
             
             <div class="content-container">
-                <?php foreach($content as $item): ?>
-                <p><?=$item["name"]?></p>
-                <?php endforeach;?>
+                <?php if($activeTab == "communities"): ?>
+                    <?php $communities = $community->getCommunity($id); ?>
+                    <?php foreach($communities as $community): ?>
+                       <div class="community-card">
+                <div class="community-icon">r/<?= strtoupper(substr($community['name'], 0, 1)); ?></div>
+                <div class="community-info">
+                    <p class="community-name">r/<?= $community['name'] ?></p>
+                    <p class="community-desc"><?= $community['description'] ?></p>
+                    <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
+                </div>
+                <button class="join-btn">Join</button>
+            </div>
+                    <?php endforeach; ?>
+                <?php elseif($activeTab == "comments"): ?>
+                <?php else: ?>
+                <?php endif; ?>    
             </div>
 
         </main>

@@ -16,7 +16,7 @@ class Community extends Db
         $stmt->bindParam(':user_id',$userId);
         $stmt->execute();
 
-        return $stmt->fetch();
+        return $stmt->fetchAll();
     }
 
     public function nameLength($name)
