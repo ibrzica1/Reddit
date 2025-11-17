@@ -76,6 +76,21 @@ body {
   right: 0;
 }
 
+.image-container input[type="file"] {
+  display: flex;
+  width: 96%;
+  min-height: 40px;
+  padding: 8px;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.image-container input[type="file"]:hover {
+  background-color: #f0f2f5;
+}
+
 button[type="submit"] {
   margin-top: 40px;
   background-color: #0079d3;

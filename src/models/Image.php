@@ -10,6 +10,8 @@ class Image extends Db
     const MAX_IMAGE_WIDTH = 2920;
     const MAX_IMAGE_HEIGHT = 2924;
 
+    
+
     public function uploadImage(string $tmpName, string $name, int $postId, int $userId): void
     {
         $finalPath = __DIR__ . "/../../images/uploaded/$name";
@@ -19,6 +21,20 @@ class Image extends Db
         VALUES (:name,:post_id,:user_id)");
         $stmt->bindParam(':name',$name);
         $stmt->bindParam(':post_id',$postId);
+        $stmt->bindParam(':user_id',$userId);
+        $stmt->execute();
+        
+    }
+
+    public function uploadCommunityImage(string $tmpName, string $name, int $communityId, int $userId): void
+    {
+        $finalPath = __DIR__ . "/../../images/community/$name";
+
+        move_uploaded_file($tmpName, $finalPath);
+        $stmt = $this->connection->prepare("INSERT INTO image (name,community_id,user_id) 
+        VALUES (:name,:community_id,:user_id)");
+        $stmt->bindParam(':name',$name);
+        $stmt->bindParam(':community_id',$communityId);
         $stmt->bindParam(':user_id',$userId);
         $stmt->execute();
         

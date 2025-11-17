@@ -136,7 +136,9 @@ $activeTab = $_GET['tab'] ?? 'posts';
                     <?php $communities = $community->getCommunity($id); ?>
                     <?php foreach($communities as $community): ?>
                        <div class="community-card">
-                <div class="community-icon">r/<?= strtoupper(substr($community['name'], 0, 1)); ?></div>
+                <div class="community-icon">
+                    <img src="" alt="">
+                </div>
                 <div class="community-info">
                     <p class="community-name">r/<?= $community['name'] ?></p>
                     <p class="community-desc"><?= $community['description'] ?></p>

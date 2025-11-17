@@ -79,7 +79,7 @@ if(!$session->sessionExists("username"))
     <h4>A name and description help people understand what your 
         community is all about.</h4>
     <div class="form-container">
-        <form action="../decisionMaker.php" method="post">
+        <form action="../decisionMaker.php" method="post" enctype="multipart/form-data">
         <div class="input-container">
             <div class="name-container">
                 <input type="text" name="name" id="nameInput" placeholder="Community name">
@@ -89,6 +89,9 @@ if(!$session->sessionExists("username"))
                 <textarea name="description" id="descriptionInput" rows="10"
                 placeholder="Description"></textarea>
                 <p class="description-letters">0</p>
+            </div>
+            <div class="image-container">
+                <input type="file" name="image" id="">
             </div>
         </div>
         <button type="submit">Create</button>

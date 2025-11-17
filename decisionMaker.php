@@ -83,12 +83,19 @@ if(isset($_POST['title']) && !empty($_FILES['image']['name'][0]))
   $postController->imagePost($title, $images);
 }
 
-if(isset($_POST['name']) && isset($_POST['description']))
+if(isset($_POST['name']) && 
+isset($_POST['description']) &&
+isset($_FILES['image']))
 {
   $name = $_POST['name'];
   $description = $_POST['description'];
+  $image = $_FILES['image'];
 
   $communityController = new CommunityController();
-  $communityController->createCommunity($name,$description);
+  $communityController->createCommunity($name,$description,$image);
+}
+else
+{
+  echo "Error";
 }
 
