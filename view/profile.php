@@ -137,9 +137,12 @@ $activeTab = $_GET['tab'] ?? 'posts';
                 <?php if($activeTab == "communities"): ?>
                     <?php $communities = $community->getCommunity("user_id",$id); ?>
                     <?php if(empty($communities)): ?>
+                <div class="empty-container">
                     <img src="../images/logo-not-found.png" class="logo-not-found">
                     <h2>You dont have any communities yet</h2>
                     <h3>Once you create a community, it'll show up here.</h3>
+                </div>
+                    
                     <?php else: ?>
                     <?php foreach($communities as $community): ?>
                         <?php $communityImg = $image->getCommunityImage($community['id']); ?>
