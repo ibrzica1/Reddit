@@ -128,8 +128,8 @@ $activeTab = $_GET['tab'] ?? 'posts';
     <div class="content-wrapper">
         <main class="main-content">
             <nav class="profile-nav">
-                <a href="#" class="active" id="posts">POSTS</a>
-                <a href="#" id="comments">COMMENTS</a>
+                <a href="profile.php?tab=posts" id="posts">POSTS</a>
+                <a href="profile.php?tab=comments" id="comments">COMMENTS</a>
                 <a href="profile.php?tab=communities" id="communities">COMMUNITIES</a>
             </nav>
             
@@ -182,8 +182,17 @@ $activeTab = $_GET['tab'] ?? 'posts';
 </div>
 <script type="module">
     import { toggleMenu, changeBanner} from "../script/tools.js?v=<?php echo time(); ?>";
-    const  menu = document.getElementById("userInfo");
+    const menu = document.getElementById("userInfo");
+    const postBtn = document.getElementById("posts");
+    const communityBtn = document.getElementById("communities");
+    const commentsBtn = document.getElementById("comments");
     menu.addEventListener('click',toggleMenu);
+
+    "<?=$activeTab?>" == "posts" && postBtn.classList.add("active");
+        
+    "<?=$activeTab?>" == "communities" && communityBtn.classList.add("active");
+    
+    "<?=$activeTab?>" == "comments" && commentsBtn.classList.add("active");
 
     changeBanner('<?=$session->getFromSession('avatar')?>');
 </script>
