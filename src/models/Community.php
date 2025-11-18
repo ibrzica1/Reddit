@@ -10,10 +10,10 @@ class Community extends Db
     public $user_id;
     public $time;
 
-    public function getCommunity($userId)
+    public function getCommunity(string $attribute, mixed $value): array
     {
-        $stmt = $this->connection->prepare("SELECT * FROM community WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id',$userId);
+        $stmt = $this->connection->prepare("SELECT * FROM community WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
         $stmt->execute();
 
         return $stmt->fetchAll();

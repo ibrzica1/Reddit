@@ -29,7 +29,7 @@ header("Location: ../index.php");
 
 <div class="header-container">
     <a class="logo-container" href="../index.php">
-        <img src="../images/reddit.png" alt="Reddit Logo" class="reddit-logo">
+        <img src="../images/logo.png" alt="Reddit Logo" class="reddit-logo">
     </a>
     
     <div class="search-container">

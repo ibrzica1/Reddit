@@ -43,7 +43,7 @@ $activeTab = $_GET['tab'] ?? 'posts';
 
 <div class="header-container">
     <a class="logo-container" href="../index.php">
-        <img src="../images/reddit.png" alt="Reddit Logo" class="reddit-logo">
+        <img src="../images/logo.png" alt="Reddit Logo" class="reddit-logo">
     </a>
     
     <div class="search-container">
@@ -128,14 +128,19 @@ $activeTab = $_GET['tab'] ?? 'posts';
     <div class="content-wrapper">
         <main class="main-content">
             <nav class="profile-nav">
-                <a href="#" class="active">POSTS</a>
-                <a href="#">COMMENTS</a>
-                <a href="profile.php?tab=communities">COMMUNITIES</a>
+                <a href="#" class="active" id="posts">POSTS</a>
+                <a href="#" id="comments">COMMENTS</a>
+                <a href="profile.php?tab=communities" id="communities">COMMUNITIES</a>
             </nav>
             
             <div class="content-container">
                 <?php if($activeTab == "communities"): ?>
-                    <?php $communities = $community->getCommunity($id); ?>
+                    <?php $communities = $community->getCommunity("user_id",$id); ?>
+                    <?php if(empty($communities)): ?>
+                    <img src="../images/logo-not-found.png" class="logo-not-found">
+                    <h2>You dont have any communities yet</h2>
+                    <h3>Once you create a community, it'll show up here.</h3>
+                    <?php else: ?>
                     <?php foreach($communities as $community): ?>
                         <?php $communityImg = $image->getCommunityImage($community['id']); ?>
                        <div class="community-card">
@@ -143,13 +148,14 @@ $activeTab = $_GET['tab'] ?? 'posts';
                     <img src='../images/community/<?=$communityImg['name']?>' alt="">
                 </div>
                 <div class="community-info">
-                    <a href="" class="community-name">r/<?= $community['name'] ?></a>
+                    <a href="community.php?comm_id=<?=$community['id']?>" class="community-name">r/<?= $community['name'] ?></a>
                     <p class="community-desc"><?= $community['description'] ?></p>
                     <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
                 </div>
                 <button class="join-btn">Join</button>
             </div>
                     <?php endforeach; ?>
+                    <?php endif; ?>
                 <?php elseif($activeTab == "comments"): ?>
                 <?php else: ?>
                 <?php endif; ?>    
