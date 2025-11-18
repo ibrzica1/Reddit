@@ -396,7 +396,7 @@
     justify-content: center;
     font-weight: bold;
     font-size: 20px;
-    margin-right: 15px;
+    margin-right: 20px;
     object-fit: cover;
 }
 
@@ -412,11 +412,15 @@
     text-decoration: none;
 }
 
+.community-name span {
+    color: rgb(220, 81, 0);
+}
+
 .community-desc {
     margin: 4px 0;
     color: #555;
     font-size: 14px;
-    
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .community-time {

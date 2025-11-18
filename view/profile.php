@@ -151,7 +151,8 @@ $activeTab = $_GET['tab'] ?? 'posts';
                     <img src='../images/community/<?=$communityImg['name']?>' alt="">
                 </div>
                 <div class="community-info">
-                    <a href="community.php?comm_id=<?=$community['id']?>" class="community-name">r/<?= $community['name'] ?></a>
+                    <a href="community.php?comm_id=<?=$community['id']?>" class="community-name">
+                        <span>r/</span><?= $community['name'] ?></a>
                     <p class="community-desc"><?= $community['description'] ?></p>
                     <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
                 </div>
