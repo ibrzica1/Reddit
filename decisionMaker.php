@@ -99,3 +99,16 @@ else
   echo "Error";
 }
 
+if(isset($_POST['delete-community']))
+{
+  $communityId = $_POST['delete-community'];
+
+  $communityController = new CommunityController();
+  $communityController->deleteCommunityController($communityId);
+}
+else
+{
+  echo "Error";
+}
+
+

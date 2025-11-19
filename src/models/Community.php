@@ -40,4 +40,12 @@ class Community extends Db
 
         $stmt->execute();
     }
+
+    public function deleteCommunity(int $communityId): void
+    {
+        $stmt = $this->connection->prepare("DELETE FROM community WHERE id = :id");
+        $stmt->bindParam(':id',$communityId);
+
+        $stmt->execute();
+    }
 }

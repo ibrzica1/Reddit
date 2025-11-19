@@ -125,6 +125,10 @@ $activeTab = $_GET['tab'] ?? 'posts';
         </div>
     </div>
 
+    <div class="message-container">
+        <p class="message"><?=$session->displayMessage()?></p>
+    </div>
+
     <div class="content-wrapper">
         <main class="main-content">
             <nav class="profile-nav">
@@ -156,7 +160,13 @@ $activeTab = $_GET['tab'] ?? 'posts';
                     <p class="community-desc"><?= $community['description'] ?></p>
                     <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
                 </div>
-                <button class="join-btn">Join</button>
+                <form action="../decisionMaker.php" method="post">
+                    <input type="hidden" name="delete-community" value="<?=$community['id']?>">
+                    <button class="delete-container">
+                        <img src="../images/icons/set.png">
+                    </button>
+                </form>
+                
             </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
@@ -190,6 +200,17 @@ $activeTab = $_GET['tab'] ?? 'posts';
     const postBtn = document.getElementById("posts");
     const communityBtn = document.getElementById("communities");
     const commentsBtn = document.getElementById("comments");
+    const deleteBtn = document.querySelectorAll('.delete-container');
+
+    deleteBtn.forEach(btn => {
+        btn.addEventListener('click',()=>{
+            if(confirm("Are you sure you want do delete this community"))
+            {
+                btn.disabled = false;
+            }
+        });
+    });
+
     menu.addEventListener('click',toggleMenu);
 
     "<?=$activeTab?>" == "posts" && postBtn.classList.add("active");

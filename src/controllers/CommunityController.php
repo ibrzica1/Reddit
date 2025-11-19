@@ -105,4 +105,22 @@ class CommunityController extends Community
 
         $image->uploadCommunityImage($uploadedImages['tmp_name'],$randomName,$communityId,$user_id);
     }
+
+    public function deleteCommunityController(int $communityId): void
+    {
+        $session = new SessionService();
+        $image = new Image();
+
+        if(!isset($communityId))
+        {
+        $message = "You didnt send community id";
+        $session->setSession("message",$message);
+        header("Location: view/profile.php");
+        exit();
+        }
+
+        $this->deleteCommunity($communityId);
+
+        header("Location: view/profile.php");
+    }
 }
