@@ -77,4 +77,11 @@ class Image extends Db
         return in_array($imageType, self::ALLOWED_EXTENSIONS);
     }
     
+    public function deleteImage(string $attribute, mixed $value): void
+    {
+        $stmt = $this->connection->prepare("DELETE FROM image WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
+
+        $stmt->execute();
+    }
 }

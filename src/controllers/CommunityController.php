@@ -120,6 +120,14 @@ class CommunityController extends Community
         }
 
         $this->deleteCommunity($communityId);
+        $commImg = $image->getCommunityImage($communityId);
+        $fileName = $commImg['name'];
+        $path = '../images/community/'. $fileName;
+        $image->deleteImage("community_id",$communityId);
+
+        if (file_exists($path)) {
+            unlink($path);
+        }
 
         header("Location: view/profile.php");
     }
