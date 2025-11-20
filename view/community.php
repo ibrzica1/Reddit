@@ -20,7 +20,8 @@ if(!$session->sessionExists("username"))
 $communityId = $_GET['comm_id'];
 $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
-
+$userId = $session->getFromSession("user_id");
+$communityUserId = $selectedCommunity[0]["user_id"];
 
 ?>
 
@@ -94,6 +95,14 @@ $communityImage = $image->getCommunityImage($communityId);
             <img src="../images/icons/add.png">
             <p>Create Post</p>
         </div>
+        <?php if($communityUserId == $userId): ?>
+            <form action="../decisionMaker.php" method="post">
+                <input type="hidden" name="delete-community" value="<?=$selectedCommunity[0]['id']?>">
+                <button class="delete-container">
+                     <img src="../images/icons/set.png">
+                </button>
+            </form>
+        <?php endif; ?>
     </div>
 
     <div class="content-container">
@@ -118,8 +127,16 @@ $communityImage = $image->getCommunityImage($communityId);
 <script type="module">
 import { toggleMenu} from "../script/tools.js?v=<?php echo time(); ?>";
 
-const  menu = document.getElementById("userInfo");
+const menu = document.getElementById("userInfo");
+const deleteBtn = document.querySelector('.delete-container');
+
 menu.addEventListener('click',toggleMenu);
+deleteBtn.addEventListener('click',()=>{
+    if(confirm("Are you sure you want do delete this community"))
+    {
+        deleteBtn.disabled = false;
+    }
+});
 
 </script>
 </body>

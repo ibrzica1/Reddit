@@ -50,7 +50,6 @@ body {
     width: 150px;
     padding: 6px 12px;
     border-radius: 20px;
-    margin-top: 10px;
     text-decoration: none;
     border: 2px solid #0079D3;
     color: #0079D3;
@@ -66,6 +65,27 @@ body {
 .create-post-container:hover {
     background-color: rgb(225, 231, 233);
     cursor: pointer;
+}
+
+.delete-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+}
+
+.delete-container:hover {
+    background-color: rgb(236, 236, 236);
+    cursor: pointer;
+}
+
+.delete-container img {
+    width: 30px;
+    height: auto;
 }
 
 .content-container {
@@ -124,6 +144,8 @@ body {
 .info-box .created img {
     width: 20px;
 }
+
+
 
 @media (max-width: 900px) {
     .content-container {
