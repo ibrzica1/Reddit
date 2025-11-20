@@ -38,26 +38,34 @@ body {
     font-weight: bold;
 }
 
+.name-container span {
+    color: rgb(220, 81, 0);
+}
+
 .create-post-container {
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 14px;
+    height: 30px;
+    width: 150px;
+    padding: 6px 12px;
     border-radius: 20px;
-    background: #0079d3;
-    color: white;
+    margin-top: 10px;
+    text-decoration: none;
+    border: 2px solid #0079D3;
+    color: #0079D3;
     font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
 }
 
 .create-post-container img {
-    width: 18px;
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
 }
 
 .create-post-container:hover {
-    background: #0060a8;
+    background-color: rgb(225, 231, 233);
+    cursor: pointer;
 }
 
 .content-container {
@@ -90,6 +98,10 @@ body {
     border: 1px solid #ccc;
     border-radius: 6px;
     padding: 18px;
+}
+
+.info-box span {
+    color: rgb(220, 81, 0);
 }
 
 .info-box h3 {

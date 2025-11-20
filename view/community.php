@@ -21,6 +21,7 @@ $communityId = $_GET['comm_id'];
 $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
 
+
 ?>
 
 <!DOCTYPE html>
@@ -87,10 +88,10 @@ $communityImage = $image->getCommunityImage($communityId);
             <img src="../images/community/<?=$communityImage["name"]?>">
         </div>
         <div class="name-container">
-            <p>r/<?=$selectedCommunity[0]["name"]?></p>
+            <p><span>r/</span><?=$selectedCommunity[0]["name"]?></p>
         </div>
         <div class="create-post-container">
-            <img src="../images/icons/plus.png">
+            <img src="../images/icons/add.png">
             <p>Create Post</p>
         </div>
     </div>
@@ -101,7 +102,7 @@ $communityImage = $image->getCommunityImage($communityId);
 
     <aside class="community-info">
         <div class="info-box">
-            <h3>r/<?=$selectedCommunity[0]["name"]?></h3>
+            <h3><span>r/</span><?=$selectedCommunity[0]["name"]?></h3>
             <p class="desc"><?=$selectedCommunity[0]["description"]?></p>
 
             <div class="created">
