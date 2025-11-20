@@ -104,6 +104,9 @@ class CommunityController extends Community
         }
 
         $image->uploadCommunityImage($uploadedImages['tmp_name'],$randomName,$communityId,$user_id);
+
+        header("Location: view/profile.php?tab=communities");
+        exit();
     }
 
     public function deleteCommunityController(int $communityId): void
