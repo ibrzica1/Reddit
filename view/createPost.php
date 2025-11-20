@@ -3,8 +3,16 @@
 require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
+use Reddit\models\Community;
+use Reddit\models\Image;
 
 $session = new SessionService();
+$community = new Community();
+$image = new Image();
+
+$communityId = $_GET["comm_id"];
+$selectedCommunity = $community->getCommunity("id",$communityId);
+$commImage = $image->getCommunityImage($communityId);
 
 if(!$session->sessionExists("username"))
 {
@@ -80,6 +88,11 @@ if(!$session->sessionExists("username"))
 
 <div>
    <h2>Create Post</h2>
+</div>
+
+<div class="community-container">
+    <img src="../images/community/<?=$commImage["name"]?>">
+    <p><span>r/</span><?= $selectedCommunity[0]["name"] ?></p>
 </div>
 
 <div class="options-container">

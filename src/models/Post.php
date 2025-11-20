@@ -9,8 +9,18 @@ class Post extends Db
     public $text;
     public $image;
     public $user_id;
+    public $community_id;
     public $time;
     public $likes;
+
+    public function getPost(string $attribute, mixed $value): array
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM post WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 
     public function titleLength($title)
     {

@@ -91,10 +91,12 @@ $communityUserId = $selectedCommunity[0]["user_id"];
         <div class="name-container">
             <p><span>r/</span><?=$selectedCommunity[0]["name"]?></p>
         </div>
-        <div class="create-post-container">
+        
+        <a href="createPost.php?comm_id=<?=$selectedCommunity[0]['id']?>" class="create-post-container">
             <img src="../images/icons/add.png">
             <p>Create Post</p>
-        </div>
+        </a>
+
         <?php if($communityUserId == $userId): ?>
             <form action="../decisionMaker.php" method="post">
                 <input type="hidden" name="delete-community" value="<?=$selectedCommunity[0]['id']?>">

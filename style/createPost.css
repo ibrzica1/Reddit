@@ -16,6 +16,36 @@ h2 {
   font-weight: 600;
 }
 
+.community-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: rgb(225, 231, 233);
+  border-radius: 30px;
+  padding: 6px 14px;
+  width: fit-content;
+  max-width: 250px;
+  height: 30px;
+  gap: 10px;
+  margin-left: 40px;
+  margin-bottom: 10px;
+}
+
+.community-container img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.community-container p {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.community-container span {
+  color: rgb(220, 81, 0);
+}
+
 .options-container {
   display: flex;
   justify-content: flex-start;
