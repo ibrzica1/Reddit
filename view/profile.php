@@ -118,7 +118,7 @@ $activeTab = $_GET['tab'] ?? 'posts';
                 <button class="new-post-btn">Create Post</button>
             </a>
             <a href="createCommunity.php" class="new-comm-btn">
-                <img src="../images/icons/plus.png">
+                <img src="../images/icons/add.png">
                 <p>Start a Community</p>
             </a>
             
