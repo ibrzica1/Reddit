@@ -9,7 +9,7 @@ use Reddit\services\TimeService;
 
 class PostController extends Post
 {
-    public function textPost($title, $text)
+    public function textPost($title, $text, $communityId)
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
@@ -34,6 +34,14 @@ class PostController extends Post
         exit();
         }
 
+        if(!isset($communityId))
+        {
+        $message = "You didnt send community Id";
+        $session->setSession("message",$message);
+        header("Location: view/createPost.php");
+        exit();
+        }
+
         if(!$this->titleLength($title))
         {
         $message = "Title cant be bigger then 300 letters and smaller then 2 letter";
@@ -50,10 +58,12 @@ class PostController extends Post
         exit();
         }
 
-        $this->registerTextPost($title,$text,$user_id,$time,$likes);
+        $this->registerTextPost($title,$text,$user_id,$communityId,$time,$likes);
+
+        header('Location: view/community.php?comm_id=<?=$communityId?>');
     }
 
-    public function imagePost($title, $files)
+    public function imagePost($title, $files,$communityId)
     {
         $session = new SessionService();
         $image = new Image();
@@ -74,6 +84,14 @@ class PostController extends Post
         if(!isset($files))
         {
         $message = "You didnt send files";
+        $session->setSession("message",$message);
+        header("Location: view/createPost.php");
+        exit();
+        }
+
+        if(!isset($communityId))
+        {
+        $message = "You didnt send community Id";
         $session->setSession("message",$message);
         header("Location: view/createPost.php");
         exit();
@@ -124,7 +142,7 @@ class PostController extends Post
             }
         }
 
-        $this->registerImagePost($title,$userId,$time,$likes);
+        $this->registerImagePost($title,$userId,$communityId,$time,$likes);
 
         $postId = $this->connection->lastInsertId();
         

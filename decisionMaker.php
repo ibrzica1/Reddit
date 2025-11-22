@@ -65,22 +65,28 @@ if(isset($_POST['avatar-update']))
   $userController->changeAvatar($avatar);
 }
 
-if(isset($_POST['title']) && !empty(trim($_POST['text'])))
+if(isset($_POST['title']) && 
+isset($_POST['community']) &&
+!empty(trim($_POST['text'])))
 {
   $title = $_POST['title'];
   $text = $_POST['text'];
+  $communityId = $_POST['community'];
 
   $postController = new PostController();
-  $postController->textPost($title, $text);
+  $postController->textPost($title, $text, $communityId);
 }
 
-if(isset($_POST['title']) && !empty($_FILES['image']['name'][0]))
+if(isset($_POST['title']) && 
+isset($_POST['community']) &&
+!empty($_FILES['image']['name'][0]))
 {
   $title = $_POST['title'];
   $images = $_FILES['image'];
+  $communityId = $_POST['community'];
 
   $postController = new PostController();
-  $postController->imagePost($title, $images);
+  $postController->imagePost($title, $images, $communityId);
 }
 
 if(isset($_POST['name']) && 
@@ -94,10 +100,6 @@ isset($_FILES['image']))
   $communityController = new CommunityController();
   $communityController->createCommunity($name,$description,$image);
 }
-else
-{
-  echo "Error";
-}
 
 if(isset($_POST['delete-community']))
 {
@@ -106,9 +108,11 @@ if(isset($_POST['delete-community']))
   $communityController = new CommunityController();
   $communityController->deleteCommunityController($communityId);
 }
-else
+
+if(isset($_GET['']))
 {
-  echo "Error";
+
 }
+
 
 

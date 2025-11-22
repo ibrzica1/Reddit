@@ -10,9 +10,13 @@ $session = new SessionService();
 $community = new Community();
 $image = new Image();
 
-$communityId = $_GET["comm_id"];
-$selectedCommunity = $community->getCommunity("id",$communityId);
-$commImage = $image->getCommunityImage($communityId);
+if(!empty($_GET["comm_id"]))
+{
+   $communityId = $_GET["comm_id"]; 
+   $selectedCommunity = $community->getCommunity("id",$communityId);
+   $commImage = $image->getCommunityImage($communityId);
+}
+
 
 if(!$session->sessionExists("username"))
 {
@@ -91,8 +95,14 @@ if(!$session->sessionExists("username"))
 </div>
 
 <div class="community-container">
+    <?php if(!empty($selectedCommunity)): ?>
     <img src="../images/community/<?=$commImage["name"]?>">
     <p><span>r/</span><?= $selectedCommunity[0]["name"] ?></p>
+    <?php else: ?>
+    <form action="../decisionMaker.php" method="get">
+        <input type="text" name="community-search" placeholder="Search for community">
+    </form>
+    <?php endif; ?>
 </div>
 
 <div class="options-container">
@@ -102,6 +112,7 @@ if(!$session->sessionExists("username"))
 
 <div class="form-container">
     <form action="../decisionMaker.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="community" value="<?=$communityId?>">
         <div class="title-container">
             <input type="text" placeholder="Title" id="titleId" name="title">
             <p><span class="letters">300</span> Letters</p>

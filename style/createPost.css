@@ -46,6 +46,16 @@ h2 {
   color: rgb(220, 81, 0);
 }
 
+.community-container input {
+  background-color: rgb(225, 231, 233);
+  border: none;
+}
+
+.community-container input:focus {
+  border: none;
+  outline: none;
+}
+
 .options-container {
   display: flex;
   justify-content: flex-start;
