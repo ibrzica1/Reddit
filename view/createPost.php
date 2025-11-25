@@ -94,16 +94,17 @@ if(!$session->sessionExists("username"))
    <h2>Create Post</h2>
 </div>
 
+ 
 <div class="community-container">
-    <?php if(!empty($selectedCommunity)): ?>
     <img src="../images/community/<?=$commImage["name"]?>">
     <p><span>r/</span><?= $selectedCommunity[0]["name"] ?></p>
-    <?php else: ?>
-    <form action="../decisionMaker.php" method="get">
-        <input type="text" name="community-search" placeholder="Search for community">
-    </form>
-    <?php endif; ?>
 </div>
+    
+<div class="seek-container">
+    <input type="text" name="community-search" id="search-input" placeholder="Search for community">
+    <p id="search-display"></p>
+</div>
+    
 
 <div class="options-container">
     <div class="text-option">Text</div>
@@ -112,7 +113,7 @@ if(!$session->sessionExists("username"))
 
 <div class="form-container">
     <form action="../decisionMaker.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="community" value="<?=$communityId?>">
+        <input type="hidden" id="selectedCommunity" name="community" value="<?=$communityId?>">
         <div class="title-container">
             <input type="text" placeholder="Title" id="titleId" name="title">
             <p><span class="letters">300</span> Letters</p>
@@ -141,6 +142,60 @@ const textContainer = document.querySelector('.text-container');
 const imageContainer = document.querySelector('.image-container');
 const title = document.getElementById('titleId');
 const letters = document.querySelector(".letters");
+const searchInput = document.getElementById("search-input");
+const displayInput = document.getElementById("search-display");
+const communitySelect = document.getElementById("selectedCommunity");
+const communityContainer = document.querySelector(".community-container");
+const seekContainer = document.querySelector(".seek-container");
+
+const isCommunitySelected = <?php echo json_encode(!empty($selectedCommunity)); ?>;
+
+if (isCommunitySelected) {
+    if (communityContainer) communityContainer.style.display = "flex";
+    if (seekContainer) seekContainer.style.display = "none";
+} else {
+    if (communityContainer) communityContainer.style.display = "none";
+    if (seekContainer) seekContainer.style.display = "flex";
+}
+
+searchInput.addEventListener("input",()=>{
+  let search = searchInput.value.trim();
+
+  if(search.length < 2)
+  {
+    displayInput.style.display = "none";
+  }
+  else
+  {
+    displayInput.style.display = "block";
+  }
+
+  fetch("../decisionMaker.php?community-search=" + search)
+        .then(res => res.json())
+        .then(data => {
+            displayInput.innerHTML = "";
+            data.forEach(community => {
+
+                const communityId = community["id"];
+                const div = document.createElement('div');
+                const p = document.createElement('p');
+                p.innerHTML = "u/" + community['name'];
+                div.appendChild(p);
+                displayInput.appendChild(div);
+                div.addEventListener("click",()=>{
+                    window.location.href = "createPost.php?comm_id=" + communityId;
+                });
+            });
+        })
+});
+
+if(communityContainer) {
+    communityContainer.addEventListener("click",()=>{
+        communityContainer.style.display = "none";
+        if(seekContainer) {
+        seekContainer.style.display = "flex";
+    }});
+}
 
 title.addEventListener('keydown', ()=>{
     let maxLetters = 300;

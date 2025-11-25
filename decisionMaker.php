@@ -109,8 +109,14 @@ if(isset($_POST['delete-community']))
   $communityController->deleteCommunityController($communityId);
 }
 
-if(isset($_GET['']))
+if(isset($_GET['community-search']))
 {
+  header("Content-Type: application/json");
+  
+  $search = $_GET['community-search'];
+
+  $communityController = new CommunityController();
+  echo $communityController->searchCommunityConntroller($search);
 
 }
 

@@ -16,6 +16,32 @@ h2 {
   font-weight: 600;
 }
 
+.seek-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: rgb(225, 231, 233);
+  border-radius: 30px;
+  padding: 6px 14px;
+  width: fit-content;
+  max-width: 250px;
+  height: 30px;
+  gap: 10px;
+  margin-left: 40px;
+  margin-bottom: 10px;
+}
+
+.seek-container input {
+  background-color: rgb(225, 231, 233);
+  border: none;
+}
+
+.seek-container input:focus {
+  border: none;
+  outline: none;
+}
+
 .community-container {
   display: flex;
   align-items: center;
@@ -46,14 +72,20 @@ h2 {
   color: rgb(220, 81, 0);
 }
 
-.community-container input {
+#search-display {
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  left: 0;
+  display: none;
+  align-items: center;
   background-color: rgb(225, 231, 233);
-  border: none;
-}
-
-.community-container input:focus {
-  border: none;
-  outline: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 6px 6px;
+  width: 180px;
+  max-width: 250px;
+  height: 30px;
 }
 
 .options-container {

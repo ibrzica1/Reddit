@@ -135,4 +135,21 @@ class CommunityController extends Community
 
         header("Location: view/profile.php");
     }
+
+    public function searchCommunityConntroller(string $search): string
+    {
+        $session = new SessionService();
+
+        if(!isset($search))
+        {
+        $message = "You didnt send search content";
+        $session->setSession("message",$message);
+        header("Location: view/createPost.php");
+        exit();
+        }
+
+        $results = $this->searchCommunity("name",$search);
+
+        return json_encode($results);
+    }
 }

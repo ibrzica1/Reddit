@@ -48,4 +48,14 @@ class Community extends Db
 
         $stmt->execute();
     }
+
+    public function searchCommunity($attribute, $value)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM community WHERE $attribute LIKE :value");
+        $search = "%". $value . "%";
+        $stmt->bindParam(':value',$search);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }
