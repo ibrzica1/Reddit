@@ -24,7 +24,7 @@ h2 {
   background-color: rgb(225, 231, 233);
   border-radius: 30px;
   padding: 6px 14px;
-  width: fit-content;
+  width: 250px;
   max-width: 250px;
   height: 30px;
   gap: 10px;
@@ -75,17 +75,35 @@ h2 {
 #search-display {
   position: absolute;
   z-index: 1;
-  top: 16px;
-  left: 0;
+  top: 30px;
+  left: 10px;
   display: none;
   align-items: center;
-  background-color: rgb(225, 231, 233);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  padding: 6px 6px;
-  width: 180px;
+  background-color: rgb(247, 247, 247);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  width: 240px;
   max-width: 250px;
-  height: 30px;
+  height: fit-content;
+  max-height: 200px;
+}
+
+#search-display div {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-radius: 10px;
+}
+
+#search-display div:hover {
+  background-color: rgb(225, 231, 233);
+  cursor: pointer;
+}
+
+#search-display span {
+  
+  color: rgb(220, 81, 0);
+  
 }
 
 .options-container {

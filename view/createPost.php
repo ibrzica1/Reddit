@@ -179,9 +179,15 @@ searchInput.addEventListener("input",()=>{
                 const communityId = community["id"];
                 const div = document.createElement('div');
                 const p = document.createElement('p');
-                p.innerHTML = "u/" + community['name'];
+                const span = document.createElement('span');
+                span.innerHTML = "u/";
+                p.innerHTML = community['name'];
+                div.appendChild(span);
                 div.appendChild(p);
                 displayInput.appendChild(div);
+
+                
+
                 div.addEventListener("click",()=>{
                     window.location.href = "createPost.php?comm_id=" + communityId;
                 });
@@ -194,7 +200,11 @@ if(communityContainer) {
         communityContainer.style.display = "none";
         if(seekContainer) {
         seekContainer.style.display = "flex";
-    }});
+    }
+        if(searchInput) {
+            searchInput.focus();
+        }
+});
 }
 
 title.addEventListener('keydown', ()=>{
