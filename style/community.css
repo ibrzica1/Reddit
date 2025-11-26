@@ -260,6 +260,23 @@ body {
     width: 310px;
 }
 
+.no-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+}
+
+.no-posts img {
+    width: 170px;
+    height: auto;
+}
+
+.no-posts h2 {
+    font-size: 18px;
+}
+
 .info-box {
     background: white;
     border: 1px solid #ccc;

@@ -153,6 +153,10 @@ $communityPosts = $post->getPost("community_id",$communityId);
                </div>
             <?php endforeach; ?>
         <?php else: ?>
+            <div class="no-posts">
+                <img src="../images/logo-not-found.png">
+                <h2>There is no posts in this community yet.</h2>
+            </div>
         <?php endif; ?>
     </main>
 
