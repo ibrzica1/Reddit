@@ -9,6 +9,7 @@ use Reddit\models\Image;
 $session = new SessionService();
 $community = new Community();
 $image = new Image();
+$communityId = "";
 
 if(!empty($_GET["comm_id"]))
 {
@@ -186,7 +187,7 @@ searchInput.addEventListener("input",()=>{
                 div.appendChild(p);
                 displayInput.appendChild(div);
 
-                
+
 
                 div.addEventListener("click",()=>{
                     window.location.href = "createPost.php?comm_id=" + communityId;

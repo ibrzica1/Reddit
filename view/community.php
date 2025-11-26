@@ -17,7 +17,8 @@ if(!$session->sessionExists("username"))
     header("Location: ../index.php");
 }
 
-$communityId = $_GET['comm_id'];
+$get = $_GET['comm_id'];
+$communityId = intval($get);
 $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
 $userId = $session->getFromSession("user_id");

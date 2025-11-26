@@ -9,7 +9,7 @@ use Reddit\services\TimeService;
 
 class PostController extends Post
 {
-    public function textPost($title, $text, $communityId)
+    public function textPost(string $title,string $text,int $communityId): void
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
@@ -34,7 +34,7 @@ class PostController extends Post
         exit();
         }
 
-        if(!isset($communityId))
+        if(!isset($communityId) || empty($communityId))
         {
         $message = "You didnt send community Id";
         $session->setSession("message",$message);
@@ -60,7 +60,8 @@ class PostController extends Post
 
         $this->registerTextPost($title,$text,$user_id,$communityId,$time,$likes);
 
-        header('Location: view/community.php?comm_id=<?=$communityId?>');
+        header("Location: view/community.php?comm_id=$communityId");
+        
     }
 
     public function imagePost($title, $files,$communityId)
