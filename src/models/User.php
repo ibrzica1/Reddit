@@ -79,6 +79,15 @@ class User extends Db
     $stmt->execute();
   }
 
+  public function getUserByAttribute(string $attribute, mixed $value): mixed
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM user WHERE $attribute = :attribute");
+    $stmt->bindParam(':attribute',$value);
+    $stmt->execute();
+
+    return $stmt->fetch();
+  }
+
   public function getUser(string $username): mixed
   {
     $stmt = $this->connection->prepare("SELECT * FROM user WHERE username = :username");

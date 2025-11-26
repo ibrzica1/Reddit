@@ -96,17 +96,164 @@ body {
     margin: auto;
 }
 
+.post-container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 95%;
+    margin-top: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+.post-user-container {
+    display: flex;
+    align-items: center;
+}
+
+.post-user-container img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.post-user-container p {
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+
+.post-user-container span {
+    color: rgb(220, 81, 0);
+}
+
+.post-user-container h3 {
+    font-size: 10px;
+    font-weight: 400;
+    margin-left: 20px;
+    color: #888;
+}
+
+.post-content-container {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.post-content-container h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.post-content-container p {
+    font-size: 16px;
+    margin: 0;
+    padding-top: 10px;
+    color: #707070;
+}
+
 .posts-grid {
     flex: 1;
 }
 
 .posts-grid::before {
-    content: "No posts yet.";
     display: block;
     text-align: center;
     padding: 40px;
     color: #888;
     font-size: 18px;
+}
+
+.post-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.like-comment-btns {
+    display: flex;
+    margin: 0;
+}
+
+.like-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    background-color: rgb(225, 231, 233);
+    border-radius: 18px;
+}
+
+.like-btn img {
+    width: 14px;
+    height: 14px;
+}
+
+.like-btn p {
+    margin: 0;
+}
+
+.up-btn,
+.down-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+.up-btn:hover,
+.down-btn:hover {
+    background-color: rgb(212, 217, 219);
+    cursor: pointer;
+}
+
+.comment-btn {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    background-color: rgb(225, 231, 233);
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 18px;
+}
+
+.comment-btn:hover {
+    background-color: rgb(212, 217, 219);
+    cursor: pointer;
+}
+
+.comment-btn img {
+    width: 14px;
+    height: 14px;
+}
+
+.comment-btn p {
+    margin: 0;
+    margin-left: 10px;
+}
+
+.delete-btn {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    background-color: rgb(225, 231, 233);
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 18px;
+}
+
+.delete-btn:hover {
+    background-color: rgb(212, 217, 219);
+    cursor: pointer;
+}
+
+.delete-btn img {
+    width: 14px;
+    height: 14px;
 }
 
 .community-info {

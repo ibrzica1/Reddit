@@ -7,10 +7,13 @@ use Reddit\services\TimeService;
 use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
+use Reddit\models\Post;
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
+$post = new Post();
+$user = new User();
 
 if(!$session->sessionExists("username"))
 {
@@ -23,6 +26,8 @@ $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
 $userId = $session->getFromSession("user_id");
 $communityUserId = $selectedCommunity[0]["user_id"];
+$communityPosts = $post->getPost("community_id",$communityId);
+
 
 ?>
 
@@ -110,6 +115,45 @@ $communityUserId = $selectedCommunity[0]["user_id"];
 
     <div class="content-container">
     <main class="posts-grid">
+        <?php if(!empty($communityPosts)): ?>
+            <?php foreach($communityPosts as $postItem): ?>
+                <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>
+               <div class="post-container">
+                <div class="post-user-container">
+                    <img src="../images/avatars/<?=$postUser['avatar']?>.webp">
+                    <p><span>u/</span><?= $postUser["username"] ?></p>
+                    <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+                </div>
+                <div class="post-content-container">
+                  <h3><?= $postItem["title"] ?></h3>
+                  <p><?= $postItem["text"] ?></p>  
+                </div>
+                <div class="post-button-container">
+                  <div class="like-comment-btns">
+                    <div class="like-btn">
+                        <div class="up-btn">
+                           <img src="../images/icons/arrow-up.png">
+                        </div>
+                        <p><?= $postItem["likes"] ?></p>
+                        <div class="down-btn">
+                           <img src="../images/icons/arrow-down.png">
+                        </div>
+                    </div>
+                    <div class="comment-btn">
+                        <img src="../images/icons/bubble.png">
+                        <p>0</p>
+                    </div>
+                  </div>
+                  <?php if($postItem["user_id"] == $userId): ?>
+                  <div class="delete-btn">
+                    <img src="../images/icons/set.png">
+                  </div>
+                  <?php endif; ?>
+                </div>
+               </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+        <?php endif; ?>
     </main>
 
     <aside class="community-info">
