@@ -7,10 +7,13 @@ use Reddit\services\TimeService;
 use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
+use Reddit\models\Post;
+
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
+$post = new Post();
 
 if(!$session->sessionExists("username"))
 {
@@ -26,7 +29,7 @@ $userKarma = $user->getUserAtribute('karma',$id);
 $accountAge = $time->calculateTime($timeCreated[0]); 
 $bio = $user->getUserAtribute('bio',$id);
 $karma = $userKarma[0];
-$activeTab = $_GET['tab'] ?? 'posts';
+$activeTab = $_GET['tab'] ?? "posts";
 
 ?>
 <!DOCTYPE html>
@@ -170,8 +173,56 @@ $activeTab = $_GET['tab'] ?? 'posts';
             </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
-                <?php elseif($activeTab == "comments"): ?>
-                <?php else: ?>
+                <?php endif; ?>
+                <?php if($activeTab == "posts"): ?>
+                    <?php $posts = $post->getPost("user_id",$id) ?>
+                    <?php if(empty($posts)): ?>
+                        <div class="empty-container">
+                            <img src="../images/logo-not-found.png" class="logo-not-found">
+                            <h2>You dont have any posts yet</h2>
+                            <h3>Once you create a post, it'll show up here.</h3>
+                        </div>
+                    <?php else: ?>
+                        <?php foreach($posts as $postItem): ?>
+                            <?php $commId = $postItem["community_id"]; ?>
+                            <?php $postCommunity = $community->getCommunity("id",$commId); ?>
+                            
+                            <?php $communityImg = $image->getCommunityImage($postItem["community_id"]) ?>
+                            <div class="post-container">
+                                <a href="community.php?comm_id=<?=$commId?>" class="post-user-container">
+                                    <img src="../images/community/<?=$communityImg["name"]?>">
+                                    <p><span>u/</span><?= $postCommunity[0]["name"] ?></p>
+                                    <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+                                </a>
+                                <div class="post-content-container">
+                                <h3><?= $postItem["title"] ?></h3>
+                                <p><?= $postItem["text"] ?></p>  
+                                </div>
+                                <div class="post-button-container">
+                                <div class="like-comment-btns">
+                                    <div class="like-btn">
+                                        <div class="up-btn" data-post-id="<?= $postItem["id"] ?>">
+                                        <img src="../images/icons/arrow-up.png">
+                                        </div>
+                                        <p class="likes" id="<?= $postItem["id"] ?>"><?= $postItem["likes"] ?></p>
+                                        <div class="down-btn" data-post-id="<?= $postItem["id"] ?>">
+                                        <img src="../images/icons/arrow-down.png">
+                                        </div>
+                                    </div>
+                                    <div class="comment-btn">
+                                        <img src="../images/icons/bubble.png">
+                                        <p>0</p>
+                                    </div>
+                                </div>
+                                <?php if($postItem["user_id"] == $id): ?>
+                                <div class="delete-btn">
+                                    <img src="../images/icons/set.png">
+                                </div>
+                                <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>    
+                    <?php endif; ?>    
                 <?php endif; ?>    
             </div>
 
@@ -194,6 +245,7 @@ $activeTab = $_GET['tab'] ?? 'posts';
         </aside>
     </div>
 </div>
+
 <script type="module">
     import { toggleMenu, changeBanner} from "../script/tools.js?v=<?php echo time(); ?>";
     const menu = document.getElementById("userInfo");
@@ -201,6 +253,16 @@ $activeTab = $_GET['tab'] ?? 'posts';
     const communityBtn = document.getElementById("communities");
     const commentsBtn = document.getElementById("comments");
     const deleteBtn = document.querySelectorAll('.delete-container');
+    const likeBtn = document.querySelectorAll('.up-btn');
+    const dislikeBtn = document.querySelectorAll('.down-btn');
+    
+    likeBtn.forEach(btn => {
+        btn.addEventListener('click',()=>{
+            const postId = btn.dataset.postId;
+            let likeCount = document.getElementById(postId);
+            
+        });
+    });
 
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
