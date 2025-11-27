@@ -15,6 +15,14 @@ class Like extends Db
         $this->userId = $idUser;
     }
 
+    public function getLike($attribute,$value)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM like WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
+        
+        $stmt->execute();
+    }
+
     public function addLikePost($postId,$status)
     {
         $stmt = $this->connection->prepare("INSERT INTO like (user_id,post_id,status)
