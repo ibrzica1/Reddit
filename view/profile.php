@@ -201,13 +201,13 @@ $activeTab = $_GET['tab'] ?? "posts";
                                 <div class="post-button-container">
                                 <div class="like-comment-btns">
                                     <div class="like-btn">
-                                        <div class="up-btn" data-post-id="<?= $postItem["id"] ?>">
+                                        <button class="up-btn" data-post-id="<?= $postItem["id"] ?>">
                                         <img src="../images/icons/arrow-up.png">
-                                        </div>
-                                        <p class="likes" id="<?= $postItem["id"] ?>"><?= $postItem["likes"] ?></p>
-                                        <div class="down-btn" data-post-id="<?= $postItem["id"] ?>">
+                                        </button>
+                                        <p class="likes" id="count-<?= $postItem["id"] ?>"><?= $postItem["likes"] ?></p>
+                                        <button class="down-btn" data-post-id="<?= $postItem["id"] ?>">
                                         <img src="../images/icons/arrow-down.png">
-                                        </div>
+                                        </button>
                                     </div>
                                     <div class="comment-btn">
                                         <img src="../images/icons/bubble.png">
@@ -259,8 +259,23 @@ $activeTab = $_GET['tab'] ?? "posts";
     likeBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
             const postId = btn.dataset.postId;
-            let likeCount = document.getElementById(postId);
-            
+            let likeCount = document.getElementById(`count-${postId}`);
+
+            fetch('../decisionMaker.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `post-like=${postId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "success") {
+                    likeCount.textContent = data.new_count;
+                }
+                else {
+                    console.error("Like error:", data.message);
+                }
+            })
+            .catch(error => console.error('Network error:', error));
         });
     });
 

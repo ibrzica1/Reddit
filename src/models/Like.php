@@ -24,8 +24,8 @@ class Like extends Db
 
     public function addLikePost($postId,$status,$userId)
     {
-        $stmt = $this->connection->prepare("INSERT INTO like (user_id,post_id,status)
-        VALUES :user_id, :post_id, :status");
+        $stmt = $this->connection->prepare("INSERT INTO likes (user_id,post_id,status)
+        VALUES (:user_id, :post_id, :status)");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':post_id', $postId);
         $stmt->bindParam(':status', $status);
@@ -38,7 +38,7 @@ class Like extends Db
         $stmt = $this->connection->prepare("UPDATE likes 
         SET status = :status
         WHERE user_id = :user_id
-        AND post_id = :post_id)");
+        AND post_id = :post_id");
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':post_id', $postId);
         $stmt->bindParam(':status', $status);
@@ -46,5 +46,13 @@ class Like extends Db
         $stmt->execute();
     }
 
-    
+    public function getPostLikeCount($postId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE post_id = :post_id");
+        $stmt->bindParam(':post_id',$postId);
+        $stmt->execute();
+        
+        $count = $stmt->fetchColumn();
+        return $count;
+    }
 }

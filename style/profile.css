@@ -408,6 +408,8 @@
     width: 26px;
     height: 26px;
     border-radius: 50%;
+    border: none;
+    background-color: rgb(225, 231, 233);
 }
 
 .up-btn:hover,

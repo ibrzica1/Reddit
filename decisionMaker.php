@@ -3,11 +3,13 @@
 require_once "vendor/autoload.php";
 
 use Reddit\controllers\CommunityController;
+use Reddit\controllers\LikeController;
 use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
 use Reddit\controllers\PostController;
 
 $session = new SessionService();
+
 
 if(isset($_POST['login']))
 {
@@ -123,5 +125,20 @@ if(isset($_GET['community-search']))
 
 }
 
+if(isset($_POST['post-like']))
+{
+  $postId = $_POST['post-like'];
+  $userId = $session->getFromSession('user_id');
 
+  $likeController = new LikeController();
+  $data = $likeController->addPostLikeController($userId,$postId);
+
+  header('Content-Type: application/json');
+  echo json_encode([
+      'status' => 'success',
+      'new_count' => $data[0],
+      'like_status' => $data[1]
+  ]);
+  exit();
+}
 
