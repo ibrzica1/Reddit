@@ -131,6 +131,7 @@ if(isset($_POST['post-like']))
   $userId = $session->getFromSession('user_id');
 
   $likeController = new LikeController();
+
   $data = $likeController->addPostLikeController($userId,$postId);
 
   header('Content-Type: application/json');
@@ -142,3 +143,20 @@ if(isset($_POST['post-like']))
   exit();
 }
 
+if(isset($_POST['post-dislike']))
+{
+  $postId = $_POST['post-dislike'];
+  $userId = $session->getFromSession('user_id');
+
+  $likeController = new LikeController();
+
+  $data = $likeController->addPostDislikeController($userId,$postId);
+
+  header('Content-Type: application/json');
+  echo json_encode([
+      'status' => 'success',
+      'new_count' => $data[0],
+      'like_status' => $data[1]
+  ]);
+  exit();
+}

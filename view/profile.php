@@ -8,12 +8,14 @@ use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
+use Reddit\models\Like;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
 $post = new Post();
+$like = new Like();
 
 if(!$session->sessionExists("username"))
 {
@@ -186,6 +188,10 @@ $activeTab = $_GET['tab'] ?? "posts";
                         <?php foreach($posts as $postItem): ?>
                             <?php $commId = $postItem["community_id"]; ?>
                             <?php $postCommunity = $community->getCommunity("id",$commId); ?>
+                            <?php $postId = $postItem["id"] ?>
+                            <?php $postLikes = $like->getLike("post_id",$postId,$id) ?>
+                            <?php $likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"]; ?>
+                            <?php $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
                             
                             <?php $communityImg = $image->getCommunityImage($postItem["community_id"]) ?>
                             <div class="post-container">
@@ -200,12 +206,12 @@ $activeTab = $_GET['tab'] ?? "posts";
                                 </div>
                                 <div class="post-button-container">
                                 <div class="like-comment-btns">
-                                    <div class="like-btn">
-                                        <button class="up-btn" data-post-id="<?= $postItem["id"] ?>">
+                                    <div class="like-btn" id="like-<?= $postId ?>">
+                                        <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>">
                                         <img src="../images/icons/arrow-up.png">
                                         </button>
-                                        <p class="likes" id="count-<?= $postItem["id"] ?>"><?= $postItem["likes"] ?></p>
-                                        <button class="down-btn" data-post-id="<?= $postItem["id"] ?>">
+                                        <p class="likes" id="count-<?= $postId ?>"><?= $like->getPostLikeCount($postId) ?></p>
+                                        <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>">
                                         <img src="../images/icons/arrow-down.png">
                                         </button>
                                     </div>
@@ -221,6 +227,63 @@ $activeTab = $_GET['tab'] ?? "posts";
                                 <?php endif; ?>
                                 </div>
                             </div>
+                            <script>
+                                {
+                                const idPost = <?= $postId ?>;
+                                const likeCount = document.getElementById(`count-${idPost}`);
+                                const likeContainer = document.getElementById(`like-${idPost}`);
+                                const upBtn = document.getElementById(`up-${idPost}`);
+                                const downBtn = document.getElementById(`down-${idPost}`);
+
+                                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "liked")
+                                {
+                                    likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                                    upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+                                    downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                                }
+                                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "disliked")
+                                {
+                                    likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                    upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                    downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+                                }
+
+                                const handleLike = (liketype)=>{
+                                    
+                                  fetch('../decisionMaker.php', {
+                                        method: 'POST',
+                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                        body: `post-${liketype}=${idPost}` 
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if(data.status === "success") {
+                                            let count = data.new_count < 0 ? 0 : data.new_count;
+                                            likeCount.textContent = count;
+                                            const status = data.like_status; 
+
+                                            if (status === "liked") {
+                                                likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                                                upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+                                                downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                                            } else if (status === "disliked") {
+                                                likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                                upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                                downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+                                            } else { 
+                                                likeContainer.style.backgroundColor = "rgb(212, 217, 219)";
+                                                upBtn.style.backgroundColor = "rgb(212, 217, 219)";
+                                                downBtn.style.backgroundColor = "rgb(212, 217, 219)";
+                                            }
+                                        }
+                                    })
+                                    .catch(error => console.error('Network error:', error));
+                                };
+
+                                upBtn.addEventListener('click', () => handleLike('like'));
+                                downBtn.addEventListener('click', () => handleLike('dislike'));
+                            }
+                            </script>
                         <?php endforeach; ?>    
                     <?php endif; ?>    
                 <?php endif; ?>    
@@ -253,32 +316,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     const communityBtn = document.getElementById("communities");
     const commentsBtn = document.getElementById("comments");
     const deleteBtn = document.querySelectorAll('.delete-container');
-    const likeBtn = document.querySelectorAll('.up-btn');
-    const dislikeBtn = document.querySelectorAll('.down-btn');
     
-    likeBtn.forEach(btn => {
-        btn.addEventListener('click',()=>{
-            const postId = btn.dataset.postId;
-            let likeCount = document.getElementById(`count-${postId}`);
-
-            fetch('../decisionMaker.php', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: `post-like=${postId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === "success") {
-                    likeCount.textContent = data.new_count;
-                }
-                else {
-                    console.error("Like error:", data.message);
-                }
-            })
-            .catch(error => console.error('Network error:', error));
-        });
-    });
-
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
             if(confirm("Are you sure you want do delete this community"))

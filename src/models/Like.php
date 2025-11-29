@@ -52,7 +52,34 @@ class Like extends Db
         $stmt->bindParam(':post_id',$postId);
         $stmt->execute();
         
-        $count = $stmt->fetchColumn();
+        $likes = $stmt->fetchAll();
+
+        if(empty($likes))
+        {
+            $count = 0;
+            return $count;
+        }    
+        $positive = 0;
+        $negative = 0;
+        foreach($likes as $like)
+        {
+            if($like["status"] == "liked")
+            {
+                $positive++;
+            }
+            if($like["status"] == "disliked")
+            {
+                $negative++;
+            }
+        }
+        $count = $positive - $negative;
         return $count;
+    }
+
+    public function deleteLike($likeId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM likes WHERE id = :id");
+        $stmt->bindParam(':id',$likeId);
+        $stmt->execute();
     }
 }

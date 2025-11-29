@@ -418,6 +418,14 @@
     cursor: pointer;
 }
 
+.liked {
+   background-color: rgba(223, 120, 120, 1);
+}
+
+.liked-btn {
+   background-color: rgba(220, 55, 55, 1);
+}
+
 .comment-btn {
     display: flex;
     align-items: center;
