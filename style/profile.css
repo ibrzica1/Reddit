@@ -454,11 +454,15 @@
 .delete-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-right: 10px;
     background-color: rgb(225, 231, 233);
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 18px;
+    border: none;
+    width: 36px;
+    height: 30px;
 }
 
 .delete-btn:hover {

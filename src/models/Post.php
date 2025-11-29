@@ -58,4 +58,12 @@ class Post extends Db
 
         $stmt->execute();
     }
+
+    public function deletePost($postId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM post WHERE id = :id");
+        $stmt->bindParam(':id',$postId);
+
+        $stmt->execute();
+    }
 }

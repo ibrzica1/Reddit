@@ -19,6 +19,15 @@ class Image extends Db
         return $stmt->fetch();
     }
 
+    public function getPostImage(int $id)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM image WHERE post_id = :id");
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function uploadImage(string $tmpName, string $name, int $postId, int $userId): void
     {
         $finalPath = __DIR__ . "/../../images/uploaded/$name";

@@ -73,6 +73,7 @@ class Like extends Db
             }
         }
         $count = $positive - $negative;
+        $count = $count < 0 ? 0 : $count;
         return $count;
     }
 

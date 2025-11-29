@@ -160,3 +160,13 @@ if(isset($_POST['post-dislike']))
   ]);
   exit();
 }
+
+if(isset($_POST['post-delete']))
+{
+  $postId = $_POST['post-delete'];
+  $location = $_POST['location'];
+
+  $postController = new PostController();
+  $postController->deletePostController($postId,$location);
+
+}

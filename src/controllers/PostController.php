@@ -170,4 +170,44 @@ class PostController extends Post
         }
         
     }
+
+    public function deletePostController($postId,$location)
+    {
+        $session = new SessionService();
+        $image = new Image();
+
+        if(!isset($postId))
+        {
+        $message = "You didnt send post Id";
+        $session->setSession("message",$message);
+        header("Location: view/$location.php");
+        exit();
+        }
+
+        if(!isset($location))
+        {
+        $message = "You didnt send location";
+        $session->setSession("message",$message);
+        header("Location: view/index.php");
+        exit();
+        }
+
+        $this->deletePost($postId);
+        $postImages = $image->getPostImage($postId);
+        foreach($postImages as $postImage)
+        {
+            $fileName = $postImage['name'];
+            $path = 'images/uploaded/'. $fileName;
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
+            $image->deleteImage("post_id",$postId);
+        }
+
+        header("Location: view/$location.php");
+        exit();
+        
+    }
 }

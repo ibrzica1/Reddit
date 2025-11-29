@@ -221,9 +221,14 @@ $activeTab = $_GET['tab'] ?? "posts";
                                     </div>
                                 </div>
                                 <?php if($postItem["user_id"] == $id): ?>
-                                <div class="delete-btn">
+                                <form action="../decisionMaker.php" method="post">
+                                  <input type="hidden" name="location" value="profile">
+                                  <input type="hidden" name="post-delete" value="<?= $postId ?>">
+                                  <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">
                                     <img src="../images/icons/set.png">
-                                </div>
+                                  </button>
+                                </form>
+                                
                                 <?php endif; ?>
                                 </div>
                             </div>
@@ -234,6 +239,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                                 const likeContainer = document.getElementById(`like-${idPost}`);
                                 const upBtn = document.getElementById(`up-${idPost}`);
                                 const downBtn = document.getElementById(`down-${idPost}`);
+                                const deletePost = document.getElementById(`delete-post-${idPost}`);
 
                                 if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "liked")
                                 {
@@ -282,6 +288,12 @@ $activeTab = $_GET['tab'] ?? "posts";
 
                                 upBtn.addEventListener('click', () => handleLike('like'));
                                 downBtn.addEventListener('click', () => handleLike('dislike'));
+                                deletePost.addEventListener('click',()=>{
+                                    if(confirm("Are you sure you want do delete this post"))
+                                    {
+                                        deletePost.disabled = false;
+                                    }
+                                });
                             }
                             </script>
                         <?php endforeach; ?>    
