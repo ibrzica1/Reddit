@@ -1,0 +1,218 @@
+<?php
+
+require_once "../vendor/autoload.php";
+
+use Reddit\services\SessionService;
+use Reddit\services\TimeService;
+use Reddit\models\User;
+use Reddit\models\Community;
+use Reddit\models\Image;
+use Reddit\models\Post;
+use Reddit\models\Like;
+
+$session = new SessionService();
+$time = new TimeService();
+$community = new Community();
+$image = new Image();
+$post = new Post();
+$user = new User();
+$like = new Like();
+
+if(!$session->sessionExists("username"))
+{
+    header("Location: ../index.php");
+}
+
+$getPost = $_GET['post_id'];
+$postId = intval($getPost);
+$selectedPost = $post->getPost("id",$postId);
+$postCommunityId = $selectedPost[0]["community_id"];
+$postCommunity = $community->getCommunity("id",$postCommunityId);
+$communityImage = $image->getCommunityImage($postCommunityId);
+$userId = $session->getFromSession("user_id");
+$postUserId = $selectedPost[0]["user_id"];
+$postUser = $user->getUserByAttribute("id",$postUserId);
+$userId = $session->getFromSession("user_id");
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment</title>
+    <link rel="stylesheet" href="../style/header.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../style/comment.css?v=<?php echo time(); ?>">
+</head>
+
+<body>
+
+<div class="header-container">
+    <a class="logo-container" href="../index.php">
+        <img src="../images/logo.png" alt="Reddit Logo" class="reddit-logo">
+    </a>
+    
+    <div class="search-container">
+        <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
+        <input type="text" placeholder="Search Reddit">
+    </div>
+    
+    <div class="buttons-container">
+        <a href="../view/createPost.php" class="create-post-btn" title="Create Post">
+            <img class='plus-icon' src="../images/icons/plus.png">
+            <p>Create</p>
+        </a>
+        <a class="notifications-container" href="">
+            <img src="../images/icons/bell.png">
+        </a>
+            <div class="user-info" id="userInfo">
+            <div class="green-dot"></div>
+            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
+                    
+    </div>
+    <div class="menu-container" id="userMenu">
+        <a class="profile-container" href="profile.php">
+        <div class="avatar-container">
+            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
+        </div>
+        <div class="info-container">
+            <h3>View Profile</h3>
+            <p>u/<?= $session->getFromSession("username") ?></p>
+        </div>
+        </a>
+        <a class="edit-container" href="../view/editAvatar.php">
+            <img src="../images/icons/shirt.png">
+            <p>Edit Avatar</p>
+        </a>
+        <a class="logout-container" href="../src/controllers/Logout.php">
+            <img src="../images/icons/house-door.png">
+            <p>Log Out</p>
+        </a>
+    </div>
+    </div>
+</div>   
+
+<div class="body-container">
+
+        <div class="body-comments">
+            <div class="post-container">
+                <div class="post-header">
+                    <div class="info-header">
+                        <button class="get-back-btn" onclick="history.back()">
+                            <img src="../images/icons/back.png">
+                        </button>
+                        <div class="comm-image">
+                            <img src="../images/community/<?= $communityImage["name"] ?>">
+                        </div>
+                        <div class="comm-user-info">
+                            <div class="comm-name-time">
+                                <h4>r/<?= $postCommunity[0]["name"] ?></h4>
+                                <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost[0]["time"]); ?></p>
+                            </div>
+                            <div class="user-name">
+                                <p>u/<?= $postUser["username"] ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if($selectedPost[0]["user_id"] == $userId): ?>
+                        <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Jeste li sigurni da želite obrisati ovaj post?');">
+                            <input type="hidden" name="location" value="profile">
+                            <input type="hidden" name="post-delete" value="<?= $postId ?>">
+                            <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">
+                                <img src="../images/icons/set.png">
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+                <div class="post-title">
+                    <h3><?= $selectedPost[0]["title"] ?></h3>
+                </div>
+                <div class="post-text">
+                    <p><?= $selectedPost[0]["text"] ?></p>
+                </div>
+                <div class="post-button-container">
+                    <div class="like-comment-btns">
+                        <div class="like-btn" id="like-<?= $postId ?>">
+                            <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'liked' ? 'liked' : '' ?>">
+                                <img src="../images/icons/arrow-up.png">
+                            </button>
+                            <p class="likes" id="count-<?= $postId ?>"><?= $like->getPostLikeCount($postId) ?></p>
+                            <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'disliked' ? 'disliked' : '' ?>">
+                                <img src="../images/icons/arrow-down.png">
+                            </button>
+                        </div>
+                        <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
+                            <img src="../images/icons/bubble.png">
+                            <p>0</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reply-container">
+                <p class="commenting-as">Comment as <span class="reply-username">u/<?= $session->getFromSession("username") ?></span></p>
+                <form action="../decisionMaker.php" method="POST" class="comment-form">
+                    <input type="hidden" name="post_id" value="<?= $postId ?>">
+                    <textarea name="comment_text" placeholder="What are your thoughts?" rows="4"></textarea>
+                    <div class="form-footer">
+                        <button type="submit" name="submit-comment" class="comment-submit-btn">Comment</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="comment-separator"></div>
+
+            <div class="comments-grid">
+                <div class="single-comment">
+                    <div class="comment-author-info">
+                        <img src="../images/avatars/<?= $postUser['avatar'] ?? 'default' ?>.webp" alt="Avatar" class="comment-avatar">
+                        <span class="comment-username">u/<?= $postUser["username"] ?></span>
+                        <span class="comment-time"> • 2 hours ago</span>
+                    </div>
+                    <div class="comment-content">
+                        <p>Ovo je primjer komentara. Ovdje bi se učitavali pravi komentari iz baze podataka.</p>
+                    </div>
+                    <div class="comment-actions">
+                        <div class="comment-votes">
+                            <button class="comment-upvote">↑</button>
+                            <span class="comment-score">15</span>
+                            <button class="comment-downvote">↓</button>
+                        </div>
+                        <button class="comment-reply-btn">Reply</button>
+                        <button class="comment-reply-btn">Share</button>
+                        <button class="comment-reply-btn">Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-community">
+            <div class="community-card-header">
+                <h4 class="community-name">About r/<?= $postCommunity[0]["name"] ?></h4>
+            </div>
+            <div class="community-description">
+                <p><?= $postCommunity[0]["description"] ?></p>
+            </div>
+            <div class="community-created">
+                <p class="community-stats">
+                    <img src="../images/icons/cake.png" alt="Cake Day">
+                    Created: <?= $time->calculateTime($postCommunity[0]['time']); ?>
+                </p>
+            </div>
+            <a href="community.php?comm_id=<?= $postCommunityId ?>" class="community-view-btn">View Community</a>
+        </div>
+
+    </div>
+
+<script type="module">
+    import { toggleMenu} from "../script/tools.js?v=<?php echo time(); ?>";
+
+    const menu = document.getElementById("userInfo");
+    menu.addEventListener('click',toggleMenu);
+
+</script>
+</body>
+
+</html>
