@@ -246,7 +246,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                         upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
                         downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
                     }
-                    if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "disliked")
+                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "disliked")
                     {
                         likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
                         upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";

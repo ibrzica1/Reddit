@@ -33,6 +33,9 @@ $userId = $session->getFromSession("user_id");
 $postUserId = $selectedPost[0]["user_id"];
 $postUser = $user->getUserByAttribute("id",$postUserId);
 $userId = $session->getFromSession("user_id");
+$postLikes = $like->getLike("post_id",$postId,$userId);
+$likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"];
+$likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"];
 
 ?>
 
@@ -210,7 +213,63 @@ $userId = $session->getFromSession("user_id");
     import { toggleMenu} from "../script/tools.js?v=<?php echo time(); ?>";
 
     const menu = document.getElementById("userInfo");
+    const idPost = <?= $postId ?>;
+    const likeCount = document.getElementById(`count-${idPost}`);
+    const likeContainer = document.getElementById(`like-${idPost}`);
+    const upBtn = document.getElementById(`up-${idPost}`);
+    const downBtn = document.getElementById(`down-${idPost}`);
+    const deletePost = document.getElementById(`delete-post-${idPost}`);
+
+
+    if(<?= $likeId ?> === <?= $userId ?> && "<?= $likeStatus ?>" === "liked")
+    {
+        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+    }
+    if(<?= $likeId ?> === <?= $userId  ?> && "<?= $likeStatus ?>" === "disliked")
+    {
+        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+         downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+    }
+
+    const handleLike = (liketype)=>{
+                                    
+        fetch('../decisionMaker.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `post-${liketype}=${idPost}` 
+        })
+        .then(response => response.json())
+        .then(data => {
+        if(data.status === "success") {
+            let count = data.new_count < 0 ? 0 : data.new_count;
+            likeCount.textContent = count;
+            const status = data.like_status; 
+
+            if (status === "liked") {
+                likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+                downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+            } else if (status === "disliked") {
+                likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+            } else { 
+                likeContainer.style.backgroundColor = "rgb(212, 217, 219)";
+                upBtn.style.backgroundColor = "rgb(212, 217, 219)";
+                downBtn.style.backgroundColor = "rgb(212, 217, 219)";
+            }
+            }})
+        .catch(error => console.error('Network error:', error));
+        };
+
+    upBtn.addEventListener('click', () => handleLike('like'));
+    downBtn.addEventListener('click', () => handleLike('dislike'));
     menu.addEventListener('click',toggleMenu);
+
+
 
 </script>
 </body>
