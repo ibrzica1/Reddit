@@ -134,7 +134,7 @@
             background-color: #dee8fe; 
             border-radius: 18px;
             padding: 2px 0;
-            height: 32px;
+            height: 26px;
             margin-right: 10px;
         }
         
@@ -316,6 +316,7 @@
             align-items: center;
             padding-left: 25px;
             font-size: 12px;
+            margin-top: 14px;
         }
 
         .comment-votes {

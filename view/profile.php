@@ -210,7 +210,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                                         <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>">
                                         <img src="../images/icons/arrow-up.png">
                                         </button>
-                                        <p class="likes" id="count-<?= $postId ?>"><?= $like->getPostLikeCount($postId) ?></p>
+                                        <p class="likes" id="count-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
                                         <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>">
                                         <img src="../images/icons/arrow-down.png">
                                         </button>

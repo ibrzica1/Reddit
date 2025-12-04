@@ -6,15 +6,15 @@ use Reddit\models\Like;
 
 class LikeController extends Like
 {
-    public function addPostDislikeController($userId,$postId)
+    public function addCommentDislikeController($userId,$commId)
     {
-        $likeItem = $this->getLike("post_id",$postId,$userId);
+        $likeItem = $this->getLike("comment_id",$commId,$userId);
 
         if(empty($likeItem))
         {
             $status = "disliked";
-            $this->addLikePost($postId,$status,$userId);
-            $newCount = $this->getPostLikeCount($postId);
+            $this->addLikeComment($commId,$status,$userId);
+            $newCount = $this->getLikeCount("comment_id",$commId);
             $data = [$newCount,$status];
             return $data;
         }
@@ -24,7 +24,7 @@ class LikeController extends Like
             $likeId = $likeItem['id'];
             $this->deleteLike($likeId);
             $status = "neutral";
-            $newCount = $this->getPostLikeCount($postId);
+            $newCount = $this->getLikeCount("comment_id",$commId);
             $data = [$newCount,$status];
             return $data;
         }
@@ -32,8 +32,74 @@ class LikeController extends Like
         if($likeItem['status'] == "liked")
         {
             $status = "disliked";
-            $this->updateLikePost($postId,$status,$userId);
-            $newCount = $this->getPostLikeCount($postId);
+            $this->updateLike("comment_id",$commId,$status,$userId);
+            $newCount = $this->getLikeCount("comment_id",$commId);
+            $data = [$newCount,$status];
+            return $data;
+        }   
+    }
+
+    public function addCommentLikeController($userId,$commId)
+    {
+        $likeItem = $this->getLike("comment_id",$commId,$userId);
+
+        if(empty($likeItem))
+        {
+            $status = "liked";
+            $this->addLikeComment($commId,$status,$userId);
+            $newCount = $this->getLikeCount("comment_id",$commId);
+            $data = [$newCount,$status];
+            return $data;
+        }
+
+        if($likeItem['status'] == "liked")
+        {
+            $likeId = $likeItem['id'];
+            $this->deleteLike($likeId);
+            $status = "neutral";
+            $newCount = $this->getLikeCount("comment_id",$commId);
+            $data = [$newCount,$status];
+            return $data;
+        }
+
+        if($likeItem['status'] == "disliked")
+        {
+            $status = "liked";
+            $this->updateLike("comment_id",$commId,$status,$userId);
+            $newCount = $this->getLikeCount("comment_id",$commId);
+            $data = [$newCount,$status];
+            return $data;
+        }     
+    }
+
+    public function addPostDislikeController($userId,$postId)
+    {
+        $likeItem = $this->getLike("post_id",$postId,$userId);
+
+        if(empty($likeItem))
+        {
+            $status = "disliked";
+            $this->addLikePost($postId,$status,$userId);
+            $newCount = $this->getLikeCount("post_id",$postId);
+            $data = [$newCount,$status];
+            return $data;
+        }
+        
+        if($likeItem['status'] == "disliked")
+        {
+            $likeId = $likeItem['id'];
+            $this->deleteLike($likeId);
+            $status = "neutral";
+            $newCount = $this->getLikeCount("post_id",$postId);
+            $data = [$newCount,$status];
+            return $data;
+        }
+
+        if($likeItem['status'] == "liked")
+        {
+            $status = "disliked";
+            $this->updateLike("post_id",$postId,$status,$userId);
+            $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
         }   
@@ -48,7 +114,7 @@ class LikeController extends Like
         {
             $status = "liked";
             $this->addLikePost($postId,$status,$userId);
-            $newCount = $this->getPostLikeCount($postId);
+            $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
         }
@@ -58,7 +124,7 @@ class LikeController extends Like
             $likeId = $likeItem['id'];
             $this->deleteLike($likeId);
             $status = "neutral";
-            $newCount = $this->getPostLikeCount($postId);
+            $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
         }
@@ -66,8 +132,8 @@ class LikeController extends Like
         if($likeItem['status'] == "disliked")
         {
             $status = "liked";
-            $this->updateLikePost($postId,$status,$userId);
-            $newCount = $this->getPostLikeCount($postId);
+            $this->updateLike("post_id",$postId,$status,$userId);
+            $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
         }     

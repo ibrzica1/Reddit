@@ -22,6 +22,17 @@ class Like extends Db
         return $stmt->fetch();
     }
 
+    public function addLikeComment($commId,$status,$userId)
+    {
+        $stmt = $this->connection->prepare("INSERT INTO likes (user_id,comment_id,status)
+        VALUES (:user_id, :comment_id, :status)");
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':comment_id', $commId);
+        $stmt->bindParam(':status', $status);
+
+        $stmt->execute();
+    }
+
     public function addLikePost($postId,$status,$userId)
     {
         $stmt = $this->connection->prepare("INSERT INTO likes (user_id,post_id,status)
@@ -33,23 +44,23 @@ class Like extends Db
         $stmt->execute();
     }
 
-    public function updateLikePost($postId,$status,$userId)
+    public function updateLike($attribute,$value,$status,$userId)
     {
         $stmt = $this->connection->prepare("UPDATE likes 
         SET status = :status
         WHERE user_id = :user_id
-        AND post_id = :post_id");
+        AND $attribute = :value");
         $stmt->bindParam(':user_id', $userId);
-        $stmt->bindParam(':post_id', $postId);
+        $stmt->bindParam(':value', $value);
         $stmt->bindParam(':status', $status);
 
         $stmt->execute();
     }
 
-    public function getPostLikeCount($postId)
+    public function getLikeCount($attribute,$value)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE post_id = :post_id");
-        $stmt->bindParam(':post_id',$postId);
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
         $stmt->execute();
         
         $likes = $stmt->fetchAll();

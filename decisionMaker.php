@@ -162,6 +162,42 @@ if(isset($_POST['post-dislike']))
   exit();
 }
 
+if(isset($_POST['comment-like']))
+{
+  $postId = $_POST['comment-like'];
+  $userId = $session->getFromSession('user_id');
+
+  $likeController = new LikeController();
+
+  $data = $likeController->addCommentLikeController($userId,$postId);
+
+  header('Content-Type: application/json');
+  echo json_encode([
+      'status' => 'success',
+      'new_count' => $data[0],
+      'like_status' => $data[1]
+  ]);
+  exit();
+}
+
+if(isset($_POST['comment-dislike']))
+{
+  $postId = $_POST['comment-dislike'];
+  $userId = $session->getFromSession('user_id');
+
+  $likeController = new LikeController();
+
+  $data = $likeController->addCommentDislikeController($userId,$postId);
+
+  header('Content-Type: application/json');
+  echo json_encode([
+      'status' => 'success',
+      'new_count' => $data[0],
+      'like_status' => $data[1]
+  ]);
+  exit();
+}
+
 if(isset($_POST['post-delete']))
 {
   $postId = $_POST['post-delete'];

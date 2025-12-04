@@ -10,6 +10,16 @@ class Comment extends Db
     public $post_id;
     public $time;
 
+    public function getComments($atribute,$value)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM comment
+        WHERE $atribute = :value");
+        $stmt->bindParam(':value',$value);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function registerComment($text,$user_id,$post_id,$time)
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, time)
