@@ -10,5 +10,8 @@ class Comment extends Db
     public $post_id;
     public $time;
 
-    
+    public function commentLength($text)
+    {
+        return strlen($text) < 500;
+    }
 }
