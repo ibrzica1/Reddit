@@ -150,7 +150,7 @@ $comments = $comment->getComments("post_id",$postId);
                         </div>
                         <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
                             <img src="../images/icons/bubble.png">
-                            <p>0</p>
+                            <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
                         </a>
                     </div>
                 </div>

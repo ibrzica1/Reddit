@@ -20,6 +20,23 @@ class Comment extends Db
         return $stmt->fetchAll();
     }
 
+    public function getCommentCount($attribute,$value)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM comment
+        WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
+        $stmt->execute();
+
+        if(empty($stmt))
+        {
+            $count = 0;
+            return $count;
+        }
+
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
     public function registerComment($text,$user_id,$post_id,$time)
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, time)
