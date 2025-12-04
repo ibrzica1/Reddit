@@ -2,6 +2,7 @@
 
 require_once "vendor/autoload.php";
 
+use Reddit\controllers\CommentController;
 use Reddit\controllers\CommunityController;
 use Reddit\controllers\LikeController;
 use Reddit\services\SessionService;
@@ -169,4 +170,13 @@ if(isset($_POST['post-delete']))
   $postController = new PostController();
   $postController->deletePostController($postId,$location);
 
+}
+
+if(isset($_POST['comment_text']) && isset($_POST['post_id']))
+{
+  $postId = $_POST['post_id'];
+  $commText = $_POST['comment_text'];
+
+  $commentController = new CommentController();
+  $commentController->createComment($commText,$postId);
 }

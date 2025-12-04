@@ -434,6 +434,8 @@
     padding-left: 12px;
     padding-right: 12px;
     border-radius: 18px;
+    text-decoration: none;
+    color: black;
 }
 
 .comment-btn:hover {

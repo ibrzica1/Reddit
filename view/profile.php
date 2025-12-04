@@ -215,10 +215,10 @@ $activeTab = $_GET['tab'] ?? "posts";
                                         <img src="../images/icons/arrow-down.png">
                                         </button>
                                     </div>
-                                    <div class="comment-btn">
+                                    <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
                                         <img src="../images/icons/bubble.png">
                                         <p>0</p>
-                                    </div>
+                                    </a>
                                 </div>
                                 <?php if($postItem["user_id"] == $id): ?>
                                 <form action="../decisionMaker.php" method="post">
@@ -228,77 +228,77 @@ $activeTab = $_GET['tab'] ?? "posts";
                                     <img src="../images/icons/set.png">
                                   </button>
                                 </form>
-                                
                                 <?php endif; ?>
-                                </div>
-                            </div>
-                            <script>
-                                {
-                                const idPost = <?= $postId ?>;
-                                const likeCount = document.getElementById(`count-${idPost}`);
-                                const likeContainer = document.getElementById(`like-${idPost}`);
-                                const upBtn = document.getElementById(`up-${idPost}`);
-                                const downBtn = document.getElementById(`down-${idPost}`);
-                                const deletePost = document.getElementById(`delete-post-${idPost}`);
+            </div>
+            </div>
+            <script>
+            {
+                const idPost = <?= $postId ?>;
+                const likeCount = document.getElementById(`count-${idPost}`);
+                const likeContainer = document.getElementById(`like-${idPost}`);
+                const upBtn = document.getElementById(`up-${idPost}`);
+                const downBtn = document.getElementById(`down-${idPost}`);
+                const deletePost = document.getElementById(`delete-post-${idPost}`);
 
-                                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "liked")
-                                {
-                                    likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                                    upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-                                    downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                                }
-                                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "disliked")
-                                {
-                                    likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                                    upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                                    downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-                                }
+                if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "liked")
+                    {
+                        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+                        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                    }
+                    if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "disliked")
+                    {
+                        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+                    }
 
-                                const handleLike = (liketype)=>{
+                    const handleLike = (liketype)=>{
                                     
-                                  fetch('../decisionMaker.php', {
-                                        method: 'POST',
-                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                                        body: `post-${liketype}=${idPost}` 
-                                    })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if(data.status === "success") {
-                                            let count = data.new_count < 0 ? 0 : data.new_count;
-                                            likeCount.textContent = count;
-                                            const status = data.like_status; 
+                        fetch('../decisionMaker.php', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            body: `post-${liketype}=${idPost}` 
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if(data.status === "success") {
+                                let count = data.new_count < 0 ? 0 : data.new_count;
+                                likeCount.textContent = count;
+                                const status = data.like_status; 
 
-                                            if (status === "liked") {
-                                                likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                                                upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-                                                downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                                            } else if (status === "disliked") {
-                                                likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                                                upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                                                downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-                                            } else { 
-                                                likeContainer.style.backgroundColor = "rgb(212, 217, 219)";
-                                                upBtn.style.backgroundColor = "rgb(212, 217, 219)";
-                                                downBtn.style.backgroundColor = "rgb(212, 217, 219)";
-                                            }
-                                        }
-                                    })
-                                    .catch(error => console.error('Network error:', error));
-                                };
+                            if (status === "liked") {
+                                likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                                upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+                                downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+                            } else if (status === "disliked") {
+                                likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+                                downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+                            } else { 
+                                likeContainer.style.backgroundColor = "rgb(212, 217, 219)";
+                                upBtn.style.backgroundColor = "rgb(212, 217, 219)";
+                                downBtn.style.backgroundColor = "rgb(212, 217, 219)";
+                            }
+                            }})
+                            .catch(error => console.error('Network error:', error));
+                            };
 
-                                upBtn.addEventListener('click', () => handleLike('like'));
-                                downBtn.addEventListener('click', () => handleLike('dislike'));
-                                deletePost.addEventListener('click',()=>{
-                                    if(confirm("Are you sure you want do delete this post"))
-                                    {
-                                        deletePost.disabled = false;
-                                    }
-                                });
+                            upBtn.addEventListener('click', () => handleLike('like'));
+                            downBtn.addEventListener('click', () => handleLike('dislike'));
+                            deletePost.addEventListener('click',()=>{
+                            if(confirm("Are you sure you want do delete this post"))
+                            {
+                                deletePost.disabled = false;
+                            }
+                            });
                             }
                             </script>
                         <?php endforeach; ?>    
                     <?php endif; ?>    
-                <?php endif; ?>    
+                <?php endif; ?> 
+                <?php if($activeTab == "comments"): ?>
+                <?php endif; ?>   
             </div>
 
         </main>
