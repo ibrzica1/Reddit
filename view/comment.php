@@ -195,9 +195,19 @@ $comments = $comment->getComments("post_id",$postId);
                             <img src="../images/icons/arrow-down.png">
                             </button>
                         </div>
-                        <button class="comment-reply-btn">Reply</button>
-                        
+                        <button class="comment-reply-btn" id="commentReplyBtn-<?= $commId ?>">
+                            Reply</button>
                     </div>
+                    <form action="../decisionMaker.php" method="post" class="reply-form" id="replyForm-<?= $commId ?>">
+                        <input type="hidden" name="comment_id" value="<?= $commId ?>">
+                        <textarea name="reply-text" rows="1" id="replyText-<?= $commId ?>"></textarea>
+                        <div class="reply-btns">
+                            <button type="button" class="reply-cancel" id="replyCancel-<?= $commId ?>">
+                                Cancel</button>
+                            <button type="submit" class="reply-submit" id="replySubmit-<?= $commId ?>">
+                                Submit</button>
+                        </div>
+                    </form>
                 </div>
 <script>
     {
@@ -206,6 +216,11 @@ $comments = $comment->getComments("post_id",$postId);
     const commLikeContainer = document.getElementById(`comm-like-${commentId}`);
     const commUpBtn = document.getElementById(`comm-up-${commentId}`);
     const commDownBtn = document.getElementById(`comm-down-${commentId}`);
+    const commReplyBtn = document.getElementById(`commentReplyBtn-${commentId}`);
+    const replyText =document.getElementById(`replyText-${commentId}`);
+    const replyForm = document.getElementById(`replyForm-${commentId}`);
+    const replyCancel = document.getElementById(`replyCancel-${commentId}`);
+    const replySubmit = document.getElementById(`replySubmit-${commentId}`);
 
     if("<?= $commentLikeStatus ?>" === "liked")
     {
@@ -253,6 +268,13 @@ $comments = $comment->getComments("post_id",$postId);
 
     commUpBtn.addEventListener('click', () => handleCommLike('like'));
     commDownBtn.addEventListener('click', () => handleCommLike('dislike'));
+    commReplyBtn.addEventListener('click', () => {
+        replyForm.style.display = 'flex';
+        replyText.focus();
+    });
+    replyCancel.addEventListener('click', () => {
+        replyForm.style.display = 'none';
+    });
     }
 </script>
             <?php endforeach; ?>    

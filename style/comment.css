@@ -263,7 +263,7 @@
         }
 
         .comment-submit-btn {
-            background-color: #0079D3;
+            background-color: #6C2491;
             color: white;
             border: none;
             padding: 8px 16px;
@@ -364,6 +364,59 @@
             text-transform: uppercase;
             font-size: 12px;
             padding: 0;
+        }
+
+        .reply-form {
+            display: none;
+            flex-direction: column;
+            width: 90%;
+            margin-top: 20px;
+            margin-left: 20px;
+            border: 1px solid rgb(190, 184, 184);
+            border-radius: 20px;
+            padding: 10px;
+        }
+
+        .reply-form textarea {
+            border: none;
+            padding: 10px;
+        }
+
+        .reply-form textarea:focus {
+            outline: none;
+        }
+
+        .reply-cancel {
+            border: none;
+            padding: 8px 10px;
+            border-radius: 15px;
+            background-color: #e9edf5;
+            margin-right: 10px;
+        }
+
+        .reply-cancel:hover {
+            cursor: pointer;
+            background-color: #d6d9e0;
+        }
+
+        .reply-btns {
+            display: flex;
+            justify-content: end;
+            padding-top: 10px;
+            padding-right: 10px;
+        }
+
+        .reply-submit {
+            border: none;
+            padding: 8px 10px;
+            border-radius: 15px;
+            background-color: #6C2491;
+            color: white;
+        }
+
+        .reply-submit:hover {
+            cursor: pointer;
+            background-color: #5b1081;
         }
 
         .community-card-header {
