@@ -8,12 +8,14 @@ use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
+use Reddit\models\Like;
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
 $post = new Post();
 $user = new User();
+$like = new Like();
 
 if(!$session->sessionExists("username"))
 {
@@ -134,7 +136,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
                         <div class="up-btn">
                            <img src="../images/icons/arrow-up.png">
                         </div>
-                        <p><?= $postItem["likes"] ?></p>
+                        <p><?= $like->getLikeCount("post_id",$postItem["id"]) ?></p>
                         <div class="down-btn">
                            <img src="../images/icons/arrow-down.png">
                         </div>

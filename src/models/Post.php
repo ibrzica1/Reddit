@@ -11,7 +11,6 @@ class Post extends Db
     public $user_id;
     public $community_id;
     public $time;
-    public $likes;
 
     public function getPost(string $attribute, mixed $value): array
     {
@@ -34,27 +33,25 @@ class Post extends Db
 
     public function registerTextPost($title, $text, $user_id, $community_id, $time, $likes)
     {
-        $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time, likes)
-        VALUES (:title, :text, :user_id, :community_id, :time, :likes)");
+        $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time)
+        VALUES (:title, :text, :user_id, :community_id, :time)");
         $stmt->bindParam(':title',$title);
         $stmt->bindParam(':text',$text);
         $stmt->bindParam(':user_id',$user_id);
         $stmt->bindParam(':community_id',$community_id);
         $stmt->bindParam(':time',$time);
-        $stmt->bindParam(':likes',$likes);
 
         $stmt->execute();
     }
 
     public function registerImagePost($title, $user_id, $community_id, $time, $likes)
     {
-        $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time, likes)
-        VALUES (:title, :user_id, :community_id, :time, :likes)");
+        $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time)
+        VALUES (:title, :user_id, :community_id, :time)");
         $stmt->bindParam(':title',$title);
         $stmt->bindParam(':user_id',$user_id);
         $stmt->bindParam(':community_id',$community_id);
         $stmt->bindParam(':time',$time);
-        $stmt->bindParam(':likes',$likes);
 
         $stmt->execute();
     }

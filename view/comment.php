@@ -117,7 +117,7 @@ $comments = $comment->getComments("post_id",$postId);
                                 <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost[0]["time"]); ?></p>
                             </div>
                             <div class="user-name">
-                                <p>u/<?= $postUser["username"] ?></p>
+                                <p><?= $postUser["username"] ?></p>
                             </div>
                         </div>
                     </div>
