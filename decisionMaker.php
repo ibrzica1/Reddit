@@ -216,3 +216,15 @@ if(isset($_POST['comment_text']) && isset($_POST['post_id']))
   $commentController = new CommentController();
   $commentController->createComment($commText,$postId);
 }
+
+if(isset($_POST['reply-text']) && 
+   isset($_POST['comment_id']) &&
+   isset($_POST['post_id']))
+{
+  $replyText = $_POST['reply-text'];
+  $commentId = $_POST['comment_id'];
+  $postId = $_POST['post_id'];
+
+  $commentController = new CommentController();
+  $commentController->createReply($replyText,$commentId,$postId);
+}
