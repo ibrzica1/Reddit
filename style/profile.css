@@ -387,7 +387,7 @@
     align-items: center;
     gap: 8px;
     width: fit-content;
-    background-color: rgb(225, 231, 233);
+    background-color: #dee8fe;
     border-radius: 18px;
 }
 
@@ -409,12 +409,12 @@
     height: 26px;
     border-radius: 50%;
     border: none;
-    background-color: rgb(225, 231, 233);
+    background-color: #dee8fe;
 }
 
 .up-btn:hover,
 .down-btn:hover {
-    background-color: rgb(212, 217, 219);
+    opacity: 0.7;
     cursor: pointer;
 }
 
@@ -430,7 +430,7 @@
     display: flex;
     align-items: center;
     margin-left: 20px;
-    background-color: rgb(225, 231, 233);
+    background-color: #dee8fe;
     padding-left: 12px;
     padding-right: 12px;
     border-radius: 18px;
@@ -475,6 +475,101 @@
 .delete-btn img {
     width: 14px;
     height: 14px;
+}
+
+.single-comment {
+    background-color: white;
+    padding: 12px 10px;
+    margin-left: 5px; 
+    padding-left: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.post-info {
+    display: flex;
+    align-items: center;
+}
+
+.post-info img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+.comment-community-name {
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0;
+    margin-right: 10px;
+    margin-left: 10px;
+    color: rgb(101, 101, 101);
+}
+
+.post-title {
+    font-size: 12px;
+    color: #5d5b5b;
+    margin: 0;
+}
+
+.user-info {
+    display: flex;
+    justify-content: left;
+    width: 80%;
+    height: 20px;
+    margin-left: 34px;
+}
+
+.user-info h3 {
+    font-size: 13px;
+    margin: 0;
+}
+
+.user-info p {
+    font-size: 11px;
+    color: rgb(105, 105, 105);
+    margin: 0;
+}
+
+.comment-content {
+    margin-left: 34px;
+}
+
+.comment-content p {
+    font-size: 16px;
+}
+
+.comment-actions {
+    display: flex;
+    margin-left: 34px;
+}
+
+.comment-reply-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    width: 80px;
+    background-color: #dee8fe;
+    border-radius: 14px;
+    margin-left: 10px;
+    text-decoration: none;
+    color: #1A1A1B;
+}
+
+.comment-reply-btn:hover {
+    background-color: #c6d3f0;
+    cursor: pointer;
+}
+
+.comment-reply-btn img {
+    width: 14px;
+    height: 14px;
+}
+
+.comment-reply-btn p {
+    font-size: 14px;
+    margin-left: 4px;
 }
 
 .sidebar-card {
