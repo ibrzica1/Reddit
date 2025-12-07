@@ -176,7 +176,7 @@ $comments = $comment->getComments("post_id",$postId);
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem["user_id"]) ?>
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem["user_id"])  ?>
     <?php $commentLikeStatus = empty($commentLikes["status"]) ? "neutral" : $commentLikes["status"] ?>
-
+    
     <div class="single-comment">
         <div class="comment-author-info">
             <img src="../images/avatars/<?= $commentUser['avatar'] ?>.webp" class="comment-avatar">

@@ -9,6 +9,7 @@ use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
+use Reddit\models\Comment;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -16,6 +17,7 @@ $community = new Community();
 $image = new Image();
 $post = new Post();
 $like = new Like();
+$comment = new Comment();
 
 if(!$session->sessionExists("username"))
 {
@@ -217,7 +219,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                                     </div>
                                     <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
                                         <img src="../images/icons/bubble.png">
-                                        <p>0</p>
+                                        <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
                                     </a>
                                 </div>
                                 <?php if($postItem["user_id"] == $id): ?>

@@ -200,6 +200,11 @@
     height: 12px;
 }
 
+.comment-btn:hover {
+    cursor: pointer;
+    background-color: #c6d3f0; 
+}
+
 .comment-btn img {
     width: 12px;
     height: 12px;
@@ -374,6 +379,7 @@
     width: 90%;
     margin-top: 20px;
     margin-left: 20px;
+    border: 1px solid rgb(172, 168, 168);
     border-radius: 20px;
     padding: 10px;
 }
@@ -480,4 +486,9 @@
     text-decoration: none;
     font-weight: bold;
     margin: 10px;
+}
+
+.community-view-btn:hover {
+    background-color: #5b1081;
+    cursor: pointer;
 }
