@@ -121,6 +121,8 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <?php foreach($communityPosts as $postItem): ?>
     <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>
     <?php $postId = $postItem["id"]; ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$postItem["user_id"]); ?>
+    <?php $postLikeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
@@ -148,12 +150,13 @@ $communityPosts = $post->getPost("community_id",$communityId);
     </div>
     <div class="post-button-container">
         <div class="like-comment-btns">
-        <div class="like-btn">
-        <div class="up-btn">
+        <div class="like-btn" id="like-<?= $postId ?>">
+        <div class="up-btn" id="up-<?= $postId ?>">
             <img src="../images/icons/arrow-up.png">
         </div>
-        <p><?= $like->getLikeCount("post_id",$postItem["id"]) ?></p>
-        <div class="down-btn">
+        <p id="count-<?= $postId ?>">
+            <?= $like->getLikeCount("post_id",$postId) ?></p>
+        <div class="down-btn" id="down-<?= $postId ?>">
             <img src="../images/icons/arrow-down.png">
         </div>
         </div>
@@ -177,6 +180,58 @@ $communityPosts = $post->getPost("community_id",$communityId);
     const rightArrow = document.getElementById(`rightArrow-${postId}`);
     const postImages = <?= json_encode($postImages) ?>;
     const imageCount = postImages.length;
+    const likeCount = document.getElementById(`count-${postId}`);
+    const likeContainer = document.getElementById(`like-${postId}`);
+    const upBtn = document.getElementById(`up-${postId}`);
+    const downBtn = document.getElementById(`down-${postId}`);
+
+    if("<?= $postLikeStatus ?>" === "liked")
+    {
+        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+    }
+    if("<?= $postLikeStatus ?>" === "disliked")
+    {
+        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+    }
+
+    const handleLike = (liketype)=>{
+                    
+    fetch('../decisionMaker.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `post-${liketype}=${postId}` 
+    })
+    .then(response => response.json())
+    .then(data => {
+    if(data.status === "success") {
+        let count = data.new_count < 0 ? 0 : data.new_count;
+        likeCount.textContent = count;
+        const status = data.like_status; 
+
+    if (status === "liked") {
+        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+    } else if (status === "disliked") {
+        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+    } else { 
+        likeContainer.style.backgroundColor = "#dee8fe";
+        upBtn.style.backgroundColor = "#dee8fe";
+        downBtn.style.backgroundColor = "#dee8fe";
+    }
+    }})
+    .catch(error => console.error('Network error:', error));
+    };
+
+    upBtn.addEventListener('click', () => handleLike('like'));
+    downBtn.addEventListener('click', () => handleLike('dislike'));
+
     let currentImgIndex = 0;
 
     let updateImageDisplay = () => {
