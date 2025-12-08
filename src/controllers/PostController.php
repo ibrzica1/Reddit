@@ -169,6 +169,8 @@ class PostController extends Post
             $image->uploadImage($uploadedImages['tmp_name'],$randomName,$postId,$userId);
         }
         
+        header("Location: view/comment.php?post_id=$postId");
+        exit();
     }
 
     public function deletePostController($postId,$location)

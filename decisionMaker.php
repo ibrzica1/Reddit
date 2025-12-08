@@ -88,9 +88,6 @@ isset($_POST['community']) &&
   $images = $_FILES['image'];
   $communityId = $_POST['community'];
 
-  var_dump($title);
-  exit();
-  
   $postController = new PostController();
   $postController->imagePost($title, $images, $communityId);
 }

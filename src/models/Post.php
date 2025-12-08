@@ -31,7 +31,7 @@ class Post extends Db
         return strlen($text) >= 2 && strlen($text) <= 1000;
     }
 
-    public function registerTextPost($title, $text, $user_id, $community_id, $time, $likes)
+    public function registerTextPost($title, $text, $user_id, $community_id, $time)
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time)
         VALUES (:title, :text, :user_id, :community_id, :time)");
@@ -44,7 +44,7 @@ class Post extends Db
         $stmt->execute();
     }
 
-    public function registerImagePost($title, $user_id, $community_id, $time, $likes)
+    public function registerImagePost($title, $user_id, $community_id, $time)
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time)
         VALUES (:title, :user_id, :community_id, :time)");

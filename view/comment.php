@@ -38,6 +38,7 @@ $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
 $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"];
 $comments = $comment->getComments("post_id",$postId);
+$imgNum = 0;
 
 ?>
 
@@ -134,9 +135,28 @@ $comments = $comment->getComments("post_id",$postId);
 <div class="post-title">
     <h3><?= $selectedPost[0]["title"] ?></h3>
 </div>
+<?php if(!empty($selectedPost[0]["text"])): ?>
+
 <div class="post-text">
     <p><?= $selectedPost[0]["text"] ?></p>
 </div>
+<?php else: ?>
+    <?php $postImages = $image->getUploadedImages("post_id",$postId) ?>
+    <?php $imgCount = count($postImages); ?>
+    <div class="image-gallery">
+    
+    <div class="image">
+        <div class="left-arrow" id="leftArrow">
+            <img src="../images/icons/arrowLeft.png">
+        </div>
+        <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay">
+        <div class="right-arrow" id="rightArrow">
+            <img src="../images/icons/arrowRight.png">
+        </div>
+    </div>
+
+    </div>
+<?php endif; ?>
 <div class="post-button-container">
 <div class="like-comment-btns">
     <div class="like-btn" id="like-<?= $postId ?>">
@@ -400,7 +420,58 @@ const likeContainer = document.getElementById(`like-${idPost}`);
 const upBtn = document.getElementById(`up-${idPost}`);
 const downBtn = document.getElementById(`down-${idPost}`);
 const deletePost = document.getElementById(`delete-post-${idPost}`);
+const imgDisplay = document.getElementById(`imageDisplay`);
+const leftArrow = document.getElementById(`leftArrow`);
+const rightArrow = document.getElementById(`rightArrow`);
+const postImages = <?= json_encode($postImages) ?>;
+const imageCount = postImages.length;
+let currentImgIndex = 0;
 
+const updateImageDisplay = () => {
+    imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
+
+    if (currentImgIndex > 0) {
+        leftArrow.style.display = "flex";
+    } else {
+        leftArrow.style.display = "none";
+    }
+
+    if (currentImgIndex < imageCount - 1) {
+        rightArrow.style.display = "flex";
+    } else {
+        rightArrow.style.display = "none";
+    }
+    
+    if (imageCount <= 1) {
+        leftArrow.style.display = "none";
+        rightArrow.style.display = "none";
+    }
+};
+
+if (imageCount > 0) {
+    updateImageDisplay();
+} else {
+    if (leftArrow) leftArrow.style.display = "none";
+    if (rightArrow) rightArrow.style.display = "none";
+}
+
+if (rightArrow) {
+    rightArrow.addEventListener('click', () => {
+        if (currentImgIndex < imageCount - 1) {
+            currentImgIndex++;
+            updateImageDisplay();
+        }
+    });
+}
+
+if (leftArrow) {
+    leftArrow.addEventListener('click', () => {
+        if (currentImgIndex > 0) {
+            currentImgIndex--;
+            updateImageDisplay();
+        }
+    });
+}
 
 if("<?= $likeStatus ?>" === "liked")
 {
