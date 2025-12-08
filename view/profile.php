@@ -145,95 +145,110 @@ $activeTab = $_GET['tab'] ?? "posts";
         <a href="profile.php?tab=communities" id="communities">COMMUNITIES</a>
     </nav>
     
-    <div class="content-container">
-        <?php if($activeTab == "communities"): ?>
-            <?php $communities = $community->getCommunity("user_id",$id); ?>
-            <?php if(empty($communities)): ?>
+<div class="content-container">
+    <?php if($activeTab == "communities"): ?>
+        <?php $communities = $community->getCommunity("user_id",$id); ?>
+        <?php if(empty($communities)): ?>
+    <div class="empty-container">
+        <img src="../images/logo-not-found.png" class="logo-not-found">
+        <h2>You dont have any communities yet</h2>
+        <h3>Once you create a community, it'll show up here.</h3>
+    </div>
+        
+        <?php else: ?>
+        <?php foreach($communities as $community): ?>
+            <?php $communityImg = $image->getCommunityImage($community['id']); ?>
+            <div class="community-card">
+    <div class="community-icon">
+        <img src='../images/community/<?=$communityImg['name']?>' alt="">
+    </div>
+    <div class="community-info">
+        <a href="community.php?comm_id=<?=$community['id']?>" class="community-name">
+            <span>r/</span><?= $community['name'] ?></a>
+        <p class="community-desc"><?= $community['description'] ?></p>
+        <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
+    </div>
+    <form action="../decisionMaker.php" method="post">
+        <input type="hidden" name="delete-community" value="<?=$community['id']?>">
+        <button class="delete-container">
+            <img src="../images/icons/set.png">
+        </button>
+    </form>
+    
+</div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if($activeTab == "posts"): ?>
+    <?php $posts = $post->getPost("user_id",$id) ?>
+    <?php if(empty($posts)): ?>
         <div class="empty-container">
             <img src="../images/logo-not-found.png" class="logo-not-found">
-            <h2>You dont have any communities yet</h2>
-            <h3>Once you create a community, it'll show up here.</h3>
+            <h2>You dont have any posts yet</h2>
+            <h3>Once you create a post, it'll show up here.</h3>
         </div>
-            
-            <?php else: ?>
-            <?php foreach($communities as $community): ?>
-                <?php $communityImg = $image->getCommunityImage($community['id']); ?>
-                <div class="community-card">
-        <div class="community-icon">
-            <img src='../images/community/<?=$communityImg['name']?>' alt="">
+    <?php else: ?>
+<?php foreach($posts as $postItem): ?>
+    <?php $commId = $postItem["community_id"]; ?>
+    <?php $postCommunity = $community->getCommunity("id",$commId); ?>
+    <?php $postId = $postItem["id"] ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$id) ?>
+    <?php $likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"]; ?>
+    <?php $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
+    <?php $postImages = []; ?>
+    
+    <?php $communityImg = $image->getCommunityImage($postItem["community_id"]) ?>
+    <div class="post-container">
+    <a href="community.php?comm_id=<?=$commId?>" class="post-user-container">
+        <img src="../images/community/<?=$communityImg["name"]?>">
+        <p><span>u/</span><?= $postCommunity[0]["name"] ?></p>
+        <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+    </a>
+    <div class="post-content-container">
+    <h3><?= $postItem["title"] ?></h3>
+    <?php if(!empty($postItem["text"])): ?>
+        <p><?= $postItem["text"] ?></p> 
+    <?php else: ?>
+    <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
+    <?php $imgCount = count($postImages); ?>
+        <div class="image">
+            <div class="left-arrow" id="leftArrow-<?= $postId ?>">
+                <img src="../images/icons/arrowLeft.png">
+            </div>
+            <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+            <div class="right-arrow" id="rightArrow-<?= $postId ?>">
+                <img src="../images/icons/arrowRight.png">
+            </div>
         </div>
-        <div class="community-info">
-            <a href="community.php?comm_id=<?=$community['id']?>" class="community-name">
-                <span>r/</span><?= $community['name'] ?></a>
-            <p class="community-desc"><?= $community['description'] ?></p>
-            <p class="community-time">Created <?= $time->calculateTime($community['time']); ?></p>
-        </div>
-        <form action="../decisionMaker.php" method="post">
-            <input type="hidden" name="delete-community" value="<?=$community['id']?>">
-            <button class="delete-container">
-                <img src="../images/icons/set.png">
-            </button>
-        </form>
-        
-    </div>
-        <?php endforeach; ?>
-        <?php endif; ?>
     <?php endif; ?>
-    <?php if($activeTab == "posts"): ?>
-        <?php $posts = $post->getPost("user_id",$id) ?>
-        <?php if(empty($posts)): ?>
-            <div class="empty-container">
-                <img src="../images/logo-not-found.png" class="logo-not-found">
-                <h2>You dont have any posts yet</h2>
-                <h3>Once you create a post, it'll show up here.</h3>
-            </div>
-        <?php else: ?>
-    <?php foreach($posts as $postItem): ?>
-        <?php $commId = $postItem["community_id"]; ?>
-        <?php $postCommunity = $community->getCommunity("id",$commId); ?>
-        <?php $postId = $postItem["id"] ?>
-        <?php $postLikes = $like->getLike("post_id",$postId,$id) ?>
-        <?php $likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"]; ?>
-        <?php $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
-        
-        <?php $communityImg = $image->getCommunityImage($postItem["community_id"]) ?>
-        <div class="post-container">
-        <a href="community.php?comm_id=<?=$commId?>" class="post-user-container">
-            <img src="../images/community/<?=$communityImg["name"]?>">
-            <p><span>u/</span><?= $postCommunity[0]["name"] ?></p>
-            <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
-        </a>
-        <div class="post-content-container">
-        <h3><?= $postItem["title"] ?></h3>
-        <p><?= $postItem["text"] ?></p>  
-        </div>
-        <div class="post-button-container">
-        <div class="like-comment-btns">
-            <div class="like-btn" id="like-<?= $postId ?>">
-                <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>">
-                <img src="../images/icons/arrow-up.png">
-                </button>
-                <p class="likes" id="count-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
-                <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>">
-                <img src="../images/icons/arrow-down.png">
-                </button>
-            </div>
-            <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
-                <img src="../images/icons/bubble.png">
-                <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
-            </a>
-        </div>
-        <?php if($postItem["user_id"] == $id): ?>
-        <form action="../decisionMaker.php" method="post">
-            <input type="hidden" name="location" value="profile">
-            <input type="hidden" name="post-delete" value="<?= $postId ?>">
-            <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">
-            <img src="../images/icons/set.png">
+    </div>
+    <div class="post-button-container">
+    <div class="like-comment-btns">
+        <div class="like-btn" id="like-<?= $postId ?>">
+            <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>">
+            <img src="../images/icons/arrow-up.png">
             </button>
-        </form>
-        <?php endif; ?>
+            <p class="likes" id="count-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
+            <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>">
+            <img src="../images/icons/arrow-down.png">
+            </button>
+        </div>
+        <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
+            <img src="../images/icons/bubble.png">
+            <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
+        </a>
     </div>
-    </div>
+    <?php if($postItem["user_id"] == $id): ?>
+    <form action="../decisionMaker.php" method="post">
+        <input type="hidden" name="location" value="profile">
+        <input type="hidden" name="post-delete" value="<?= $postId ?>">
+        <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">
+        <img src="../images/icons/set.png">
+        </button>
+    </form>
+    <?php endif; ?>
+</div>
+</div>
 <script>
 {
 const idPost = <?= $postId ?>;
@@ -242,6 +257,57 @@ const likeContainer = document.getElementById(`like-${idPost}`);
 const upBtn = document.getElementById(`up-${idPost}`);
 const downBtn = document.getElementById(`down-${idPost}`);
 const deletePost = document.getElementById(`delete-post-${idPost}`);
+const imgDisplay = document.getElementById(`imageDisplay-${idPost}`);
+const leftArrow = document.getElementById(`leftArrow-${idPost}`);
+const rightArrow = document.getElementById(`rightArrow-${idPost}`);
+const postImages = <?= json_encode($postImages) ?>;
+const imageCount = postImages.length;
+
+let currentImgIndex = 0;
+
+let updateImageDisplay = () => {
+    imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
+
+    if(currentImgIndex > 0){
+        leftArrow.style.display = "flex";
+    } else{
+        leftArrow.style.display = "none";
+    }
+    if(currentImgIndex < imageCount - 1){
+        rightArrow.style.display = "flex";
+    } else {
+        rightArrow.style.display = "none";
+    }
+    if(imageCount <= 1){
+        rightArrow.style.display = "none";
+        leftArrow.style.display = "none";
+    }
+};
+
+if (imageCount > 0) {
+    updateImageDisplay();
+} else {
+    if (leftArrow) leftArrow.style.display = "none";
+    if (rightArrow) rightArrow.style.display = "none";
+}
+
+if (rightArrow) {
+rightArrow.addEventListener('click', () => {
+    if (currentImgIndex < imageCount - 1) {
+        currentImgIndex++;
+        updateImageDisplay();
+    }
+});
+}
+
+if (leftArrow) {
+    leftArrow.addEventListener('click', () => {
+        if (currentImgIndex > 0) {
+            currentImgIndex--;
+            updateImageDisplay();
+        }
+    });
+}
 
 if(<?= $likeId ?> === <?= $id ?> && "<?= $likeStatus ?>" === "liked")
 {
