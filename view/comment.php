@@ -143,7 +143,6 @@ $imgNum = 0;
 <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId) ?>
     <?php $imgCount = count($postImages); ?>
-    <div class="image-gallery">
     
     <div class="image">
         <div class="left-arrow" id="leftArrow">
@@ -155,7 +154,6 @@ $imgNum = 0;
         </div>
     </div>
 
-    </div>
 <?php endif; ?>
 <div class="post-button-container">
 <div class="like-comment-btns">

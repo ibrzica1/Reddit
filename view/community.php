@@ -115,52 +115,123 @@ $communityPosts = $post->getPost("community_id",$communityId);
         <?php endif; ?>
     </div>
 
-    <div class="content-container">
-    <main class="posts-grid">
-        <?php if(!empty($communityPosts)): ?>
-            <?php foreach($communityPosts as $postItem): ?>
-                <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>
-               <div class="post-container">
-                <div class="post-user-container">
-                    <img src="../images/avatars/<?=$postUser['avatar']?>.webp">
-                    <p><span>u/</span><?= $postUser["username"] ?></p>
-                    <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
-                </div>
-                <div class="post-content-container">
-                  <h3><?= $postItem["title"] ?></h3>
-                  <p><?= $postItem["text"] ?></p>  
-                </div>
-                <div class="post-button-container">
-                  <div class="like-comment-btns">
-                    <div class="like-btn">
-                        <div class="up-btn">
-                           <img src="../images/icons/arrow-up.png">
-                        </div>
-                        <p><?= $like->getLikeCount("post_id",$postItem["id"]) ?></p>
-                        <div class="down-btn">
-                           <img src="../images/icons/arrow-down.png">
-                        </div>
-                    </div>
-                    <div class="comment-btn">
-                        <img src="../images/icons/bubble.png">
-                        <p>0</p>
-                    </div>
-                  </div>
-                  <?php if($postItem["user_id"] == $userId): ?>
-                  <div class="delete-btn">
-                    <img src="../images/icons/set.png">
-                  </div>
-                  <?php endif; ?>
-                </div>
-               </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="no-posts">
-                <img src="../images/logo-not-found.png">
-                <h2>There is no posts in this community yet.</h2>
-            </div>
+<div class="content-container">
+<main class="posts-grid">
+    <?php if(!empty($communityPosts)): ?>
+    <?php foreach($communityPosts as $postItem): ?>
+    <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>
+    <?php $postId = $postItem["id"]; ?>
+    <?php $postImages = []; ?>
+    <div class="post-container">
+    <div class="post-user-container">
+        <img src="../images/avatars/<?=$postUser['avatar']?>.webp">
+        <p><span>u/</span><?= $postUser["username"] ?></p>
+        <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+    </div>
+    <div class="post-content-container">
+        <h3><?= $postItem["title"] ?></h3>
+    <?php if(!empty($postItem["text"])): ?>
+        <p><?= $postItem["text"] ?></p>
+    <?php else: ?>
+    <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
+    <?php $imgCount = count($postImages); ?>
+    <div class="image">
+        <div class="left-arrow" id="leftArrow-<?= $postId ?>">
+            <img src="../images/icons/arrowLeft.png">
+        </div>
+        <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+        <div class="right-arrow" id="rightArrow-<?= $postId ?>">
+            <img src="../images/icons/arrowRight.png">
+        </div>
+    </div>
+    <?php endif; ?>  
+    </div>
+    <div class="post-button-container">
+        <div class="like-comment-btns">
+        <div class="like-btn">
+        <div class="up-btn">
+            <img src="../images/icons/arrow-up.png">
+        </div>
+        <p><?= $like->getLikeCount("post_id",$postItem["id"]) ?></p>
+        <div class="down-btn">
+            <img src="../images/icons/arrow-down.png">
+        </div>
+        </div>
+        <div class="comment-btn">
+            <img src="../images/icons/bubble.png">
+            <p>0</p>
+        </div>
+        </div>
+        <?php if($postItem["user_id"] == $userId): ?>
+        <div class="delete-btn">
+        <img src="../images/icons/set.png">
+        </div>
         <?php endif; ?>
-    </main>
+    </div>
+    </div>
+<script>
+{
+    const postId = <?= $postId ?>;
+    const imgDisplay = document.getElementById(`imageDisplay-${postId}`);
+    const leftArrow = document.getElementById(`leftArrow-${postId}`);
+    const rightArrow = document.getElementById(`rightArrow-${postId}`);
+    const postImages = <?= json_encode($postImages) ?>;
+    const imageCount = postImages.length;
+    let currentImgIndex = 0;
+
+    let updateImageDisplay = () => {
+        imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
+
+        if(currentImgIndex > 0){
+            leftArrow.style.display = "flex";
+        } else{
+            leftArrow.style.display = "none";
+        }
+        if(currentImgIndex < imageCount - 1){
+            rightArrow.style.display = "flex";
+        } else {
+            rightArrow.style.display = "none";
+        }
+        if(imageCount <= 1){
+            rightArrow.style.display = "none";
+            leftArrow.style.display = "none";
+        }
+    };
+
+    if (imageCount > 0) {
+        updateImageDisplay();
+    } else {
+        if (leftArrow) leftArrow.style.display = "none";
+        if (rightArrow) rightArrow.style.display = "none";
+    }
+
+    if (rightArrow) {
+    rightArrow.addEventListener('click', () => {
+        if (currentImgIndex < imageCount - 1) {
+            currentImgIndex++;
+            updateImageDisplay();
+        }
+    });
+    }
+
+    if (leftArrow) {
+        leftArrow.addEventListener('click', () => {
+            if (currentImgIndex > 0) {
+                currentImgIndex--;
+                updateImageDisplay();
+            }
+        });
+    }
+}
+</script>
+    <?php endforeach; ?>
+    <?php else: ?>
+        <div class="no-posts">
+            <img src="../images/logo-not-found.png">
+            <h2>There is no posts in this community yet.</h2>
+        </div>
+    <?php endif; ?>
+</main>
 
     <aside class="community-info">
         <div class="info-box">

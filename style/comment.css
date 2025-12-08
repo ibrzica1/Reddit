@@ -126,10 +126,6 @@
     margin-bottom: 15px;
 }
 
-.image-gallery {
-    display: flex;
-}
-
 .image {
     display: flex;
     align-items: center;
@@ -139,6 +135,7 @@
 .image img {
     width: 100%;
     height: auto;
+    border-radius: 10px;
 }
 
 .left-arrow {
