@@ -9,11 +9,13 @@ use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
+use Reddit\models\Comment;
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
 $post = new Post();
+$comment = new Comment();
 $user = new User();
 $like = new Like();
 
@@ -160,10 +162,10 @@ $communityPosts = $post->getPost("community_id",$communityId);
             <img src="../images/icons/arrow-down.png">
         </div>
         </div>
-        <div class="comment-btn">
+        <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
             <img src="../images/icons/bubble.png">
-            <p>0</p>
-        </div>
+            <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
+        </a>
         </div>
         <?php if($postItem["user_id"] == $userId): ?>
         <div class="delete-btn">
