@@ -6,6 +6,7 @@ use Reddit\models\Post;
 use Reddit\models\Image;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
+use Reddit\controllers\NotificationController;
 
 class PostController extends Post
 {
@@ -13,6 +14,7 @@ class PostController extends Post
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
+        $notificationController = new NotificationController();
 
         $user_id = $session->getFromSession('user_id');
         $time = $timeStamp->time;
@@ -58,7 +60,9 @@ class PostController extends Post
         exit();
         }
 
-        $this->registerTextPost($title,$text,$user_id,$communityId,$time,$likes);
+        $lastId = $this->registerTextPost($title,$text,$user_id,$communityId,$time);
+        $postId = intval($lastId);
+        $notificationController->postNotification($user_id,$postId,$communityId,$time);
 
         header("Location: view/community.php?comm_id=$communityId");
         

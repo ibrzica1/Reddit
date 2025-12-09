@@ -42,6 +42,9 @@ class Post extends Db
         $stmt->bindParam(':time',$time);
 
         $stmt->execute();
+
+        $lastId = $this->connection->lastInsertId();
+        return $lastId;
     }
 
     public function registerImagePost($title, $user_id, $community_id, $time)

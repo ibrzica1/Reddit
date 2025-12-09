@@ -114,6 +114,7 @@ class LikeController extends Like
         {
             $status = "liked";
             $this->addLikePost($postId,$status,$userId);
+            
             $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
