@@ -390,7 +390,7 @@ fetch('../decisionMaker.php', {
             <p class="comment-community-name">r/<?= $commentCommunity[0]["name"] ?></p>
             <p class="post-title"><?= $commentPost[0]["title"] ?></p>
         </div>
-        <div class="user-info">
+        <div class="comment-user-info">
             <h3><?= $commentUser["username"] ?></h3>
             <p>commented <?= $time->calculateTime($commentItem["time"]) ?></p>
         </div>
