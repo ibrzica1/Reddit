@@ -43,8 +43,7 @@ class Post extends Db
 
         $stmt->execute();
 
-        $lastId = $this->connection->lastInsertId();
-        return $lastId;
+       
     }
 
     public function registerImagePost($title, $user_id, $community_id, $time)
@@ -57,6 +56,7 @@ class Post extends Db
         $stmt->bindParam(':time',$time);
 
         $stmt->execute();
+
     }
 
     public function deletePost($postId)

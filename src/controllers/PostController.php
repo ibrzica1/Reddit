@@ -60,8 +60,8 @@ class PostController extends Post
         exit();
         }
 
-        $lastId = $this->registerTextPost($title,$text,$user_id,$communityId,$time);
-        $postId = intval($lastId);
+        $this->registerTextPost($title,$text,$user_id,$communityId,$time);
+        $postId = $this->connection->lastInsertId();
         $notificationController->postNotification($user_id,$postId,$communityId,$time);
 
         header("Location: view/community.php?comm_id=$communityId");
@@ -73,6 +73,7 @@ class PostController extends Post
         $session = new SessionService();
         $image = new Image();
         $timeStamp = new TimeService();
+        $notificationController = new NotificationController();
 
         $userId = $session->getFromSession('user_id');
         $time = $timeStamp->time;
@@ -147,10 +148,8 @@ class PostController extends Post
             }
         }
 
-        $this->registerImagePost($title,$userId,$communityId,$time,$likes);
-
+        $this->registerImagePost($title,$userId,$communityId,$time);
         $postId = $this->connection->lastInsertId();
-        
 
         foreach($files['name'] as $key => $file)
         {
@@ -173,6 +172,7 @@ class PostController extends Post
             $image->uploadImage($uploadedImages['tmp_name'],$randomName,$postId,$userId);
         }
         
+        $notificationController->postNotification($userId,$postId,$communityId,$time);
         header("Location: view/comment.php?post_id=$postId");
         exit();
     }
