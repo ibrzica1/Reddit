@@ -5,6 +5,7 @@ namespace Reddit\controllers;
 use Reddit\models\Comment;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
+use Reddit\controllers\NotificationController;
 
 class CommentController extends Comment
 {
@@ -12,6 +13,7 @@ class CommentController extends Comment
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
+        $notificationController = new NotificationController();
 
         if(!isset($text))
         {
@@ -49,6 +51,8 @@ class CommentController extends Comment
         $time = $timeStamp->time;
 
         $this->registerReply($text,$userId,$postId,$commentId,$time);
+        $commentId = $this->connection->lastInsertId();
+        $notificationController->commentNotification($userId,$commentId,$postId,$time);
 
         header("Location: view/comment.php?post_id=$postId");
     }
@@ -57,6 +61,7 @@ class CommentController extends Comment
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
+        $notificationController = new NotificationController();
 
         if(!isset($text))
         {
@@ -86,6 +91,8 @@ class CommentController extends Comment
         $time = $timeStamp->time;
 
         $this->registerComment($text,$userId,$postId,$time);
+        $commentId = $this->connection->lastInsertId();
+        $notificationController->commentNotification($userId,$commentId,$postId,$time);
 
         header("Location: view/comment.php?post_id=$postId");
 
