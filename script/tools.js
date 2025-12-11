@@ -1,3 +1,11 @@
+document.addEventListener("click", function (event) {
+    const menu = document.getElementById("userMenu");
+    const userInfo = document.getElementById("userInfo");
+
+    if (!menu.contains(event.target) && !userInfo.contains(event.target)) {
+        menu.classList.remove("active");
+    }
+});
 
 export function toggleMenu()
 {

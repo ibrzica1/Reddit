@@ -59,39 +59,39 @@ $activeTab = $_GET['tab'] ?? "posts";
         <input type="text" placeholder="Search Reddit">
     </div>
     
-      <div class="buttons-container">
-            <a href="../view/createPost.php" class="create-post-btn" title="Create Post">
-                <img class='plus-icon' src="../images/icons/plus.png">
-                <p>Create</p>
-            </a>
-            <a class="notifications-container" href="">
-                <img src="../images/icons/bell.png">
-            </a>
-                <div class="user-info" id="userInfo">
-                    <div class="green-dot"></div>
-                    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-                    
-                </div>
-                <div class="menu-container" id="userMenu">
-                        <a class="profile-container" href="profile.php">
-                            <div class="avatar-container">
-                                <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-                            </div>
-                            <div class="info-container">
-                                <h3>View Profile</h3>
-                                <p>u/<?= $session->getFromSession("username") ?></p>
-                            </div>
-                        </a>
-                        <a class="edit-container" href="../view/editAvatar.php">
-                            <img src="../images/icons/shirt.png">
-                            <p>Edit Avatar</p>
-                        </a>
-                        <a class="logout-container" href="../src/controllers/Logout.php">
-                            <img src="../images/icons/house-door.png">
-                            <p>Log Out</p>
-                        </a>
-                    </div>
+    <div class="buttons-container">
+    <a href="../view/createPost.php" class="create-post-btn" title="Create Post">
+        <img class='plus-icon' src="../images/icons/plus.png">
+        <p>Create</p>
+    </a>
+    <div class="notifications-container">
+        <img src="../images/icons/bell.png">
+    </div>
+    <div class="user-info" id="userInfo">
+        <div class="green-dot"></div>
+        <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
+        
+    </div>
+    <div class="menu-container" id="userMenu">
+    <a class="profile-container" href="profile.php">
+        <div class="avatar-container">
+            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
         </div>
+        <div class="info-container">
+            <h3>View Profile</h3>
+            <p>u/<?= $session->getFromSession("username") ?></p>
+        </div>
+    </a>
+    <a class="edit-container" href="../view/editAvatar.php">
+        <img src="../images/icons/shirt.png">
+        <p>Edit Avatar</p>
+    </a>
+    <a class="logout-container" href="../src/controllers/Logout.php">
+        <img src="../images/icons/house-door.png">
+        <p>Log Out</p>
+    </a>
+    </div>
+    </div>
   </div>
 
 <div class="profile-page-container">
