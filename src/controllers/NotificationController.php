@@ -5,9 +5,52 @@ namespace Reddit\controllers;
 use Reddit\models\Notification;
 use Reddit\models\Community;
 use Reddit\models\Post;
+use Reddit\models\Comment;
+use Reddit\services\TimeService;
 
 class NotificationController extends Notification
 {
+    public function likeCommentNotification($senderId,$likeId,$commentId)
+    {
+        $timeStamp = new TimeService();
+        $comment = new Comment();
+
+        $selectedComment = $comment->getComments("id",$commentId);
+        $recieverId = $selectedComment[0]["user_id"];
+        $time = $timeStamp->time;
+
+        if($recieverId == $senderId || empty($recieverId))
+        {
+            return;
+        }
+
+        $type = "like";
+        $seen = "false";
+
+        $this->registerLikeCommentNotification($recieverId,$senderId,$likeId,$commentId,$type,$seen,$time);
+    }
+
+    public function likePostNotification($senderId,$likeId,$postId)
+    {
+        $timeStamp = new TimeService();
+        $post = new Post();
+
+        $selectedPost = $post->getPost("id",$postId);
+        
+        $recieverId = $selectedPost[0]["user_id"];
+        $time = $timeStamp->time;
+
+        if($recieverId == $senderId || empty($recieverId))
+        {
+            return;
+        }
+
+        $type = "like";
+        $seen = "false";
+
+        $this->registerLikePostNotification($recieverId,$senderId,$likeId,$postId,$type,$seen,$time);
+    }
+
     public function commentNotification($senderId,$commentId,$postId,$time)
     {
         $post = new Post();

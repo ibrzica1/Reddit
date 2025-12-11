@@ -8,6 +8,7 @@ use Reddit\controllers\LikeController;
 use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
 use Reddit\controllers\PostController;
+use Reddit\controllers\NotificationController;
 
 $session = new SessionService();
 
@@ -129,15 +130,17 @@ if(isset($_POST['post-like']))
   $userId = $session->getFromSession('user_id');
 
   $likeController = new LikeController();
+  
 
   $data = $likeController->addPostLikeController($userId,$postId);
-
+ 
   header('Content-Type: application/json');
   echo json_encode([
       'status' => 'success',
       'new_count' => $data[0],
       'like_status' => $data[1]
   ]);
+  
   exit();
 }
 
@@ -161,19 +164,21 @@ if(isset($_POST['post-dislike']))
 
 if(isset($_POST['comment-like']))
 {
-  $postId = $_POST['comment-like'];
+  $commId = $_POST['comment-like'];
   $userId = $session->getFromSession('user_id');
 
   $likeController = new LikeController();
+  
 
-  $data = $likeController->addCommentLikeController($userId,$postId);
-
+  $data = $likeController->addCommentLikeController($userId,$commId);
+ 
   header('Content-Type: application/json');
   echo json_encode([
       'status' => 'success',
       'new_count' => $data[0],
       'like_status' => $data[1]
   ]);
+  
   exit();
 }
 

@@ -41,12 +41,15 @@ class LikeController extends Like
 
     public function addCommentLikeController($userId,$commId)
     {
+        $notificationController = new NotificationController();
         $likeItem = $this->getLike("comment_id",$commId,$userId);
 
         if(empty($likeItem))
         {
             $status = "liked";
             $this->addLikeComment($commId,$status,$userId);
+            $likeId = $this->connection->lastInsertId();
+            $notificationController->likeCommentNotification($userId,$likeId,$commId);
             $newCount = $this->getLikeCount("comment_id",$commId);
             $data = [$newCount,$status];
             return $data;
@@ -108,13 +111,15 @@ class LikeController extends Like
     
     public function addPostLikeController($userId,$postId)
     {
+        $notificationController = new NotificationController();
         $likeItem = $this->getLike("post_id",$postId,$userId);
 
         if(empty($likeItem))
         {
             $status = "liked";
             $this->addLikePost($postId,$status,$userId);
-            
+            $likeId = $this->connection->lastInsertId();
+            $notificationController->likePostNotification($userId,$likeId,$postId);
             $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
