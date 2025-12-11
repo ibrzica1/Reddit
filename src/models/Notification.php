@@ -74,4 +74,25 @@ class Notification extends Db
 
         $stmt->execute();
     }
+
+    public function existNotification($recieverId,$type,$attribute,$value)
+    {
+        $stmt = $this->connection->prepare("SELECT 1 FROM notification WHERE 
+        reciever_id = :reciever_id 
+        AND type = :type
+        AND $attribute = :value");
+        $stmt->bindParam(':reciever_id',$recieverId);
+        $stmt->bindParam(':type',$type);
+        $stmt->bindParam(':value',$value);
+        $stmt->execute();
+        $stmt->fetch();
+        $number = $stmt->rowCount();
+        
+        if($number > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

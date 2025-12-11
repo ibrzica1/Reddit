@@ -19,6 +19,11 @@ class NotificationController extends Notification
         $recieverId = $selectedComment[0]["user_id"];
         $time = $timeStamp->time;
 
+        if($this->existNotification($recieverId,"like","comment_id",$commentId))
+        {
+            return;
+        }
+
         if($recieverId == $senderId || empty($recieverId))
         {
             return;
@@ -39,6 +44,11 @@ class NotificationController extends Notification
         
         $recieverId = $selectedPost[0]["user_id"];
         $time = $timeStamp->time;
+
+        if($this->existNotification($recieverId,"like","post_id",$postId))
+        {
+            return;
+        }
 
         if($recieverId == $senderId || empty($recieverId))
         {
