@@ -10,6 +10,7 @@ use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
+use Reddit\models\Notification;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -19,6 +20,7 @@ $image = new Image();
 $post = new Post();
 $like = new Like();
 $comment = new Comment();
+$notification = new Notification();
 
 if(!$session->sessionExists("username"))
 {
@@ -66,6 +68,66 @@ $activeTab = $_GET['tab'] ?? "posts";
     </a>
     <div class="notifications-container">
         <img src="../images/icons/bell.png">
+    </div>
+    <div class="notification-grid">
+        <?php $notifications = $notification->getUserNotifications($id) ?>
+        <?php if(empty($notification)): ?>
+        <p class="empty-notification">There is no new notifications</p>
+        <?php else: ?>
+        <?php foreach($notifications as $notificationItem): ?>
+        <?php $senderInfo = $user->getUserByAttribute("id",$notificationItem["sender_id"]); ?>
+        <?php if($notificationItem["seen"] == "false"): ?>
+        <?php if($notificationItem["type"] == "like"): ?>
+        <?php if(!empty($notificationItem["post_id"])): ?>
+        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
+        <div class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<?= $senderInfo["username"] ?> liked your post 
+            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+        </div>
+        </div>
+        <?php else: ?>
+        <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
+        <div class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<?= $senderInfo["username"] ?> liked your comment
+            r/<span><?= $notificationComment[0]["text"] ?></span></p>
+        </div>
+        </div>
+        <?php endif; ?>
+        <?php elseif($notificationItem["type"] == "comment"): ?>
+        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
+        <div class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<?= $senderInfo["username"] ?> commented on your post
+            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+        </div>
+        </div>
+        <?php elseif($notificationItem["type"] == "post"): ?>
+        <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
+        <div class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<?= $senderInfo["username"] ?> posted in your community
+            r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+        </div>
+        </div>
+        <?php else: ?>
+        <?php endif; ?>
+        <?php endif; ?>
+        <?php endforeach; ?>
+        <?php endif; ?>
     </div>
     <div class="user-info" id="userInfo">
         <div class="green-dot"></div>

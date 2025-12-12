@@ -259,6 +259,44 @@ body {
     cursor: pointer;
 }
 
+.notification-grid{
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    width: 180px;
+    left: 0;
+    right: 20px;
+    top: 56px;
+    background-color: white;
+    padding: 14px 10px;
+    border-radius: 10px;
+    box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.2);
+}
+
+.single-notification{
+    display: flex;
+}
+
+.sender-avatar{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sender-avatar img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.notification-body{
+    margin-left: 6px;
+}
+
+.notification-body p {
+    font-size: 11px;
+}
+
 @media (max-width: 800px) {
     .username-text, .create-post-btn p {
         display: none;

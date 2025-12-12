@@ -15,6 +15,15 @@ class Notification extends Db
     public $seen;
     public $time;
 
+    public function getUserNotifications($recieverId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM notification WHERE reciever_id = :reciever_id");
+        $stmt->bindParam(':reciever_id',$recieverId);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function registerLikeCommentNotification($recieverId,$senderId,$likeId,$commentId,$type,$seen,$time)
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, like_id, comment_id, type, seen, time)
