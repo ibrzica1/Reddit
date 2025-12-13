@@ -1,11 +1,23 @@
 document.addEventListener("click", function (event) {
     const menu = document.getElementById("userMenu");
     const userInfo = document.getElementById("userInfo");
+    const notificationDisplay = document.querySelector(".notification-grid");
+    const bellIcon = document.querySelector('.notifications-container');
 
+    if(!notificationDisplay.contains(event.target) && !bellIcon.contains(event.target)){
+        notificationDisplay.classList.remove("active");
+    }
+    
     if (!menu.contains(event.target) && !userInfo.contains(event.target)) {
         menu.classList.remove("active");
     }
 });
+
+export function toggleNotification()
+{
+    const notificationDisplay = document.querySelector(".notification-grid");
+    notificationDisplay.classList.toggle("active");
+}
 
 export function toggleMenu()
 {

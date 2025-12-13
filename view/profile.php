@@ -69,7 +69,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     <div class="notifications-container">
         <img src="../images/icons/bell.png">
     </div>
-    <div class="notification-grid">
+    <div class="notification-grid" id="notificatioGrid">
         <?php $notifications = $notification->getUserNotifications($id) ?>
         <?php if(empty($notification)): ?>
         <p class="empty-notification">There is no new notifications</p>
@@ -558,12 +558,13 @@ fetch('../decisionMaker.php', {
 </div>
 
 <script type="module">
-    import { toggleMenu, changeBanner} from "../script/tools.js?v=<?php echo time(); ?>";
+    import { toggleMenu, changeBanner, toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
     const menu = document.getElementById("userInfo");
     const postBtn = document.getElementById("posts");
     const communityBtn = document.getElementById("communities");
     const commentsBtn = document.getElementById("comments");
     const deleteBtn = document.querySelectorAll('.delete-container');
+    const bellIcon = document.querySelector('.notifications-container');
     
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
@@ -574,6 +575,7 @@ fetch('../decisionMaker.php', {
         });
     });
 
+    bellIcon.addEventListener('click',toggleNotification);
     menu.addEventListener('click',toggleMenu);
 
     "<?=$activeTab?>" == "posts" && postBtn.classList.add("active");
