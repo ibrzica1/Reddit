@@ -80,18 +80,18 @@ $activeTab = $_GET['tab'] ?? "posts";
         <?php if($notificationItem["type"] == "like"): ?>
         <?php if(!empty($notificationItem["post_id"])): ?>
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
-        <div class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>"  class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<?= $senderInfo["username"] ?> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
-        </div>
-        </div>
+        </div>  
+        </a>
         <?php else: ?>
         <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
-        <div class="single-notification">
+        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -99,11 +99,11 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p>u/<?= $senderInfo["username"] ?> liked your comment
             r/<span><?= $notificationComment[0]["text"] ?></span></p>
         </div>
-        </div>
+        </a>
         <?php endif; ?>
         <?php elseif($notificationItem["type"] == "comment"): ?>
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
-        <div class="single-notification">
+        <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -111,10 +111,10 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p>u/<?= $senderInfo["username"] ?> commented on your post
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>
-        </div>
+        </a>
         <?php elseif($notificationItem["type"] == "post"): ?>
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-        <div class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -122,7 +122,7 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p>u/<?= $senderInfo["username"] ?> posted in your community
             r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
         </div>
-        </div>
+        </a>
         <?php else: ?>
         <?php endif; ?>
         <?php endif; ?>

@@ -263,12 +263,13 @@ body {
     display: none;
     position: absolute;
     flex-direction: column;
-    width: 180px;
+    width: 204px;
     left: 0;
     right: 20px;
     top: 56px;
     background-color: white;
-    padding: 14px 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border-radius: 10px;
     box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.2);
 }
@@ -279,6 +280,15 @@ body {
 
 .single-notification{
     display: flex;
+    text-decoration: none;
+    color: black;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.single-notification:hover {
+    background-color: rgb(225, 221, 221);
+    cursor: pointer;
 }
 
 .sender-avatar{
