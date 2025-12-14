@@ -85,7 +85,7 @@ $activeTab = $_GET['tab'] ?? "posts";
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<?= $senderInfo["username"] ?> liked your post 
+            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>  
         </a>
@@ -96,7 +96,7 @@ $activeTab = $_GET['tab'] ?? "posts";
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<?= $senderInfo["username"] ?> liked your comment
+            <p>u/<span><?= $senderInfo["username"] ?></span> liked your comment
             r/<span><?= $notificationComment[0]["text"] ?></span></p>
         </div>
         </a>
@@ -108,7 +108,7 @@ $activeTab = $_GET['tab'] ?? "posts";
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<?= $senderInfo["username"] ?> commented on your post
+            <p>u/<span><?= $senderInfo["username"] ?></span> commented on your post
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>
         </a>
@@ -119,7 +119,7 @@ $activeTab = $_GET['tab'] ?? "posts";
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<?= $senderInfo["username"] ?> posted in your community
+            <p>u/<span><?= $senderInfo["username"] ?></span> posted in your community
             r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
         </div>
         </a>
