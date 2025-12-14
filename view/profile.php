@@ -37,7 +37,9 @@ $accountAge = $time->calculateTime($timeCreated[0]);
 $bio = $user->getUserAtribute('bio',$id);
 $karma = $userKarma[0];
 $activeTab = $_GET['tab'] ?? "posts";
-$notifications = $notification->getUserNotifications($id);
+$notifications = $notification->unreadNotifications($id);
+$nottNumber = count($notifications);
+
 
 ?>
 <!DOCTYPE html>
@@ -69,7 +71,7 @@ $notifications = $notification->getUserNotifications($id);
     </a>
     <div class="notifications-container">
         <img src="../images/icons/bell.png">
-        <div class="notification-number"><?= $notification->unreadNotifications($id) ?></div>
+        <div class="notification-number"><?= $nottNumber ?></div>
     </div>
     <div class="notification-grid" id="notificatioGrid">
         
@@ -82,7 +84,8 @@ $notifications = $notification->getUserNotifications($id);
         <?php if($notificationItem["type"] == "like"): ?>
         <?php if(!empty($notificationItem["post_id"])): ?>
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
-        <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>"  class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
+        onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -93,7 +96,7 @@ $notifications = $notification->getUserNotifications($id);
         </a>
         <?php else: ?>
         <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
-        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>" class="single-notification">
+        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -105,7 +108,7 @@ $notifications = $notification->getUserNotifications($id);
         <?php endif; ?>
         <?php elseif($notificationItem["type"] == "comment"): ?>
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
-        <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>" class="single-notification">
+        <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -116,7 +119,7 @@ $notifications = $notification->getUserNotifications($id);
         </a>
         <?php elseif($notificationItem["type"] == "post"): ?>
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>" class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
         </div>
@@ -567,6 +570,7 @@ fetch('../decisionMaker.php', {
     const commentsBtn = document.getElementById("comments");
     const deleteBtn = document.querySelectorAll('.delete-container');
     const bellIcon = document.querySelector('.notifications-container');
+    const notificationNum = document.querySelector('.notification-number');
     
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{

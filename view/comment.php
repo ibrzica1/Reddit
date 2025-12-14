@@ -10,6 +10,7 @@ use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
+use Reddit\models\Notification;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -19,6 +20,7 @@ $post = new Post();
 $user = new User();
 $like = new Like();
 $comment = new Comment();
+$notification = new Notification();
 
 if(!$session->sessionExists("username"))
 {
@@ -26,6 +28,11 @@ if(!$session->sessionExists("username"))
 }
 
 $getPost = $_GET['post_id'];
+if(!empty($_GET['nott_id']))
+{
+    $notificationId = $_GET['nott_id'];
+    if(!empty($notificationId)) $notification->changeSeenStatus($notificationId,"true");
+}
 $postId = intval($getPost);
 $selectedPost = $post->getPost("id",$postId);
 $postCommunityId = $selectedPost[0]["community_id"];
@@ -39,6 +46,8 @@ $postLikes = $like->getLike("post_id",$postId,$userId);
 $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"];
 $comments = $comment->getComments("post_id",$postId);
 $imgNum = 0;
+$notifications = $notification->unreadNotifications($userId);
+$nottNumber = count($notifications);
 
 ?>
 
@@ -70,9 +79,71 @@ $imgNum = 0;
             <img class='plus-icon' src="../images/icons/plus.png">
             <p>Create</p>
         </a>
-        <a class="notifications-container" href="">
+        <div class="notifications-container">
             <img src="../images/icons/bell.png">
+            <div class="notification-number"><?= $nottNumber ?></div>
+        </div>
+    <div class="notification-grid" id="notificatioGrid">
+        
+        <?php if(empty($notifications)): ?>
+        <p class="empty-notification">There is no new notifications</p>
+        <?php else: ?>
+        <?php foreach($notifications as $notificationItem): ?>
+        <?php $senderInfo = $user->getUserByAttribute("id",$notificationItem["sender_id"]); ?>
+        <?php if($notificationItem["seen"] == "false"): ?>
+        <?php if($notificationItem["type"] == "like"): ?>
+        <?php if(!empty($notificationItem["post_id"])): ?>
+        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
+        <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
+        onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
+            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+        </div>  
         </a>
+        <?php else: ?>
+        <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
+        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<span><?= $senderInfo["username"] ?></span> liked your comment
+            r/<span><?= $notificationComment[0]["text"] ?></span></p>
+        </div>
+        </a>
+        <?php endif; ?>
+        <?php elseif($notificationItem["type"] == "comment"): ?>
+        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
+        <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<span><?= $senderInfo["username"] ?></span> commented on your post
+            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+        </div>
+        </a>
+        <?php elseif($notificationItem["type"] == "post"): ?>
+        <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
+        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <div class="sender-avatar">
+           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+        </div>
+        <div class="notification-body">
+            <p>u/<span><?= $senderInfo["username"] ?></span> posted in your community
+            r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+        </div>
+        </a>
+        <?php else: ?>
+        <?php endif; ?>
+        <?php endif; ?>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
             <div class="user-info" id="userInfo">
             <div class="green-dot"></div>
             <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
@@ -409,9 +480,11 @@ replyCancel.addEventListener('click', () => {
 </div>
 
 <script type="module">
-import { toggleMenu} from "../script/tools.js?v=<?php echo time(); ?>";
+import { toggleMenu, toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
 
 const menu = document.getElementById("userInfo");
+const bellIcon = document.querySelector('.notifications-container');
+const notificationNum = document.querySelector('.notification-number');
 const idPost = <?= $postId ?>;
 const likeCount = document.getElementById(`count-${idPost}`);
 const likeContainer = document.getElementById(`like-${idPost}`);
@@ -421,9 +494,13 @@ const deletePost = document.getElementById(`delete-post-${idPost}`);
 const imgDisplay = document.getElementById(`imageDisplay`);
 const leftArrow = document.getElementById(`leftArrow`);
 const rightArrow = document.getElementById(`rightArrow`);
-const postImages = <?= json_encode($postImages) ?>;
+const postImages = <?= isset($postImages) ? json_encode($postImages) : '[]' ?>;
 const imageCount = postImages.length;
 let currentImgIndex = 0;
+console.log(likeCount);
+
+menu.addEventListener('click',toggleMenu);
+bellIcon.addEventListener('click',toggleNotification);
 
 const updateImageDisplay = () => {
     imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
@@ -517,7 +594,6 @@ const handleLike = (liketype)=>{
 
 upBtn.addEventListener('click', () => handleLike('like'));
 downBtn.addEventListener('click', () => handleLike('dislike'));
-menu.addEventListener('click',toggleMenu);
 
 
 

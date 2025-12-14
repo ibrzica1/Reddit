@@ -278,6 +278,7 @@ body {
 
 .notification-grid{
     display: none;
+    align-items: center;
     position: absolute;
     flex-direction: column;
     width: 204px;
@@ -293,6 +294,13 @@ body {
 
 .notification-grid.active{
     display: flex;
+}
+
+.empty-notification {
+    margin: 0;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .single-notification{

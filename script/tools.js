@@ -15,8 +15,10 @@ document.addEventListener("click", function (event) {
 
 export function toggleNotification()
 {
+    const notificationNum = document.querySelector('.notification-number');
     const notificationDisplay = document.querySelector(".notification-grid");
     notificationDisplay.classList.toggle("active");
+    notificationNum.style.display = "none";
 }
 
 export function toggleMenu()

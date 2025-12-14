@@ -86,14 +86,30 @@ class Notification extends Db
 
     public function unreadNotifications($recieverId)
     {
-        $stmt = $this->connection->prepare("SELECT 1 FROM notification WHERE 
+        $stmt = $this->connection->prepare("SELECT * FROM notification WHERE 
         reciever_id = :reciever_id 
-        AND seen = false");
+        AND seen = 'false'");
         $stmt->bindParam(':reciever_id',$recieverId);
         $stmt->execute();
-        $stmt->fetch();
-        $number = $stmt->rowCount();
-        return $number;
+
+        return $stmt->fetchAll();
+    }
+
+    public function changeSeenStatus($notificationId,$seen)
+    {
+        $acceptedTypes = ["true","false"];
+
+        if(!in_array($seen,$acceptedTypes))
+        {
+            return;
+        }
+
+        $stmt = $this->connection->prepare("UPDATE notification
+        SET seen = :seen 
+        WHERE id = :id");
+        $stmt->bindParam(':seen',$seen);
+        $stmt->bindParam(':id',$notificationId);
+        $stmt->execute();
     }
 
     public function existNotification($recieverId,$type,$attribute,$value)
