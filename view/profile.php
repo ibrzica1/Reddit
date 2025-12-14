@@ -37,6 +37,7 @@ $accountAge = $time->calculateTime($timeCreated[0]);
 $bio = $user->getUserAtribute('bio',$id);
 $karma = $userKarma[0];
 $activeTab = $_GET['tab'] ?? "posts";
+$notifications = $notification->getUserNotifications($id);
 
 ?>
 <!DOCTYPE html>
@@ -68,10 +69,11 @@ $activeTab = $_GET['tab'] ?? "posts";
     </a>
     <div class="notifications-container">
         <img src="../images/icons/bell.png">
+        <div class="notification-number"><?= $notification->unreadNotifications($id) ?></div>
     </div>
     <div class="notification-grid" id="notificatioGrid">
-        <?php $notifications = $notification->getUserNotifications($id) ?>
-        <?php if(empty($notification)): ?>
+        
+        <?php if(empty($notifications)): ?>
         <p class="empty-notification">There is no new notifications</p>
         <?php else: ?>
         <?php foreach($notifications as $notificationItem): ?>

@@ -84,6 +84,18 @@ class Notification extends Db
         $stmt->execute();
     }
 
+    public function unreadNotifications($recieverId)
+    {
+        $stmt = $this->connection->prepare("SELECT 1 FROM notification WHERE 
+        reciever_id = :reciever_id 
+        AND seen = false");
+        $stmt->bindParam(':reciever_id',$recieverId);
+        $stmt->execute();
+        $stmt->fetch();
+        $number = $stmt->rowCount();
+        return $number;
+    }
+
     public function existNotification($recieverId,$type,$attribute,$value)
     {
         $stmt = $this->connection->prepare("SELECT 1 FROM notification WHERE 

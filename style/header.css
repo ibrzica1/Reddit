@@ -154,6 +154,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     height: 40px;
     width: 40px;
     border-radius: 20px;
@@ -166,6 +167,22 @@ body {
 .notifications-container img{
     width: 20px;
     height: 20px;
+}
+
+.notification-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #E44917;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .user-info {
