@@ -133,6 +133,7 @@ $nottNumber = count($notifications);
         <?php endif; ?>
         <?php endforeach; ?>
         <?php endif; ?>
+        <a href="notification.php" class="see-all-nott">see all notifications</a>
     </div>
     <div class="user-info" id="userInfo">
         <div class="green-dot"></div>

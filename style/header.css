@@ -303,6 +303,12 @@ body {
     margin-bottom: 10px;
 }
 
+.see-all-nott {
+    font-size: 14px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
 .single-notification{
     display: flex;
     text-decoration: none;

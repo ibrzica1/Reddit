@@ -144,9 +144,9 @@ $nottNumber = count($notifications);
         <?php endforeach; ?>
         <?php endif; ?>
     </div>
-            <div class="user-info" id="userInfo">
-            <div class="green-dot"></div>
-            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
+    <div class="user-info" id="userInfo">
+    <div class="green-dot"></div>
+    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
                     
     </div>
     <div class="menu-container" id="userMenu">
