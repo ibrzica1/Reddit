@@ -149,12 +149,14 @@ $allNotifications = $notification->getUserNotifications($userId);
 <h2 class="nott-title">Notifications</h2>
 
 <div class="options-container">
-    <div class="mark-all">
-        <p>Mark all as read</p>
-    </div>
-    <div class="delete-all">
-        <p>Delete all notifications</p>
-    </div>
+    <form action="../decisionMaker.php" method="post">
+        <input type="hidden" name="mark-all-nott" value="<?= $userId ?>">
+        <button type="submit" class="mark-all">Mark all as read</button>
+    </form>
+    <form action="../decisionMaker.php" method="post">
+        <input type="hidden" name="delete-all-nott" value="<?= $userId ?>">
+        <button type="submit" class="delete-all">Delete all notifications</button>
+    </form>
 </div>
 
 

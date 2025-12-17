@@ -97,4 +97,13 @@ class NotificationController extends Notification
 
         $this->registerPostNotification($recieverId,$senderId,$postId,$communityId,$type,$seen,$time);
     }
+
+    public function markAllNottSeen($userId)
+    {
+        $seen = "true";
+        $this->markAllSeen($userId,$seen);
+
+        header("Location: view/notification.php");
+        exit();
+    }
 }

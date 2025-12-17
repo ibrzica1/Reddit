@@ -22,6 +22,8 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
+    font-size: 14px;
+    font-weight: 400;
     padding-left: 16px;
     padding-right: 16px;
     height: 30px;
@@ -29,18 +31,13 @@
     margin-left: 10px;
     margin-right: 10px;
     border-radius: 20px;
+    border: none;
 }
 
 .mark-all:hover,
 .delete-all:hover {
     background-color: rgb(227, 227, 227);
     cursor: pointer;
-}
-
-.mark-all p,
-.delete-all p{
-    font-size: 14px;
-    font-weight: 400;
 }
 
 .nott-grid{

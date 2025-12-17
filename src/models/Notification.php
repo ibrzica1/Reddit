@@ -98,6 +98,16 @@ class Notification extends Db
         return $stmt->fetchAll();
     }
 
+    public function markAllSeen($recieverId,$seen)
+    {
+        $stmt = $this->connection->prepare("UPDATE notification
+        SET seen = :seen 
+        WHERE reciever_id = :reciever_id");
+        $stmt->bindParam(':seen',$seen);
+        $stmt->bindParam(':reciever_id',$recieverId);
+        $stmt->execute();
+    }
+
     public function changeSeenStatus($notificationId,$seen)
     {
         $acceptedTypes = ["true","false"];

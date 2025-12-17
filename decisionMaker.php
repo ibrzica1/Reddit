@@ -230,3 +230,11 @@ if(isset($_POST['reply-text']) &&
   $commentController = new CommentController();
   $commentController->createReply($replyText,$commentId,$postId);
 }
+
+if(isset($_POST['mark-all-nott']))
+{
+  $userId = $_POST['mark-all-nott'];
+
+  $notificationController = new NotificationController();
+  $notificationController->markAllNottSeen($userId);
+}
