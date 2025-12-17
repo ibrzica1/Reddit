@@ -17,7 +17,9 @@ class Notification extends Db
 
     public function getUserNotifications($recieverId)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM notification WHERE reciever_id = :reciever_id");
+        $stmt = $this->connection->prepare("SELECT * FROM notification 
+        WHERE reciever_id = :reciever_id 
+        ORDER BY time DESC");
         $stmt->bindParam(':reciever_id',$recieverId);
         $stmt->execute();
 
@@ -88,7 +90,8 @@ class Notification extends Db
     {
         $stmt = $this->connection->prepare("SELECT * FROM notification WHERE 
         reciever_id = :reciever_id 
-        AND seen = 'false'");
+        AND seen = 'false'
+        ORDER BY time DESC");
         $stmt->bindParam(':reciever_id',$recieverId);
         $stmt->execute();
 
