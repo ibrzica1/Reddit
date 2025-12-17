@@ -145,4 +145,12 @@ class Notification extends Db
             return false;
         }
     }
+
+    public function deleteUsersNotifications($recieverId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM notification WHERE reciever_id = :reciever_id");
+        $stmt->bindParam(':reciever_id',$recieverId);
+
+        $stmt->execute();
+    }
 }

@@ -238,3 +238,11 @@ if(isset($_POST['mark-all-nott']))
   $notificationController = new NotificationController();
   $notificationController->markAllNottSeen($userId);
 }
+
+if(isset($_POST['delete-all-nott']))
+{
+  $userId = $_POST['delete-all-nott'];
+
+  $notificationController = new NotificationController();
+  $notificationController->deleteUserNott($userId);
+}

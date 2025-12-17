@@ -106,4 +106,12 @@ class NotificationController extends Notification
         header("Location: view/notification.php");
         exit();
     }
+
+    public function deleteUserNott($userId)
+    {
+        $this->deleteUsersNotifications($userId);
+
+        header("Location: view/notification.php");
+        exit();
+    }
 }

@@ -194,7 +194,7 @@ $nottNumber = count($notifications);
         </div>
     </div>
     <?php if($selectedPost[0]["user_id"] == $userId): ?>
-        <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Jeste li sigurni da želite obrisati ovaj post?');">
+        <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Are you sure you want to delete this post?')">
             <input type="hidden" name="location" value="profile">
             <input type="hidden" name="post-delete" value="<?= $postId ?>">
             <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">

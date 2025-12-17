@@ -153,7 +153,7 @@ $allNotifications = $notification->getUserNotifications($userId);
         <input type="hidden" name="mark-all-nott" value="<?= $userId ?>">
         <button type="submit" class="mark-all">Mark all as read</button>
     </form>
-    <form action="../decisionMaker.php" method="post">
+    <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Are you sure you want to delete all notifications?')">
         <input type="hidden" name="delete-all-nott" value="<?= $userId ?>">
         <button type="submit" class="delete-all">Delete all notifications</button>
     </form>
