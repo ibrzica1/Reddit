@@ -168,7 +168,7 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php if(!empty($singleNott["post_id"])): ?>
     <?php $notificationPos = $post->getPost("id",$singleNott["post_id"]) ?>
     <a href="community.php?comm_id=<?= $notificationPos[0]["community_id"] ?>&nott_id=<?= $singleNott["id"] ?>" 
-    onclick="<?php $notification->changeSeenStatus($singleNott["id"],"true") ?>" class="single-nott">
+    onclick="<?php $notification->changeSeenStatus($singleNott["id"],"true") ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf["avatar"] ?>.webp">
     </div>
@@ -180,7 +180,7 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php else: ?>
     <?php $notificationCommen = $comment->getComments("id",$singleNott["comment_id"]) ?>
-    <a href="comment.php?post_id=<?= $notificationCommen[0]["post_id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott">
+    <a href="comment.php?post_id=<?= $notificationCommen[0]["post_id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf["avatar"] ?>.webp">
     </div>
@@ -193,7 +193,7 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php endif; ?>
     <?php elseif($singleNott["type"] == "comment"): ?>
     <?php $notificationPos = $post->getPost("id",$singleNott["post_id"]); ?>
-    <a href="comment.php?post_id=<?= $notificationPos[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott">
+    <a href="comment.php?post_id=<?= $notificationPos[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf["avatar"] ?>.webp">
     </div>
@@ -205,7 +205,7 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php elseif($singleNott["type"] == "post"): ?>
     <?php $notificationCommunit = $community->getCommunity("id",$singleNott["community_id"]); ?>
-    <a href="community.php?comm_id=<?= $notificationCommunit[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott">
+    <a href="community.php?comm_id=<?= $notificationCommunit[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf["avatar"] ?>.webp">
     </div>
@@ -217,6 +217,16 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php else: ?>
     <?php endif; ?>
+<script>
+    {
+        const nottId = <?= $singleNott["id"] ?>;
+        const notification = document.getElementById(`singleNot-${nottId}`);
+
+        if("<?= $singleNott['seen'] ?>" === "false"){
+            notification.style.backgroundColor = "rgba(235, 235, 235, 1)";
+        }
+    }
+</script>
     <?php endforeach; ?>
     <?php endif; ?>
 </div>
