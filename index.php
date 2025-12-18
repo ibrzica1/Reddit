@@ -3,11 +3,14 @@
 require_once "vendor/autoload.php";
 
 use Reddit\services\SessionService;
+use Reddit\services\TimeService;
 use Reddit\models\User;
 use Reddit\models\Notification;
 use Reddit\models\Post;
 use Reddit\models\Comment;
 use Reddit\models\Community;
+use Reddit\models\Image;
+use Reddit\models\Like;
 
 $user = new User();
 $community = new Community();
@@ -15,10 +18,15 @@ $post = new Post();
 $comment = new Comment();
 $notification = new Notification();
 $session = new SessionService();
+$time = new TimeService();
+$image = new Image();
+$like = new Like();
 
 $id = $session->getFromSession('user_id');
 $notifications = $notification->unreadNotifications($id);
 $nottNumber = count($notifications);
+$posts = $post->gettAllPosts();
+
 
 ?>
 <!DOCTYPE html>
@@ -30,6 +38,7 @@ $nottNumber = count($notifications);
   <title>Index</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style/header.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="style/index.css?v=<?php echo time(); ?>">
   
 </head>
 
@@ -152,6 +161,66 @@ $nottNumber = count($notifications);
     </div>
     <?php endif; ?>
   </div>
+
+  <main class="posts-grid">
+    <?php if(!empty($posts)): ?>
+    <?php foreach($posts as $postItem): ?>
+    <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>   
+    <?php $postId = $postItem["id"]; ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$postItem["user_id"]); ?>
+    <?php $postLikeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
+    <?php $postImages = []; ?>
+    <div class="post-container">
+    <div class="post-user-container">
+        <img src="images/avatars/<?=$postUser['avatar']?>.webp">
+        <p><span>u/</span><?= $postUser["username"] ?></p>
+        <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+    </div>
+    <div class="post-content-container">
+        <h3><?= $postItem["title"] ?></h3>
+    <?php if(!empty($postItem["text"])): ?>
+        <p><?= $postItem["text"] ?></p>
+    <?php else: ?>
+    <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
+    <?php $imgCount = count($postImages); ?>
+    <div class="image">
+        <div class="left-arrow" id="leftArrow-<?= $postId ?>">
+            <img src="images/icons/arrowLeft.png">
+        </div>
+        <img src="images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+        <div class="right-arrow" id="rightArrow-<?= $postId ?>">
+            <img src="images/icons/arrowRight.png">
+        </div>
+    </div>
+    <?php endif; ?>  
+    </div>
+    <div class="post-button-container">
+        <div class="like-comment-btns">
+        <div class="like-btn" id="like-<?= $postId ?>">
+        <div class="up-btn" id="up-<?= $postId ?>">
+            <img src="images/icons/arrow-up.png">
+        </div>
+        <p id="count-<?= $postId ?>">
+            <?= $like->getLikeCount("post_id",$postId) ?></p>
+        <div class="down-btn" id="down-<?= $postId ?>">
+            <img src="images/icons/arrow-down.png">
+        </div>
+        </div>
+        <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
+            <img src="images/icons/bubble.png">
+            <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
+        </a>
+        </div>
+        <?php if($postItem["user_id"] == $id): ?>
+        <div class="delete-btn">
+        <img src="images/icons/set.png">
+        </div>
+        <?php endif; ?>
+    </div>
+    </div>
+    <?php endforeach; ?>
+    <?php endif; ?>    
+  </main>
     
   <script type="module">
     import { toggleMenu, toggleNotification } from "./script/tools.js";

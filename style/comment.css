@@ -128,14 +128,18 @@
 
 .image {
     display: flex;
+    justify-content: center;
     align-items: center;
-    position: relative;
+    max-width: 100%;
+    max-height: 500px; 
 }
 
 .image img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
     height: auto;
-    border-radius: 10px;
+    object-fit: contain;
 }
 
 .left-arrow {

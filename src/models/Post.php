@@ -12,6 +12,14 @@ class Post extends Db
     public $community_id;
     public $time;
 
+    public function gettAllPosts()
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM post ORDER BY time DESC");
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getPost(string $attribute, mixed $value): array
     {
         $stmt = $this->connection->prepare("SELECT * FROM post WHERE $attribute = :value");
