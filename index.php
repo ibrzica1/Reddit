@@ -25,7 +25,11 @@ $like = new Like();
 $id = $session->getFromSession('user_id');
 $notifications = $notification->unreadNotifications($id);
 $nottNumber = count($notifications);
-$posts = $post->gettAllPosts();
+$postCount = $post->countPosts();
+$limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+if($limit < 0) $limit = 5;
+if($limit > 50) $limit = 50;
+$posts = $post->getAllPosts($limit);
 
 
 ?>
@@ -206,7 +210,7 @@ $posts = $post->gettAllPosts();
             <img src="images/icons/arrow-down.png">
         </div>
         </div>
-        <a href="comment.php?post_id=<?= $postId ?>" class="comment-btn">
+        <a href="view/comment.php?post_id=<?= $postId ?>" class="comment-btn">
             <img src="images/icons/bubble.png">
             <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
         </a>
@@ -218,6 +222,113 @@ $posts = $post->gettAllPosts();
         <?php endif; ?>
     </div>
     </div>
+<script>
+{
+    const postId = <?= $postId ?>;
+    const imgDisplay = document.getElementById(`imageDisplay-${postId}`);
+    const leftArrow = document.getElementById(`leftArrow-${postId}`);
+    const rightArrow = document.getElementById(`rightArrow-${postId}`);
+    const postImages = <?= json_encode($postImages) ?>;
+    const imageCount = postImages.length;
+    const likeCount = document.getElementById(`count-${postId}`);
+    const likeContainer = document.getElementById(`like-${postId}`);
+    const upBtn = document.getElementById(`up-${postId}`);
+    const downBtn = document.getElementById(`down-${postId}`);
+
+    if("<?= $postLikeStatus ?>" === "liked")
+    {
+        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+    }
+    if("<?= $postLikeStatus ?>" === "disliked")
+    {
+        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+    }
+
+    const handleLike = (liketype)=>{
+                    
+    fetch('decisionMaker.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `post-${liketype}=${postId}` 
+    })
+    .then(response => response.json())
+    .then(data => {
+    if(data.status === "success") {
+        let count = data.new_count < 0 ? 0 : data.new_count;
+        likeCount.textContent = count;
+        const status = data.like_status; 
+
+    if (status === "liked") {
+        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
+        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
+        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
+    } else if (status === "disliked") {
+        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
+        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
+    } else { 
+        likeContainer.style.backgroundColor = "#dee8fe";
+        upBtn.style.backgroundColor = "#dee8fe";
+        downBtn.style.backgroundColor = "#dee8fe";
+    }
+    }})
+    .catch(error => console.error('Network error:', error));
+    };
+
+    upBtn.addEventListener('click', () => handleLike('like'));
+    downBtn.addEventListener('click', () => handleLike('dislike'));
+
+    let currentImgIndex = 0;
+
+    let updateImageDisplay = () => {
+        imgDisplay.src = `images/uploaded/${postImages[currentImgIndex].name}`;
+
+        if(currentImgIndex > 0){
+            leftArrow.style.display = "flex";
+        } else{
+            leftArrow.style.display = "none";
+        }
+        if(currentImgIndex < imageCount - 1){
+            rightArrow.style.display = "flex";
+        } else {
+            rightArrow.style.display = "none";
+        }
+        if(imageCount <= 1){
+            rightArrow.style.display = "none";
+            leftArrow.style.display = "none";
+        }
+    };
+
+    if (imageCount > 0) {
+        updateImageDisplay();
+    } else {
+        if (leftArrow) leftArrow.style.display = "none";
+        if (rightArrow) rightArrow.style.display = "none";
+    }
+
+    if (rightArrow) {
+    rightArrow.addEventListener('click', () => {
+        if (currentImgIndex < imageCount - 1) {
+            currentImgIndex++;
+            updateImageDisplay();
+        }
+    });
+    }
+
+    if (leftArrow) {
+        leftArrow.addEventListener('click', () => {
+            if (currentImgIndex > 0) {
+                currentImgIndex--;
+                updateImageDisplay();
+            }
+        });
+    }
+}
+</script>
     <?php endforeach; ?>
     <?php endif; ?>    
   </main>
@@ -230,6 +341,30 @@ $posts = $post->gettAllPosts();
 
     bellIcon.addEventListener('click',toggleNotification);
     menu.addEventListener('click',toggleMenu);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedScrollPos = localStorage.getItem('scrollPosition');
+        if (savedScrollPos) {
+            window.scrollTo(0, parseInt(savedScrollPos));
+            localStorage.removeItem('scrollPosition');
+        }
+    });
+
+    if(<?= $postCount ?> > <?= $limit ?> ) {
+    window.addEventListener('scroll', () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollPos = window.innerHeight + window.scrollY;
+
+        if(scrollPos >= scrollHeight - 50) {
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentLimit = parseInt(urlParams.get('limit')) || 5;
+            let newLimit = currentLimit + 5;
+
+            localStorage.setItem('scrollPosition', window.scrollY);
+            window.location.href = `index.php?limit=${newLimit}`;
+        }
+    });
+};
   </script>
 </body>
 

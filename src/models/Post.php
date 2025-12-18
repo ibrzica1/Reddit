@@ -12,12 +12,21 @@ class Post extends Db
     public $community_id;
     public $time;
 
-    public function gettAllPosts()
+    public function getAllPosts(int $limit)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM post ORDER BY time DESC");
+        $stmt = $this->connection->prepare("SELECT * FROM post ORDER BY time DESC LIMIT :limit");
+        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function countPosts()
+    {
+        $stmt = $this->connection->prepare("SELECT COUNT(*) FROM post");
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
     }
 
     public function getPost(string $attribute, mixed $value): array

@@ -1,13 +1,36 @@
+body{
+    background-color: white;
+}
+
+.posts-grid {
+    flex: 1;
+}
+
+.posts-grid::before {
+    display: block;
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    font-size: 18px;
+    margin-left: 20px;
+}
+
 .post-container {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: rgb(246, 249, 253);
     width: 95%;
+    max-width: 1300px;
     margin-top: 16px;
     border: 1px solid #ccc;
     border-radius: 6px;
     padding: 6px 12px;
     margin-left: 10px;
+}
+
+.post-container:hover {
+    background-color: rgb(234, 239, 247);
+    cursor: pointer;
 }
 
 .post-user-container {
@@ -45,13 +68,13 @@
 }
 
 .post-content-container h3 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     margin: 0;
 }
 
 .post-content-container p {
-    font-size: 18px;
+    font-size: 16px;
     margin: 0;
     padding-top: 10px;
     color: #707070;
@@ -123,14 +146,7 @@
     height: 26px;
     margin-left: 4px;
 }
-.posts-grid::before {
-    display: block;
-    text-align: center;
-    padding: 40px;
-    color: #888;
-    font-size: 18px;
-    margin-left: 20px;
-}
+
 
 .post-button-container {
     display: flex;
