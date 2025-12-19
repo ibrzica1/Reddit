@@ -55,7 +55,8 @@ $posts = $post->getAllPosts($limit);
     
     <div class="search-container">
         <img src="images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
-        <input type="text" placeholder="Search Reddit">
+        <input type="text" placeholder="Search Reddit" id="searchInput">
+        <p id="searchResults"></p>
     </div>
     
     <?php if($session->sessionExists("username")): ?>
@@ -338,9 +339,34 @@ $posts = $post->getAllPosts($limit);
     const  menu = document.getElementById("userInfo");
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
+    const searchEnter = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
 
     bellIcon.addEventListener('click',toggleNotification);
     menu.addEventListener('click',toggleMenu);
+
+    searchEnter.addEventListener('input', () => {
+        let search = searchEnter.value.trim();
+
+        if(search.length < 2)
+        {
+            displayInput.style.display = "none";
+        }
+        else
+        {
+            displayInput.style.display = "block";
+        }
+
+        fetch("decisionMaker.php?general-search=" + search)
+        .then(res => res.json())
+        .then(data => {
+            searchResults.innerHTML = "";
+            data.forEach(result => {
+                const div = document.createElement('div');
+                const p = document.createElement('p');
+            });
+        });
+    });
 
     window.addEventListener('DOMContentLoaded', () => {
         const savedScrollPos = localStorage.getItem('scrollPosition');

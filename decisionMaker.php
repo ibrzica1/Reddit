@@ -4,6 +4,7 @@ require_once "vendor/autoload.php";
 
 use Reddit\controllers\CommentController;
 use Reddit\controllers\CommunityController;
+use Reddit\controllers\SearchController;
 use Reddit\controllers\LikeController;
 use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
@@ -121,7 +122,16 @@ if(isset($_GET['community-search']))
 
   $communityController = new CommunityController();
   echo $communityController->searchCommunityConntroller($search);
+}
 
+if(isset($_GET['general-search']))
+{
+  header("Content-Type: application/json");
+  
+  $search = $_GET['general-search'];
+
+  $searchController = new SearchController();
+  echo $searchController->SearchAll($search);
 }
 
 if(isset($_POST['post-like']))

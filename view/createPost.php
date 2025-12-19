@@ -270,7 +270,7 @@ searchInput.addEventListener("input",()=>{
                     window.location.href = "createPost.php?comm_id=" + communityId;
                 });
             });
-        })
+        });
 });
 
 if(communityContainer) {
