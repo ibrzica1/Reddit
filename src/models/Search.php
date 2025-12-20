@@ -12,7 +12,8 @@ class Search extends Db
             'community' AS type,
             id,
             name AS display_name,
-            description AS info
+            description AS info,
+            NULL AS picture
         FROM community
         WHERE name LIKE :search1
         UNION ALL
@@ -20,7 +21,8 @@ class Search extends Db
             'post' AS type,
             id,
             title AS display_name,
-            SUBSTRING(text,1,50) AS info 
+            SUBSTRING(text,1,50) AS info,
+            community_id AS picture 
         FROM post 
         WHERE title LIKE :search2 OR text LIKE :search2
         UNION ALL
@@ -28,7 +30,8 @@ class Search extends Db
             'user' AS type,
             id,
             username AS display_name,
-            CONCAT('u/', username) AS info
+            NULL AS info,
+            avatar AS picture
         FROM user
         WHERE username LIKE :search3 
         LIMIT 10";

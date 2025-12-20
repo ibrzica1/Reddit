@@ -56,7 +56,7 @@ $posts = $post->getAllPosts($limit);
     <div class="search-container">
         <img src="images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <input type="text" placeholder="Search Reddit" id="searchInput">
-        <p id="searchResults"></p>
+        <div id="searchResults"></div>
     </div>
     
     <?php if($session->sessionExists("username")): ?>
@@ -350,11 +350,13 @@ $posts = $post->getAllPosts($limit);
 
         if(search.length < 2)
         {
-            displayInput.style.display = "none";
+            searchResults.style.display = "none";
+            searchResults.innerHTML = "";
+            return;
         }
         else
         {
-            displayInput.style.display = "block";
+            searchResults.style.display = "block";
         }
 
         fetch("decisionMaker.php?general-search=" + search)
@@ -363,8 +365,70 @@ $posts = $post->getAllPosts($limit);
             searchResults.innerHTML = "";
             data.forEach(result => {
                 const div = document.createElement('div');
+                const divImg = document.createElement('div');
+                const divInfo = document.createElement('div');
+                const img = document.createElement('img');
+                const h3 = document.createElement('h3');
                 const p = document.createElement('p');
+                const span = document.createElement('span');
+
+                div.className = "search-result-container";
+                divImg.className = "search-image-container";
+                divInfo.className = "search-info-container";
+
+                if(result['type'] === "community"){
+                    h3.innerHTML = result['display_name'];
+                    p.innerHTML = result['info'];
+                    fetch("decisionMaker.php?community-image=" + result['id'])
+                    .then(res => res.json())
+                    .then(image => {
+                        if(!image || !image.name){
+                            img.src = "images/reddit.png";
+                        }
+                        else{
+                            img.src = "images/community/" + image['name'];
+                        }
+                    });
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    divInfo.appendChild(p);
+                    searchResults.appendChild(div);
+
+                    div.addEventListener("click",()=>{
+                        window.location.href = "view/community.php?comm_id=" + result['id'];
+                    });
+                }
+
+                if(result['type'] === "post"){
+                    h3.innerHTML = result['display_name'];
+                    p.innerHTML = result['info'];
+                    img.src = "images/reddit.png";
+                    
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    divInfo.appendChild(p);
+                    searchResults.appendChild(div);
+
+                    div.addEventListener("click",()=>{
+                        window.location.href = "view/community.php?comm_id=" + result['picture'];
+                    });
+                }
+                if(result['type'] === "user"){
+                    h3.innerHTML = result['display_name'];
+                    img.src = "images/avatars/" + result['picture'] + ".webp";
+
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    searchResults.appendChild(div);
+                }
             });
+        
         });
     });
 

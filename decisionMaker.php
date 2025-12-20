@@ -10,6 +10,7 @@ use Reddit\services\SessionService;
 use Reddit\controllers\UserController;
 use Reddit\controllers\PostController;
 use Reddit\controllers\NotificationController;
+use Reddit\controllers\ImageController;
 
 $session = new SessionService();
 
@@ -256,3 +257,13 @@ if(isset($_POST['delete-all-nott']))
   $notificationController = new NotificationController();
   $notificationController->deleteUserNott($userId);
 }
+
+if(isset($_POST['community-image']))
+{
+  header("Content-Type: application/json");
+  $communityId = $_POST['community-image'];
+
+  $imageController = new ImageController();
+  echo $imageController->communityImage($commentId);
+}
+
