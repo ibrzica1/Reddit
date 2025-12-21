@@ -132,7 +132,10 @@ if(isset($_GET['general-search']))
   $search = $_GET['general-search'];
 
   $searchController = new SearchController();
-  echo $searchController->SearchAll($search);
+  $results = $searchController->SearchAll($search);
+
+  echo json_encode($results);
+  exit;
 }
 
 if(isset($_POST['post-like']))
@@ -258,12 +261,14 @@ if(isset($_POST['delete-all-nott']))
   $notificationController->deleteUserNott($userId);
 }
 
-if(isset($_POST['community-image']))
+if(isset($_GET['community-image']))
 {
   header("Content-Type: application/json");
-  $communityId = $_POST['community-image'];
+  $communityId = $_GET['community-image'];
 
   $imageController = new ImageController();
-  echo $imageController->communityImage($commentId);
+  $image = $imageController->communityImage($communityId);
+  echo json_encode($image);
+  exit();
 }
 

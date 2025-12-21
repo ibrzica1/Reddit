@@ -56,7 +56,7 @@ $posts = $post->getAllPosts($limit);
     <div class="search-container">
         <img src="images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <input type="text" placeholder="Search Reddit" id="searchInput">
-        <div id="searchResults"></div>
+        <div class="search-results" id="searchResults"></div>
     </div>
     
     <?php if($session->sessionExists("username")): ?>
@@ -347,7 +347,6 @@ $posts = $post->getAllPosts($limit);
 
     searchEnter.addEventListener('input', () => {
         let search = searchEnter.value.trim();
-
         if(search.length < 2)
         {
             searchResults.style.display = "none";
@@ -377,7 +376,7 @@ $posts = $post->getAllPosts($limit);
                 divInfo.className = "search-info-container";
 
                 if(result['type'] === "community"){
-                    h3.innerHTML = result['display_name'];
+                    h3.innerHTML = "r/" + result['display_name'];
                     p.innerHTML = result['info'];
                     fetch("decisionMaker.php?community-image=" + result['id'])
                     .then(res => res.json())
@@ -402,7 +401,7 @@ $posts = $post->getAllPosts($limit);
                 }
 
                 if(result['type'] === "post"){
-                    h3.innerHTML = result['display_name'];
+                    h3.innerHTML = "p/" + result['display_name'];
                     p.innerHTML = result['info'];
                     img.src = "images/reddit.png";
                     
@@ -418,7 +417,7 @@ $posts = $post->getAllPosts($limit);
                     });
                 }
                 if(result['type'] === "user"){
-                    h3.innerHTML = result['display_name'];
+                    h3.innerHTML = "u/" + result['display_name'];
                     img.src = "images/avatars/" + result['picture'] + ".webp";
 
                     div.appendChild(divImg);

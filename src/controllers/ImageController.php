@@ -11,7 +11,11 @@ class ImageController extends Image
     {
         $results = $this->getCommunityImage($communityId);
 
-        return json_encode($results);
+        if (!$results) {
+            return null;
+        }
+
+        return $results;
     }
 
     
