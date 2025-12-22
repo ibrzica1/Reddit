@@ -3,6 +3,8 @@ document.addEventListener("click", function (event) {
     const userInfo = document.getElementById("userInfo");
     const notificationDisplay = document.querySelector(".notification-grid");
     const bellIcon = document.querySelector('.notifications-container');
+    const searchResults = document.getElementById('searchResults');
+    const searchEnter = document.getElementById('searchInput');
 
     if(!notificationDisplay.contains(event.target) && !bellIcon.contains(event.target)){
         notificationDisplay.classList.remove("active");
@@ -11,7 +13,17 @@ document.addEventListener("click", function (event) {
     if (!menu.contains(event.target) && !userInfo.contains(event.target)) {
         menu.classList.remove("active");
     }
+
+    if (!searchResults.contains(event.target) && !searchEnter.contains(event.target)) {
+        searchResults.classList.remove("active");
+    }
 });
+
+export function toggleSearch()
+{
+    const searchResults = document.getElementById('searchResults');
+    searchResults.classList.toggle("active");
+}
 
 export function toggleNotification()
 {

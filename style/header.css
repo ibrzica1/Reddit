@@ -76,8 +76,31 @@ body {
     height: 100%;
 }
 
-.search-results {
+.user-search-container{
     display: flex;
+    align-items: center;
+    height: 26px;
+    margin-left: 10px;
+    border: 1px solid rgb(171, 171, 171);
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 6px;
+}
+
+.user-search-container img{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+.user-search-container p{
+    margin: 0;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.search-results {
+    display: hidden;
     position: absolute;
     top: 40px;
     left: 0;
@@ -88,6 +111,17 @@ body {
     z-index: 15;
     display: none;
     padding-bottom: 10px;
+}
+
+.search-results.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-no-result {
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 .search-result-container {

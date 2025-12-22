@@ -132,7 +132,22 @@ if(isset($_GET['general-search']))
   $search = $_GET['general-search'];
 
   $searchController = new SearchController();
-  $results = $searchController->SearchAll($search);
+  $results = $searchController->allSearch($search);
+
+  echo json_encode($results);
+  exit;
+}
+
+if(isset($_GET['profile-search']) &&
+isset($_GET['user-id']))
+{
+  header("Content-Type: application/json");
+  
+  $search = $_GET['profile-search'];
+  $userId = $_GET['user-id'];
+
+  $searchController = new SearchController();
+  $results = $searchController->profileSearch($search,$userId);
 
   echo json_encode($results);
   exit;

@@ -335,7 +335,7 @@ $posts = $post->getAllPosts($limit);
   </main>
     
   <script type="module">
-    import { toggleMenu, toggleNotification } from "./script/tools.js";
+    import { toggleMenu, toggleNotification, toggleSearch } from "./script/tools.js";
     const  menu = document.getElementById("userInfo");
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
@@ -347,15 +347,9 @@ $posts = $post->getAllPosts($limit);
 
     searchEnter.addEventListener('input', () => {
         let search = searchEnter.value.trim();
-        if(search.length < 2)
+        if(search.length >= 2)
         {
-            searchResults.style.display = "none";
-            searchResults.innerHTML = "";
-            return;
-        }
-        else
-        {
-            searchResults.style.display = "block";
+            toggleSearch();
         }
 
         fetch("decisionMaker.php?general-search=" + search)

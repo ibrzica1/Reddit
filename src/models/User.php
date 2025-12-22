@@ -88,6 +88,15 @@ class User extends Db
     return $stmt->fetch();
   }
 
+  public function getUserById(int $userId): mixed
+  {
+    $stmt = $this->connection->prepare("SELECT * FROM user WHERE id = :id");
+    $stmt->bindParam(':id',$userId);
+    $stmt->execute();
+
+    return $stmt->fetch();
+  }
+
   public function getUser(string $username): mixed
   {
     $stmt = $this->connection->prepare("SELECT * FROM user WHERE username = :username");
