@@ -44,7 +44,8 @@ $allNotifications = $notification->getUserNotifications($userId);
     
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
-        <input type="text" placeholder="Search Reddit">
+        <input type="text" placeholder="Search Reddit" id="searchInput">
+        <div class="search-results" id="searchResults"></div>
     </div>
     
     <div class="buttons-container">
@@ -236,14 +237,96 @@ $allNotifications = $notification->getUserNotifications($userId);
 </div>
     
 <script type="module">
-    import { toggleMenu, toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+    import { toggleMenu, toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
 
     const menu = document.getElementById("userInfo");
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
+    const searchEnter = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
 
     menu.addEventListener('click',toggleMenu);
     bellIcon.addEventListener('click',toggleNotification);
+
+    searchEnter.addEventListener('input', () => {
+        let search = searchEnter.value.trim();
+        if(search.length >= 2)
+        {
+            toggleSearch();
+        }
+
+        fetch("../decisionMaker.php?general-search=" + search)
+        .then(res => res.json())
+        .then(data => {
+            searchResults.innerHTML = "";
+            data.forEach(result => {
+                const div = document.createElement('div');
+                const divImg = document.createElement('div');
+                const divInfo = document.createElement('div');
+                const img = document.createElement('img');
+                const h3 = document.createElement('h3');
+                const p = document.createElement('p');
+                const span = document.createElement('span');
+
+                div.className = "search-result-container";
+                divImg.className = "search-image-container";
+                divInfo.className = "search-info-container";
+
+                if(result['type'] === "community"){
+                    h3.innerHTML = "r/" + result['display_name'];
+                    p.innerHTML = result['info'];
+                    fetch("../decisionMaker.php?community-image=" + result['id'])
+                    .then(res => res.json())
+                    .then(image => {
+                        if(!image || !image.name){
+                            img.src = "../images/reddit.png";
+                        }
+                        else{
+                            img.src = "../images/community/" + image['name'];
+                        }
+                    });
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    divInfo.appendChild(p);
+                    searchResults.appendChild(div);
+
+                    div.addEventListener("click",()=>{
+                        window.location.href = "../view/community.php?comm_id=" + result['id'];
+                    });
+                }
+
+                if(result['type'] === "post"){
+                    h3.innerHTML = "p/" + result['display_name'];
+                    p.innerHTML = result['info'];
+                    img.src = "../images/reddit.png";
+                    
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    divInfo.appendChild(p);
+                    searchResults.appendChild(div);
+
+                    div.addEventListener("click",()=>{
+                        window.location.href = "../view/community.php?comm_id=" + result['picture'];
+                    });
+                }
+                if(result['type'] === "user"){
+                    h3.innerHTML = "u/" + result['display_name'];
+                    img.src = "../images/avatars/" + result['picture'] + ".webp";
+
+                    div.appendChild(divImg);
+                    divImg.appendChild(img);
+                    div.appendChild(divInfo);
+                    divInfo.appendChild(h3);
+                    searchResults.appendChild(div);
+                }
+            });
+        
+        });
+    });
 </script>
 </body>
 </html>
