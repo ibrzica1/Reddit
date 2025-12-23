@@ -5,6 +5,19 @@ use Reddit\models\Db;
 
 class Search extends Db 
 {
+
+    public function searchPost($search,$commId)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM post 
+        WHERE (title LIKE :search OR text LIKE :search) AND community_id = :comm_id");
+        $searchTerm = "%$search%";
+        $stmt->bindValue(':search',$searchTerm);
+        $stmt->bindValue(':comm_id',$commId);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function searchProfile($search,$userId)
     {
         $query = "

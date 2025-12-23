@@ -7,6 +7,24 @@ use Reddit\services\SessionService;
 
 class SearchController extends Search
 {
+
+    public function postSearch($search,$commId)
+    {
+        $session = new SessionService();
+
+        if(!isset($search))
+        {
+        $message = "You didnt send search content";
+        $session->setSession("message",$message);
+        header("Location: view/createPost.php");
+        exit();
+        }
+
+        $results = $this->searchPost($search,$commId);
+
+        return $results;
+    }
+
     public function profileSearch($search,$userId)
     {
         $session = new SessionService();

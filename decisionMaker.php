@@ -153,6 +153,21 @@ isset($_GET['user-id']))
   exit;
 }
 
+if(isset($_GET['post-search']) &&
+isset($_GET['comm-id']))
+{
+  header("Content-Type: application/json");
+  
+  $search = $_GET['post-search'];
+  $commId = $_GET['comm-id'];
+
+  $searchController = new SearchController();
+  $results = $searchController->postSearch($search,$commId);
+
+  echo json_encode($results);
+  exit;
+}
+
 if(isset($_POST['post-like']))
 {
   $postId = $_POST['post-like'];
