@@ -58,11 +58,25 @@ $nottNumber = count($notifications);
     <a class="logo-container" href="../index.php">
         <img src="../images/logo.png" alt="Reddit Logo" class="reddit-logo">
     </a>
-    
+<?php if(!empty($selectedCommunity)): ?>
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
-        <input type="text" placeholder="Search Reddit">
+        <div class="user-search-container">
+            <img src="../images/community/<?=$commImage["name"]?>">
+            <p>r/<?= $selectedCommunity[0]['name'] ?></p>
+        </div>
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity[0]['name'] ?>" id="searchInput">
+        <div class="search-results" id="searchResults"></div>
     </div>
+    <?php else: ?>
+    <div class="search-container">
+        <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
+        <input type="text" placeholder="Search Reddit" id="searchInput">
+        <div class="search-results" id="searchResults"></div>
+    </div>   
+    <?php endif; ?>
+        
+    
     
       <div class="buttons-container">
         <a href="../view/createPost.php" class="create-post-btn" title="Create Post">
@@ -169,11 +183,12 @@ $nottNumber = count($notifications);
    <h2>Create Post</h2>
 </div>
 
- 
+<?php if(!empty($selectedCommunity)): ?>
 <div class="community-container">
     <img src="../images/community/<?=$commImage["name"]?>">
     <p><span>r/</span><?= $selectedCommunity[0]["name"] ?></p>
 </div>
+<?php endif; ?>
     
 <div class="seek-container">
     <input type="text" name="community-search" id="search-input" placeholder="Search for community">
@@ -207,7 +222,8 @@ $nottNumber = count($notifications);
 
 <script type="module">
 
-import { toggleMenu, toggleNotification  } from "../script/tools.js?v=<?php echo time(); ?>";
+import { toggleMenu, toggleNotification, toggleSearch  } from "../script/tools.js?v=<?php echo time(); ?>";
+const commId = <?= $communityId ?>;
 const  menu = document.getElementById("userInfo");
 const textOption = document.querySelector('.text-option');
 const imageOption = document.querySelector('.image-option');
@@ -222,11 +238,64 @@ const communityContainer = document.querySelector(".community-container");
 const seekContainer = document.querySelector(".seek-container");
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
+const searchEnter = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
 
 const isCommunitySelected = <?php echo json_encode(!empty($selectedCommunity)); ?>;
 
 bellIcon.addEventListener('click',toggleNotification);
 menu.addEventListener('click',toggleMenu);
+
+searchEnter.addEventListener('input', () => {
+    let search = searchEnter.value.trim();
+    if(search.length >= 2)
+    {
+    toggleSearch();
+    }
+
+    fetch("../decisionMaker.php?post-search=" + search + "&comm-id=" + commId)
+    .then(res => res.json())
+    .then(data => {
+    searchResults.innerHTML = "";
+    if(data.length === 0)
+    {
+        const div = document.createElement('div');
+        div.innerHTML = "No results...";
+        searchResults.appendChild(div);
+        div.className = "search-no-result";
+    }
+    data.forEach(result => {
+        const div = document.createElement('div');
+        const divImg = document.createElement('div');
+        const divInfo = document.createElement('div');
+        const img = document.createElement('img');
+        const h3 = document.createElement('h3');
+        const p = document.createElement('p');
+        const span = document.createElement('span');
+
+        div.className = "search-result-container";
+        divImg.className = "search-image-container";
+        divInfo.className = "search-info-container";
+
+        h3.innerHTML = "p/" + result['title'];
+        if(result['text'].length > 0) {
+            p.innerHTML = result['text'];
+        }
+        img.src = "../images/reddit.png";
+        
+        div.appendChild(divImg);
+        divImg.appendChild(img);
+        div.appendChild(divInfo);
+        divInfo.appendChild(h3);
+        divInfo.appendChild(p);
+        searchResults.appendChild(div);
+
+        div.addEventListener("click",()=>{
+            window.location.href = "community.php?comm_id=" + result['community_id'];
+        });
+     });
+});
+});
 
 if (isCommunitySelected) {
     if (communityContainer) communityContainer.style.display = "flex";
