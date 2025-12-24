@@ -173,28 +173,13 @@ $nottNumber = count($notifications);
         <div class="banner"></div>
         <div class="profile-card">
             <img src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp" alt="Avatar" class="profile-avatar"> 
-            
             <div class="profile-info-content">
                 <div class="username-section">
                     <h1>u/<?= $username ?></h1>
-                    <p class="display-name">
-                        <img src="../images/icons/cake.png" alt="Cake Day" class="cake-icon">
-                        User since: <?php echo $accountAge; ?>
-                    </p>
                 </div>
                 <a href="settings.php">
                     <button class="edit-profile-btn">Edit Profile</button>
                 </a>
-                
-            </div>
-            
-            <p class="bio"><?= $bio[0] ?></p>
-            
-            <div class="karma-info">
-                <div>
-                    <strong>KARMA</strong>
-                    <p><?= number_format($karma) ?></p>
-                </div>
             </div>
             <a href="createPost.php">
                 <button class="new-post-btn">Create Post</button>
@@ -203,7 +188,6 @@ $nottNumber = count($notifications);
                 <img src="../images/icons/add.png">
                 <p>Start a Community</p>
             </a>
-            
         </div>
     </div>
 
@@ -553,17 +537,18 @@ fetch('../decisionMaker.php', {
 
 <aside class="sidebar-right">
     <div class="sidebar-card about-user">
-        <h4>About User</h4>
-        <p>This is a short, public note about the user. The user is verified and active.</p>
-        <a href="#">Add social links</a>
+
+    <p class="display-name">
+        <img src="../images/icons/cake.png" alt="Cake Day" class="cake-icon">
+        User since: <?php echo $accountAge; ?>
+    </p>
+    <div class="karma-info">
+        <img src="../images/icons/karma.png" class="karma-icon">
+        <p>Karma: </p>
+        <p class="karma-number"><?= number_format($karma) ?></p>
     </div>
-    <div class="sidebar-card rules">
-        <h4>Rules and Info</h4>
-        <ul>
-            <li><a href="#">Code of Conduct</a></li>
-            <li><a href="#">Content Submission</a></li>
-            <li><a href="#">FAQ</a></li>
-        </ul>
+        <h4>About User</h4>
+        <p class="bio"><?= $bio[0] ?></p>
     </div>
 </aside>
 </div>
