@@ -76,6 +76,14 @@ body {
     height: 100%;
 }
 
+.search-container input:focus{
+    background-color: rgb(225, 231, 233);
+}
+
+.search-container input:active{
+    background-color: rgb(225, 231, 233);
+}
+
 .user-search-container{
     display: flex;
     align-items: center;
@@ -131,7 +139,7 @@ body {
 
 .search-result-container:hover {
     cursor: pointer;
-    background-color: rgb(234, 239, 247);
+    background-color: rgb(225, 231, 233);
 }
 
 .search-image-container {
