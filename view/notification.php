@@ -55,7 +55,9 @@ $allNotifications = $notification->getUserNotifications($userId);
         </a>
         <div class="notifications-container">
             <img src="../images/icons/bell.png">
+        <?php if($nottNumber > 0): ?>
             <div class="notification-number"><?= $nottNumber ?></div>
+        <?php endif; ?>
         </div>
     <div class="notification-grid" id="notificatioGrid">
         
@@ -117,6 +119,7 @@ $allNotifications = $notification->getUserNotifications($userId);
         <?php endif; ?>
         <?php endforeach; ?>
         <?php endif; ?>
+        <a href="notification.php" class="see-all-nott">see all notifications</a>
     </div>
     <div class="user-info" id="userInfo">
     <div class="green-dot"></div>

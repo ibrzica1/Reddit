@@ -77,7 +77,9 @@ $nottNumber = count($notifications);
     </a>
     <div class="notifications-container">
         <img src="../images/icons/bell.png">
+    <?php if($nottNumber > 0): ?>
         <div class="notification-number"><?= $nottNumber ?></div>
+    <?php endif; ?>
     </div>
     <div class="notification-grid" id="notificatioGrid">
         
