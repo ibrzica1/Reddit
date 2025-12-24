@@ -7,6 +7,7 @@ use Reddit\controllers\CommunityController;
 use Reddit\controllers\SearchController;
 use Reddit\controllers\LikeController;
 use Reddit\services\SessionService;
+use Reddit\services\KarmaService;
 use Reddit\controllers\UserController;
 use Reddit\controllers\PostController;
 use Reddit\controllers\NotificationController;
@@ -174,6 +175,8 @@ if(isset($_POST['post-like']))
   $userId = $session->getFromSession('user_id');
 
   $likeController = new LikeController();
+
+  
   
 
   $data = $likeController->addPostLikeController($userId,$postId);
