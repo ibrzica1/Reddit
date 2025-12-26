@@ -22,15 +22,18 @@ $time = new TimeService();
 $image = new Image();
 $like = new Like();
 
-$id = $session->getFromSession('user_id');
-$notifications = $notification->unreadNotifications($id);
-$nottNumber = count($notifications);
+if(isset($_SESSION['user_id'])) {
+    $id = $session->getFromSession('user_id');
+    $notifications = $notification->unreadNotifications($id);
+    $nottNumber = count($notifications);
+} else {
+    $id = 0;
+}
 $postCount = $post->countPosts();
 $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
 if($limit < 0) $limit = 5;
 if($limit > 50) $limit = 50;
 $posts = $post->getAllPosts($limit);
-
 
 ?>
 <!DOCTYPE html>
