@@ -185,8 +185,8 @@ $nottNumber = count($notifications);
             <button>Submit</button>
         </form>
         <div class="form">
-                <p>Bio</p>
-                <button class="edit-btn"  data-target="bio-form">Edit</button>
+            <p>Bio</p>
+            <button class="edit-btn"  data-target="bio-form">Edit</button>
         </div>
         <form action="../decisionMaker.php" method="post" id="bio-form">
             <p>New Bio (<span class="letters">235</span> Letters)</p>
@@ -195,8 +195,8 @@ $nottNumber = count($notifications);
             <button>Submit</button>
         </form>
         <div class="form">
-                <p>Avatar</p>
-                <button class="edit-btn"  data-target="avatar-form">Edit</button>
+            <p>Avatar</p>
+            <button class="edit-btn"  data-target="avatar-form">Edit</button>
         </div>
         <form action="../decisionMaker.php" method="post" id="avatar-form">
             <div class="avatar-grid" id="avatarGrid">
