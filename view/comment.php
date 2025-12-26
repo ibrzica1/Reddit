@@ -4,20 +4,20 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
 use Reddit\models\Notification;
+use Reddit\repositories\UserRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new Community();
 $image = new Image();
 $post = new Post();
-$user = new User();
+$user = new UserRepository();
 $like = new Like();
 $comment = new Comment();
 $notification = new Notification();
@@ -40,7 +40,7 @@ $postCommunity = $community->getCommunity("id",$postCommunityId);
 $communityImage = $image->getCommunityImage($postCommunityId);
 $userId = $session->getFromSession("user_id");
 $postUserId = $selectedPost[0]["user_id"];
-$postUser = $user->getUserByAttribute("id",$postUserId);
+$postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
 $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"];
@@ -104,10 +104,10 @@ $nottNumber = count($notifications);
         <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
         onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
+            <p>u/<span><?= $senderInfo->username ?></span> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>  
         </a>
@@ -115,10 +115,10 @@ $nottNumber = count($notifications);
         <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
         <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your comment
+            <p>u/<span><?= $senderInfo->username ?></span> liked your comment
             r/<span><?= $notificationComment[0]["text"] ?></span></p>
         </div>
         </a>
@@ -127,10 +127,10 @@ $nottNumber = count($notifications);
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
         <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> commented on your post
+            <p>u/<span><?= $senderInfo->username ?></span> commented on your post
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>
         </a>
@@ -138,10 +138,10 @@ $nottNumber = count($notifications);
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
         <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> posted in your community
+            <p>u/<span><?= $senderInfo->username ?></span> posted in your community
             r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
         </div>
         </a>
@@ -197,7 +197,7 @@ $nottNumber = count($notifications);
                 <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost[0]["time"]); ?></p>
             </div>
             <div class="user-name">
-                <p><?= $postUser["username"] ?></p>
+                <p><?= $postUser->username ?></p>
             </div>
         </div>
     </div>
@@ -276,8 +276,8 @@ $nottNumber = count($notifications);
     
     <div class="single-comment">
         <div class="comment-author-info">
-            <img src="../images/avatars/<?= $commentUser['avatar'] ?>.webp" class="comment-avatar">
-            <span class="comment-username">u/<?= $commentUser["username"] ?></span>
+            <img src="../images/avatars/<?= $commentUser->avatar ?>.webp" class="comment-avatar">
+            <span class="comment-username">u/<?= $commentUser->username ?></span>
             <span class="comment-time"><?= $time->calculateTime($commentItem["time"]) ?></span>
         </div>
         <div class="comment-content">
@@ -316,8 +316,8 @@ $nottNumber = count($notifications);
         <?php $replyLikeStatus = empty($replyLikes["status"]) ? "neutral" : $replyLikes["status"] ?>
             <div class="single-comment">
             <div class="comment-author-info">
-                <img src="../images/avatars/<?= $replyUser['avatar'] ?>.webp" class="comment-avatar">
-                <span class="comment-username">u/<?= $replyUser["username"] ?></span>
+                <img src="../images/avatars/<?= $replyUser->avatar ?>.webp" class="comment-avatar">
+                <span class="comment-username">u/<?= $replyUser->username?></span>
                 <span class="comment-time"><?= $time->calculateTime($replyItem["time"]) ?></span>
             </div>
             <div class="comment-content">

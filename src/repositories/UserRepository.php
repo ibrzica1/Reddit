@@ -15,6 +15,15 @@ class UserRepository extends Db
         return $stmt->rowCount() > 0;
     }
 
+    public function existsEmail(string $email): bool
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM user WHERE email = :email ");
+        $stmt->bindParam(':email',$email);
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
     public function registerUser(User $user): void
     {
         $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time, karma)
@@ -77,12 +86,24 @@ class UserRepository extends Db
         return $user->$attribute;
     }
 
-    public function updateUser(string $atribute, string $value, int $id): void
+    public function updateUser(User $user, int $id): void
     {
         $stmt = $this->connection->prepare("UPDATE user 
-        SET $atribute = :atribute
+        SET username = :username,
+        email = :email,
+        password = :password,
+        bio = :bio,
+        avatar = :avatar,
+        karma = :karma,
+        time = :time
         WHERE id = :id");
-        $stmt->bindParam(':atribute',$value);
+        $stmt->bindParam(':username',$user->username);
+        $stmt->bindParam(':email',$user->email);
+        $stmt->bindParam(':password',$user->password);
+        $stmt->bindParam(':bio',$user->bio);
+        $stmt->bindParam(':avatar',$user->avatar);
+        $stmt->bindParam(':karma',$user->karma);
+        $stmt->bindParam(':time',$user->time);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
     }

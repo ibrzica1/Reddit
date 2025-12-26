@@ -4,17 +4,17 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\User;
 use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
 use Reddit\models\Notification;
+use Reddit\repositories\UserRepository;
 
 $session = new SessionService();
 $time = new TimeService();
-$user = new User();
+$user = new UserRepository();
 $community = new Community();
 $image = new Image();
 $post = new Post();
@@ -27,16 +27,15 @@ if(!$session->sessionExists("username"))
     header("Location: ../index.php");
 }
 
-$user = new User();
-
+$user = new UserRepository();
 $id = $session->getFromSession('user_id');
 $profile = $user->getUserById($id);
+
 $username = $session->getFromSession("username");
 $timeCreated = $user->getUserAtribute('time',$id);
-$userKarma = $user->getUserAtribute('karma',$id);
 $accountAge = $time->calculateTime($timeCreated[0]); 
-$bio = $user->getUserAtribute('bio',$id);
-$karma = $userKarma[0];
+$bio = $profile->bio;
+$karma = $profile->karma;
 $activeTab = $_GET['tab'] ?? "posts";
 $notifications = $notification->unreadNotifications($id);
 $nottNumber = count($notifications);
@@ -63,10 +62,10 @@ $nottNumber = count($notifications);
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/avatars/<?= $profile["avatar"] ?>.webp">
-            <p>u/<?= $profile["username"] ?></p>
+            <img src="../images/avatars/<?= $profile->avatar ?>.webp">
+            <p>u/<?= $profile->username ?></p>
         </div>
-        <input type="text" placeholder="Search in u/<?= $profile["username"] ?>" id="searchInput">
+        <input type="text" placeholder="Search in u/<?= $profile->username ?>" id="searchInput">
         <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -95,10 +94,10 @@ $nottNumber = count($notifications);
         <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
         onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
+            <p>u/<span><?= $senderInfo->username ?></span> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>  
         </a>
@@ -106,10 +105,10 @@ $nottNumber = count($notifications);
         <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
         <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your comment
+            <p>u/<span><?= $senderInfo->username ?></span> liked your comment
             r/<span><?= $notificationComment[0]["text"] ?></span></p>
         </div>
         </a>
@@ -118,10 +117,10 @@ $nottNumber = count($notifications);
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
         <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> commented on your post
+            <p>u/<span><?= $senderInfo->username ?></span> commented on your post
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>
         </a>
@@ -129,10 +128,10 @@ $nottNumber = count($notifications);
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
         <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> posted in your community
+            <p>u/<span><?= $senderInfo->username ?></span> posted in your community
             r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
         </div>
         </a>
@@ -451,7 +450,7 @@ fetch('../decisionMaker.php', {
             <p class="post-title"><?= $commentPost[0]["title"] ?></p>
         </div>
         <div class="comment-user-info">
-            <h3><?= $commentUser["username"] ?></h3>
+            <h3><?= $commentUser->username ?></h3>
             <p>commented <?= $time->calculateTime($commentItem["time"]) ?></p>
         </div>
         <div class="comment-content">
@@ -550,7 +549,7 @@ fetch('../decisionMaker.php', {
         <p class="karma-number"><?= number_format($karma) ?></p>
     </div>
         <h4>About User</h4>
-        <p class="bio"><?= $bio[0] ?></p>
+        <p class="bio"><?= $bio ?></p>
     </div>
 </aside>
 </div>

@@ -8,8 +8,9 @@ use Reddit\models\Notification;
 use Reddit\models\Post;
 use Reddit\models\Comment;
 use Reddit\models\Community;
+use Reddit\repositories\UserRepository;
 
-$user = new User();
+$user = new UserRepository();
 $community = new Community();
 $post = new Post();
 $comment = new Comment();
@@ -73,10 +74,10 @@ $nottNumber = count($notifications);
         <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
         onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
+            <p>u/<span><?= $senderInfo->username ?></span> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>  
         </a>
@@ -84,10 +85,10 @@ $nottNumber = count($notifications);
         <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
         <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your comment
+            <p>u/<span><?= $senderInfo->username ?></span> liked your comment
             r/<span><?= $notificationComment[0]["text"] ?></span></p>
         </div>
         </a>
@@ -96,10 +97,10 @@ $nottNumber = count($notifications);
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
         <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> commented on your post
+            <p>u/<span><?= $senderInfo->username ?></span> commented on your post
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>
         </a>
@@ -107,10 +108,10 @@ $nottNumber = count($notifications);
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
         <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="../images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> posted in your community
+            <p>u/<span><?= $senderInfo->username ?></span> posted in your community
             r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
         </div>
         </a>

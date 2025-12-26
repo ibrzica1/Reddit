@@ -2,12 +2,13 @@
 
 namespace Reddit\controllers;
 
+use Reddit\repositories\UserRepository;
 use Reddit\models\User;
 use Reddit\services\SessionService;
 use Reddit\services\MailService;
 use Reddit\services\TimeService;
 
-class UserController extends User
+class UserController extends UserRepository
 {
 
   public function login(array $data): void
@@ -43,7 +44,7 @@ class UserController extends User
       exit();
     }
 
-    $dbPassword = $user['password'];
+    $dbPassword = $user->password;
 
     if(!password_verify($password,$dbPassword))
     {
@@ -53,9 +54,9 @@ class UserController extends User
       exit();
     }
 
-    $session->setSession("user_id",$user['id']);
-    $session->setSession("username",$user['username']);
-    $session->setSession("avatar",$user['avatar']);
+    $session->setSession("user_id",$user->id);
+    $session->setSession("username",$user->username);
+    $session->setSession("avatar",$user->avatar);
 
     header('Location: index.php');
   }
@@ -114,7 +115,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->usernameLength($username))
+    if(!User::usernameLength($username))
     {
       $message = "Username length cant be smaller then 3 or longer then 15 characters";
       $session->setSession("message",$message);
@@ -130,7 +131,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->checkPassword($password))
+    if(!User::checkPassword($password))
     {
       $message = "Password must contain special character, number, uppercase and lowercase letter";
       $session->setSession("message",$message);
@@ -138,7 +139,7 @@ class UserController extends User
       exit();
     }
 
-    if($this->lengthPassword($password))
+    if(User::lengthPassword($password))
     {
       $message = "Password length cant be smaller than 6 characters";
       $session->setSession("message",$message);
@@ -154,10 +155,21 @@ class UserController extends User
       exit();
     }
 
-    $this->registerUser($username,$email,$password,$bio,$avatar,$time,$karma);
+    $newUser = new User([
+      'id' => NULL,
+      'username' => $username,
+      'email' => $email,
+      'password' => password_hash($password, PASSWORD_BCRYPT),
+      'bio' => $bio,
+      'avatar' => $avatar,
+      'karma' => $karma,
+      'time' => $time
+    ]);
+
+    $this->registerUser($newUser);
     $user = $this->getUser($username);
     
-    $session->setSession("user_id",$user['id']);
+    $session->setSession("user_id",$user->id);
     $session->setSession("username",$username);
     $session->setSession("avatar",$avatar);
 
@@ -171,6 +183,7 @@ class UserController extends User
   {
     $session = new SessionService();
     $id = $session->getFromSession("user_id");
+    $user = $this->getUserById($id);
 
     if(!isset($username))
     {
@@ -188,7 +201,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->usernameLength($username))
+    if(!User::usernameLength($username))
     {
       $message = "Username length cant be smaller then 3 or longer than 15 characters";
       $session->setSession("message",$message);
@@ -196,11 +209,13 @@ class UserController extends User
       exit();
     }
 
-    $oldUsername = $this->getUserAtribute('username',$id);
+    $oldUsername = $user->username;
+    $user->username = $username;
 
-    $this->updateUser('username', $username, $id);
+    $this->updateUser($user,$id);
 
-    $newUsername = $this->getUserAtribute('username',$id);
+    $newUser = $this->getUserById($id);
+    $newUsername = $newUser->username;
     
     if($oldUsername[0] !== $newUsername[0])
     {
@@ -223,6 +238,7 @@ class UserController extends User
   {
     $session = new SessionService();
     $id = $session->getFromSession("user_id");
+    $user = $this->getUserById($id);
 
     if(!isset($email))
     {
@@ -240,11 +256,13 @@ class UserController extends User
       exit();
     }
 
-    $oldEmail = $this->getUserAtribute('email',$id);
+    $oldEmail = $user->email;
+    $user->email = $email;
 
-    $this->updateUser('email', $email, $id);
+    $this->updateUser($user, $id);
     
-    $newEmail = $this->getUserAtribute('email',$id);
+    $newUser = $this->getUserById($id);
+    $newEmail = $newUser->email;
 
     if($oldEmail[0] !== $newEmail[0])
     {
@@ -266,7 +284,7 @@ class UserController extends User
   {
     $session = new SessionService();
     $id = $session->getFromSession("user_id");
-    $username = $session->getFromSession("username");
+    $user = $this->getUserById($id);
 
     if(!isset($oldPass))
     {
@@ -290,9 +308,8 @@ class UserController extends User
       exit();
     }
    
-    $user = $this->getUser($username);
 
-    $dbPassword = $user['password'];
+    $dbPassword = $user->password;
 
     if(!password_verify($oldPass,$dbPassword))
     {
@@ -302,7 +319,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->checkPassword($newPass))
+    if(!User::checkPassword($newPass))
     {
       $message = "Password must contain special character, number, uppercase and lowercase letter";
       $session->setSession("message",$message);
@@ -310,7 +327,7 @@ class UserController extends User
       exit();
     }
 
-    if($this->lengthPassword($newPass))
+    if(User::lengthPassword($newPass))
     {
       $message = "Password length cant be smaller than 6 characters";
       $session->setSession("message",$message);
@@ -326,12 +343,13 @@ class UserController extends User
       exit();
     }
 
-    $beforePass = $this->getUserAtribute('password', $id);
-    $password = password_hash($newPass,PASSWORD_BCRYPT);
+    $beforePass = $user->password;
+    $user->password = password_hash($newPass,PASSWORD_BCRYPT);
     
-    $this->updateUser('password', $password, $id);
+    $this->updateUser($user, $id);
 
-    $afterPass = $this->getUserAtribute('password', $id);
+    $newUser = $this->getUserById($id);
+    $afterPass = $newUser->password;
 
     if($beforePass[0] !== $afterPass[0])
     {
@@ -353,6 +371,7 @@ class UserController extends User
   {
     $session = new SessionService();
     $id = $session->getFromSession("user_id");
+    $user = $this->getUserById($id);
 
     if(!isset($bio))
     {
@@ -362,7 +381,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->lengthBio($bio))
+    if(!User::lengthBio($bio))
     {
       $message = "Bio cant be longer then 235 letters";
       $session->setSession("message",$message);
@@ -370,7 +389,8 @@ class UserController extends User
       exit();
     }
 
-    $this->updateUser('bio', $bio, $id);
+    $user->bio = $bio;
+    $this->updateUser($user, $id);
     header("Location: view/settings.php");
     exit();
   }
@@ -379,6 +399,7 @@ class UserController extends User
   {
     $session = new SessionService();
     $id = $session->getFromSession("user_id");
+    $user = $this->getUserById($id);
 
     if(!isset($avatar))
     {
@@ -388,7 +409,7 @@ class UserController extends User
       exit();
     }
 
-    if(!$this->existsAvatar($avatar))
+    if(!User::existsAvatar($avatar))
     {
       $message = "Avatar doesnt exists";
       $session->setSession("message",$message);
@@ -396,7 +417,8 @@ class UserController extends User
       exit();
     }
 
-    $this->updateUser('avatar', $avatar, $id);
+    $user->avatar = $avatar;
+    $this->updateUser($user, $id);
     $session->setSession('avatar',$avatar);
     header("Location: view/profile.php");
     exit();
