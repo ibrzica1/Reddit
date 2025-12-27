@@ -4,17 +4,17 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
+use Reddit\repositories\CommunityRepository;
 
 $session = new SessionService();
 $time = new TimeService();
-$community = new Community();
+$community = new CommunityRepository();
 $image = new Image();
 $post = new Post();
 $user = new UserRepository();
@@ -73,9 +73,9 @@ $nottNumber = count($notifications);
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
             <img src="../images/community/<?=$communityImage["name"]?>">
-            <p>r/<?= $postCommunity[0]['name'] ?></p>
+            <p>r/<?= $postCommunity->name ?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $postCommunity[0]['name'] ?>" id="searchInput">
+        <input type="text" placeholder="Search in r/<?= $postCommunity->name ?>" id="searchInput">
          <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -136,13 +136,13 @@ $nottNumber = count($notifications);
         </a>
         <?php elseif($notificationItem["type"] == "post"): ?>
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-            r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+            r/<span><?= $notificationCommunity->name ?></span></p>
         </div>
         </a>
         <?php else: ?>
@@ -193,7 +193,7 @@ $nottNumber = count($notifications);
         </div>
         <div class="comm-user-info">
             <div class="comm-name-time">
-                <h4>r/<?= $postCommunity[0]["name"] ?></h4>
+                <h4>r/<?= $postCommunity->name ?></h4>
                 <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost[0]["time"]); ?></p>
             </div>
             <div class="user-name">
@@ -471,15 +471,15 @@ replyCancel.addEventListener('click', () => {
 
 <div class="body-community">
     <div class="community-card-header">
-        <h4 class="community-name">About r/<?= $postCommunity[0]["name"] ?></h4>
+        <h4 class="community-name">About r/<?= $postCommunity->name ?></h4>
     </div>
     <div class="community-description">
-        <p><?= $postCommunity[0]["description"] ?></p>
+        <p><?= $postCommunity->description ?></p>
     </div>
     <div class="community-created">
         <p class="community-stats">
             <img src="../images/icons/cake.png" alt="Cake Day">
-            Created: <?= $time->calculateTime($postCommunity[0]['time']); ?>
+            Created: <?= $time->calculateTime($postCommunity->time); ?>
         </p>
     </div>
     <a href="community.php?comm_id=<?= $postCommunityId ?>" class="community-view-btn">View Community</a>

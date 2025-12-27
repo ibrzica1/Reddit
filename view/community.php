@@ -4,18 +4,17 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\User;
-use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
+use Reddit\repositories\CommunityRepository;
 
 $session = new SessionService();
 $time = new TimeService();
-$community = new Community();
+$community = new CommunityRepository();
 $image = new Image();
 $post = new Post();
 $comment = new Comment();
@@ -38,7 +37,7 @@ $communityId = intval($get);
 $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
 $userId = $session->getFromSession("user_id");
-$communityUserId = $selectedCommunity[0]["user_id"];
+$communityUserId = $selectedCommunity->user_id;
 $communityPosts = $post->getPost("community_id",$communityId);
 $notifications = $notification->unreadNotifications($userId);
 $nottNumber = count($notifications);
@@ -66,9 +65,9 @@ $nottNumber = count($notifications);
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
             <img src="../images/community/<?=$communityImage["name"]?>">
-            <p>r/<?= $selectedCommunity[0]['name'] ?></p>
+            <p>r/<?= $selectedCommunity->name ?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $selectedCommunity[0]['name'] ?>" id="searchInput">
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
          <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -129,13 +128,13 @@ $nottNumber = count($notifications);
             </a>
             <?php elseif($notificationItem["type"] == "post"): ?>
             <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-            <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+            <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-                r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+                r/<span><?= $notificationCommunity->name ?></span></p>
             </div>
             </a>
             <?php else: ?>
@@ -179,17 +178,17 @@ $nottNumber = count($notifications);
             <img src="../images/community/<?=$communityImage["name"]?>">
         </div>
         <div class="name-container">
-            <p><span>r/</span><?=$selectedCommunity[0]["name"]?></p>
+            <p><span>r/</span><?=$selectedCommunity->name?></p>
         </div>
         
-        <a href="createPost.php?comm_id=<?=$selectedCommunity[0]['id']?>" class="create-post-container">
+        <a href="createPost.php?comm_id=<?=$selectedCommunity->id?>" class="create-post-container">
             <img src="../images/icons/add.png">
             <p>Create Post</p>
         </a>
 
         <?php if($communityUserId == $userId): ?>
             <form action="../decisionMaker.php" method="post">
-                <input type="hidden" name="delete-community" value="<?=$selectedCommunity[0]['id']?>">
+                <input type="hidden" name="delete-community" value="<?=$selectedCommunity->id?>">
                 <button class="delete-container">
                      <img src="../images/icons/set.png">
                 </button>
@@ -372,12 +371,12 @@ $nottNumber = count($notifications);
 
     <aside class="community-info">
         <div class="info-box">
-            <h3><span>r/</span><?=$selectedCommunity[0]["name"]?></h3>
-            <p class="desc"><?=$selectedCommunity[0]["description"]?></p>
+            <h3><span>r/</span><?=$selectedCommunity->name?></h3>
+            <p class="desc"><?=$selectedCommunity->description?></p>
 
             <div class="created">
                 <img src="../images/icons/cake.png">
-                <p>Created: <?=$selectedCommunity[0]["time"]?></p>
+                <p>Created: <?=$selectedCommunity->time?></p>
             </div>
         </div>
     </aside>

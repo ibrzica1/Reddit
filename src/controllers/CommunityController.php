@@ -6,8 +6,9 @@ use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
+use Reddit\repositories\CommunityRepository;
 
-class CommunityController extends Community
+class CommunityController extends CommunityRepository
 {
     public function createCommunity($name, $description, $files)
     {
@@ -42,7 +43,7 @@ class CommunityController extends Community
         exit();
         }
 
-        if(!$this->nameLength($name))
+        if(!Community::nameLength($name))
         {
         $message = "Name cant be bigger then 21 letters and smaller then 3 letter";
         $session->setSession("message",$message);
@@ -50,7 +51,7 @@ class CommunityController extends Community
         exit();
         }
 
-        if(!$this->descriptionLength($description))
+        if(!Community::descriptionLength($description))
         {
         $message = "Description cant be bigger then 500 letters and smaller then 3 letter";
         $session->setSession("message",$message);
@@ -91,8 +92,16 @@ class CommunityController extends Community
             header("Location: view/createCommunity.php");
             exit();
             }
-        
-        $this->registerCommunity($name,$description,$user_id,$time);
+            
+        $newCommunity = new Community([
+            'id' => NULL,
+            'name' => $name,
+            'description' => $description,
+            'user_id' => $user_id,
+            'time' => $time
+        ]);
+
+        $this->registerCommunity($newCommunity);
         $communityId = $this->connection->lastInsertId();
         
         $randomName = $image->generateRandomName('jpg');

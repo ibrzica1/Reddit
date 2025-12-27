@@ -4,15 +4,15 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Community;
 use Reddit\models\Post;
 use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
+use Reddit\repositories\CommunityRepository;
 
 $session = new SessionService();
 $time = new TimeService();
-$community = new Community();
+$community = new CommunityRepository();
 $post = new Post();
 $user = new UserRepository();
 $comment = new Comment();
@@ -105,13 +105,13 @@ $allNotifications = $notification->getUserNotifications($userId);
         </a>
         <?php elseif($notificationItem["type"] == "post"): ?>
         <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-        <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-            r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+            r/<span><?= $notificationCommunity->name ?></span></p>
         </div>
         </a>
         <?php else: ?>
@@ -211,13 +211,13 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php elseif($singleNott["type"] == "post"): ?>
     <?php $notificationCommunit = $community->getCommunity("id",$singleNott["community_id"]); ?>
-    <a href="community.php?comm_id=<?= $notificationCommunit[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
+    <a href="community.php?comm_id=<?= $notificationCommunit->id ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
     </div>
     <div class="nott-body">
         <p>u/<span><?= $senderInf->username ?></span> posted in your community</p>
-        <h4><?= $notificationCommunit[0]["name"] ?></h4>
+        <h4><?= $notificationCommunit->name ?></h4>
         <h4><?= $time->calculateTime($singleNott["time"]) ?></h4>
     </div>
     </a>

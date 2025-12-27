@@ -8,9 +8,10 @@ use Reddit\models\Post;
 use Reddit\models\Comment;
 use Reddit\models\Community;
 use Reddit\repositories\UserRepository;
+use Reddit\repositories\CommunityRepository;
 
 $user = new UserRepository();
-$community = new Community();
+$community = new CommunityRepository();
 $post = new Post();
 $comment = new Comment();
 $notification = new Notification();
@@ -105,13 +106,13 @@ $nottNumber = count($notifications);
             </a>
             <?php elseif($notificationItem["type"] == "post"): ?>
             <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-            <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+            <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-                r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+                r/<span><?= $notificationCommunity->name ?></span></p>
             </div>
             </a>
             <?php else: ?>

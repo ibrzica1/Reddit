@@ -1,61 +1,32 @@
 <?php
 
 namespace Reddit\models;
-use Reddit\models\Db;
 
-class Community extends Db
+class Community 
 {
+    public $id;
     public $name;
     public $description;
     public $user_id;
     public $time;
 
-    public function getCommunity(string $attribute, mixed $value): array
+    public function __construct($array)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM community WHERE $attribute = :value");
-        $stmt->bindParam(':value',$value);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        $this->id = $array['id'];
+        $this->name = $array['name'];
+        $this->description = $array['description'];
+        $this->user_id = $array['user_id'];
+        $this->time = $array['time'];
     }
 
-    public function nameLength($name)
+    public static function nameLength($name)
     {
         return strlen($name) >= 3 && strlen($name) <= 21;
     }
 
-    public function descriptionLength($description)
+    public static function descriptionLength($description)
     {
         return strlen($description) >= 3 && strlen($description) <= 500;
     }
-
-    public function registerCommunity($name, $description, $user_id, $time)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO community (name, description, user_id, time)
-        VALUES (:name, :description, :user_id, :time)");
-        $stmt->bindParam(':name',$name);
-        $stmt->bindParam(':description',$description);
-        $stmt->bindParam(':user_id',$user_id);
-        $stmt->bindParam(':time',$time);
-
-        $stmt->execute();
-    }
-
-    public function deleteCommunity(int $communityId): void
-    {
-        $stmt = $this->connection->prepare("DELETE FROM community WHERE id = :id");
-        $stmt->bindParam(':id',$communityId);
-
-        $stmt->execute();
-    }
-
-    public function searchCommunity($attribute, $value)
-    {
-        $stmt = $this->connection->prepare("SELECT * FROM community WHERE $attribute LIKE :value");
-        $search = "%". $value . "%";
-        $stmt->bindParam(':value',$search);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
+    
 }

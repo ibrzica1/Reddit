@@ -6,13 +6,13 @@ use Reddit\services\SessionService;
 use Reddit\models\Notification;
 use Reddit\models\Post;
 use Reddit\models\Comment;
-use Reddit\models\Community;
 use Reddit\models\Image;
 use Reddit\repositories\UserRepository;
+use Reddit\repositories\CommunityRepository;
 
 $session = new SessionService();
 $user = new UserRepository();
-$community = new Community();
+$community = new CommunityRepository();
 $post = new Post();
 $comment = new Comment();
 $notification = new Notification();
@@ -63,9 +63,9 @@ $nottNumber = count($notifications);
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
             <img src="../images/community/<?=$commImage["name"]?>">
-            <p>r/<?= $selectedCommunity[0]['name'] ?></p>
+            <p>r/<?= $selectedCommunity->name?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $selectedCommunity[0]['name'] ?>" id="searchInput">
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
         <div class="search-results" id="searchResults"></div>
     </div>
     <?php else: ?>
@@ -135,13 +135,13 @@ $nottNumber = count($notifications);
             </a>
             <?php elseif($notificationItem["type"] == "post"): ?>
             <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-            <a href="community.php?comm_id=<?= $notificationCommunity[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+            <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-                r/<span><?= $notificationCommunity[0]["name"] ?></span></p>
+                r/<span><?= $notificationCommunity->name ?></span></p>
             </div>
             </a>
             <?php else: ?>
@@ -189,7 +189,7 @@ $nottNumber = count($notifications);
 <?php if(!empty($selectedCommunity)): ?>
 <div class="community-container">
     <img src="../images/community/<?=$commImage["name"]?>">
-    <p><span>r/</span><?= $selectedCommunity[0]["name"] ?></p>
+    <p><span>r/</span><?= $selectedCommunity->name ?></p>
 </div>
 <?php endif; ?>
     
