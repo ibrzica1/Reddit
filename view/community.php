@@ -7,17 +7,17 @@ use Reddit\services\TimeService;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
-use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\CommentRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
 $image = new Image();
 $post = new Post();
-$comment = new Comment();
+$comment = new CommentRepository();
 $user = new UserRepository();
 $like = new Like();
 $notification = new Notification();
@@ -104,14 +104,14 @@ $nottNumber = count($notifications);
             </div>  
             </a>
             <?php else: ?>
-            <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
-            <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+            <?php $notificationComment = $comment->getComment("id",$notificationItem["comment_id"]) ?>
+            <a href="comment.php?post_id=<?= $notificationComment->post_id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> liked your comment
-                r/<span><?= $notificationComment[0]["text"] ?></span></p>
+                r/<span><?= $notificationComment->text ?></span></p>
             </div>
             </a>
             <?php endif; ?>

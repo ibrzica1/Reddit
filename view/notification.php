@@ -5,17 +5,17 @@ require_once "../vendor/autoload.php";
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\Post;
-use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\CommentRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
 $post = new Post();
 $user = new UserRepository();
-$comment = new Comment();
+$comment = new CommentRepository();
 $notification = new Notification();
 
 $userId = $session->getFromSession("user_id");
@@ -81,14 +81,14 @@ $allNotifications = $notification->getUserNotifications($userId);
         </div>  
         </a>
         <?php else: ?>
-        <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
-        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php $notificationComment = $comment->getComment("id",$notificationItem["comment_id"]) ?>
+        <a href="comment.php?post_id=<?= $notificationComment->post_id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> liked your comment
-            r/<span><?= $notificationComment[0]["text"] ?></span></p>
+            r/<span><?= $notificationComment->text ?></span></p>
         </div>
         </a>
         <?php endif; ?>
@@ -185,14 +185,14 @@ $allNotifications = $notification->getUserNotifications($userId);
     </div>  
     </a>
     <?php else: ?>
-    <?php $notificationCommen = $comment->getComments("id",$singleNott["comment_id"]) ?>
-    <a href="comment.php?post_id=<?= $notificationCommen[0]["post_id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
+    <?php $notificationCommen = $comment->getComment("id",$singleNott["comment_id"]) ?>
+    <a href="comment.php?post_id=<?= $notificationCommen->post_id ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
     </div>
     <div class="nott-body">
         <p>u/<span><?= $senderInf->username ?></span> liked your comment</p>
-        <h4><?= $notificationCommen[0]["text"] ?></h4>
+        <h4><?= $notificationCommen->text ?></h4>
         <h4><?= $time->calculateTime($singleNott["time"]) ?></h4>
     </div>
     </a>

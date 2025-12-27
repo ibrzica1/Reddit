@@ -5,64 +5,24 @@ use Reddit\models\Db;
 
 class Comment extends Db
 {
+    public $id;
     public $text;
     public $user_id;
     public $post_id;
+    public $comment_id;
     public $time;
 
-    public function getComments($atribute,$value)
+    public function __construct($array)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM comment
-        WHERE $atribute = :value");
-        $stmt->bindParam(':value',$value);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        $this->id = $array['id'];
+        $this->text = $array['text'];
+        $this->user_id = $array['user_id'];
+        $this->post_id = $array['post_id'];
+        $this->comment_id = $array['comment_id'];
+        $this->time = $array['time'];
     }
 
-    public function getCommentCount($attribute,$value)
-    {
-        $stmt = $this->connection->prepare("SELECT * FROM comment
-        WHERE $attribute = :value");
-        $stmt->bindParam(':value',$value);
-        $stmt->execute();
-
-        if(empty($stmt))
-        {
-            $count = 0;
-            return $count;
-        }
-
-        $count = $stmt->rowCount();
-        return $count;
-    }
-
-    public function registerReply($text,$user_id,$post_id,$comment_id,$time)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, comment_id, time)
-        VALUES (:text, :user_id, :post_id, :comment_id, :time)");
-        $stmt->bindParam(':text',$text);
-        $stmt->bindParam(':user_id',$user_id);
-        $stmt->bindParam(':post_id',$post_id);
-        $stmt->bindParam(':comment_id',$comment_id);
-        $stmt->bindParam(':time',$time);
-
-        $stmt->execute();
-    }
-
-    public function registerComment($text,$user_id,$post_id,$time)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, time)
-        VALUES (:text, :user_id, :post_id, :time)");
-        $stmt->bindParam(':text',$text);
-        $stmt->bindParam(':user_id',$user_id);
-        $stmt->bindParam(':post_id',$post_id);
-        $stmt->bindParam(':time',$time);
-
-        $stmt->execute();
-    }
-
-    public function commentLength($text)
+    public static function commentLength($text)
     {
         return strlen($text) < 500;
     }

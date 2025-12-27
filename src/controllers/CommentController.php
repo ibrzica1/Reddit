@@ -6,8 +6,9 @@ use Reddit\models\Comment;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\controllers\NotificationController;
+use Reddit\repositories\CommentRepository;
 
-class CommentController extends Comment
+class CommentController extends CommentRepository
 {
     public function createReply($text,$commentId,$postId)
     {
@@ -39,7 +40,7 @@ class CommentController extends Comment
         exit();
         }
 
-        if(!$this->commentLength($text))
+        if(!Comment::commentLength($text))
         {
           $message = "Text cant be longer than 500 letters";
           $session->setSession("message",$message);
@@ -49,6 +50,15 @@ class CommentController extends Comment
 
         $userId = $session->getFromSession("user_id");
         $time = $timeStamp->time;
+
+        $newComment = new Comment([
+          'id' => NULL,
+          'text' => $text,
+          'user_id' => $userId,
+          'post_id' => $postId,
+          'comment_id' => $commentId,
+          'time' => $time
+        ]);
 
         $this->registerReply($text,$userId,$postId,$commentId,$time);
         $commentId = $this->connection->lastInsertId();
@@ -79,7 +89,7 @@ class CommentController extends Comment
         exit();
         }
 
-        if(!$this->commentLength($text))
+        if(!Comment::commentLength($text))
         {
           $message = "Text cant be longer than 500 letters";
           $session->setSession("message",$message);
@@ -89,6 +99,15 @@ class CommentController extends Comment
 
         $userId = $session->getFromSession("user_id");
         $time = $timeStamp->time;
+
+        $newComment = new Comment([
+          'id' => NULL,
+          'text' => $text,
+          'user_id' => $userId,
+          'post_id' => $postId,
+          'comment_id' => NULL,
+          'time' => $time
+        ]);
 
         $this->registerComment($text,$userId,$postId,$time);
         $commentId = $this->connection->lastInsertId();

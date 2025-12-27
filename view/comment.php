@@ -7,10 +7,10 @@ use Reddit\services\TimeService;
 use Reddit\models\Image;
 use Reddit\models\Post;
 use Reddit\models\Like;
-use Reddit\models\Comment;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\CommentRepository;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -19,7 +19,7 @@ $image = new Image();
 $post = new Post();
 $user = new UserRepository();
 $like = new Like();
-$comment = new Comment();
+$comment = new CommentRepository();
 $notification = new Notification();
 
 if(!$session->sessionExists("username"))
@@ -112,14 +112,14 @@ $nottNumber = count($notifications);
         </div>  
         </a>
         <?php else: ?>
-        <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
+        <?php $notificationComment = $comment->getComment("id",$notificationItem["comment_id"]) ?>
         <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> liked your comment
-            r/<span><?= $notificationComment[0]["text"] ?></span></p>
+            r/<span><?= $notificationComment->text ?></span></p>
         </div>
         </a>
         <?php endif; ?>
@@ -268,20 +268,20 @@ $nottNumber = count($notifications);
 
 <div class="comments-grid">
 <?php foreach($comments as $commentItem): ?>
-<?php if(empty($commentItem['comment_id'])): ?>
-    <?php $commId = $commentItem["id"]; ?>
-    <?php $commentUser = $user->getUserByAttribute("id",$commentItem["user_id"]) ?>
-    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem["user_id"])  ?>
+<?php if(empty($commentItem->comment_id)): ?>
+    <?php $commId = $commentItem->id; ?>
+    <?php $commentUser = $user->getUserByAttribute("id",$commentItem->user_id) ?>
+    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id)  ?>
     <?php $commentLikeStatus = empty($commentLikes["status"]) ? "neutral" : $commentLikes["status"] ?>
     
     <div class="single-comment">
         <div class="comment-author-info">
             <img src="../images/avatars/<?= $commentUser->avatar ?>.webp" class="comment-avatar">
             <span class="comment-username">u/<?= $commentUser->username ?></span>
-            <span class="comment-time"><?= $time->calculateTime($commentItem["time"]) ?></span>
+            <span class="comment-time"><?= $time->calculateTime($commentItem->time) ?></span>
         </div>
         <div class="comment-content">
-            <p><?= $commentItem["text"] ?></p>
+            <p><?= $commentItem->text ?></p>
         </div>
         <div class="comment-actions">
             <div class="like-btn" id="comm-like-<?= $commId ?>">
@@ -309,19 +309,19 @@ $nottNumber = count($notifications);
         </form>
         <div class="reply-comments-grid">
         <?php foreach($comments as $replyItem): ?>
-        <?php if($replyItem["comment_id"] === $commentItem["id"]): ?>
-        <?php $replyId = $replyItem["id"]; ?>
-        <?php $replyUser = $user->getUserByAttribute("id",$replyItem["user_id"]) ?>
-        <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem["user_id"])  ?>
+        <?php if($replyItem->comment_id === $commentItem->id): ?>
+        <?php $replyId = $replyItem->id; ?>
+        <?php $replyUser = $user->getUserByAttribute("id",$replyItem->user_id) ?>
+        <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->user_id)  ?>
         <?php $replyLikeStatus = empty($replyLikes["status"]) ? "neutral" : $replyLikes["status"] ?>
             <div class="single-comment">
             <div class="comment-author-info">
                 <img src="../images/avatars/<?= $replyUser->avatar ?>.webp" class="comment-avatar">
                 <span class="comment-username">u/<?= $replyUser->username?></span>
-                <span class="comment-time"><?= $time->calculateTime($replyItem["time"]) ?></span>
+                <span class="comment-time"><?= $time->calculateTime($replyItem->time) ?></span>
             </div>
             <div class="comment-content">
-                <p><?= $replyItem["text"] ?></p>
+                <p><?= $replyItem->text ?></p>
             </div>
             <div class="comment-actions">
             <div class="like-btn" id="comm-like-<?= $replyId ?>">

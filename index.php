@@ -6,16 +6,16 @@ use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\Notification;
 use Reddit\models\Post;
-use Reddit\models\Comment;
 use Reddit\models\Image;
 use Reddit\models\Like;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\CommentRepository;
 
 $userRepository = new UserRepository();
 $community = new CommunityRepository();
 $post = new Post();
-$comment = new Comment();
+$comment = new CommentRepository();
 $notification = new Notification();
 $session = new SessionService();
 $time = new TimeService();
@@ -91,19 +91,19 @@ $posts = $post->getAllPosts($limit);
            <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
-            <p>u/<span><?= $senderInfo["username"] ?></span> liked your post 
+            <p>u/<span><?= $senderInfo->username ?></span> liked your post 
             r/<span><?= $notificationPost[0]["title"] ?></span></p>
         </div>  
         </a>
         <?php else: ?>
-        <?php $notificationComment = $comment->getComments("id",$notificationItem["comment_id"]) ?>
-        <a href="comment.php?post_id=<?= $notificationComment[0]["post_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php $notificationComment = $comment->getComment("id",$notificationItem["comment_id"]) ?>
+        <a href="comment.php?post_id=<?= $notificationComment->$post_id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> liked your comment
-            r/<span><?= $notificationComment[0]["text"] ?></span></p>
+            r/<span><?= $notificationComment->text ?></span></p>
         </div>
         </a>
         <?php endif; ?>
@@ -111,7 +111,7 @@ $posts = $post->getAllPosts($limit);
         <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
         <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo["avatar"] ?>.webp">
+           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> commented on your post
