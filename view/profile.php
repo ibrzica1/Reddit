@@ -4,19 +4,19 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Image;
 use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $user = new UserRepository();
 $community = new CommunityRepository();
-$image = new Image();
+$image = new ImageRepository();
 $post = new PostRepository();
 $like = new Like();
 $comment = new CommentRepository();
@@ -219,7 +219,7 @@ $nottNumber = count($notifications);
             <?php $communityImg = $image->getCommunityImage($community->id); ?>
             <div class="community-card">
     <div class="community-icon">
-        <img src='../images/community/<?=$communityImg['name']?>' alt="">
+        <img src='../images/community/<?=$communityImg->name?>' alt="">
     </div>
     <div class="community-info">
         <a href="community.php?comm_id=<?=$community->id?>" class="community-name">
@@ -259,7 +259,7 @@ $nottNumber = count($notifications);
     <?php $communityImg = $image->getCommunityImage($postItem->community_id) ?>
     <div class="post-container">
     <a href="community.php?comm_id=<?=$commId?>" class="post-user-container">
-        <img src="../images/community/<?=$communityImg["name"]?>">
+        <img src="../images/community/<?=$communityImg->name?>">
         <p><span>u/</span><?= $postCommunity->name ?></p>
         <h3><?= $time->calculateTime($postItem->time); ?></h3>
     </a>
@@ -274,7 +274,7 @@ $nottNumber = count($notifications);
             <div class="left-arrow" id="leftArrow-<?= $postId ?>">
                 <img src="../images/icons/arrowLeft.png">
             </div>
-            <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+            <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
             <div class="right-arrow" id="rightArrow-<?= $postId ?>">
                 <img src="../images/icons/arrowRight.png">
             </div>
@@ -445,7 +445,7 @@ fetch('../decisionMaker.php', {
 
     <div class="single-comment">
         <div class="post-info">
-            <img src="../images/community/<?= $commentCommunityImg["name"] ?>" class="community-img">
+            <img src="../images/community/<?= $commentCommunityImg->name ?>" class="community-img">
             <p class="comment-community-name">r/<?= $commentCommunity->name ?></p>
             <p class="post-title"><?= $commentPost->title ?></p>
         </div>

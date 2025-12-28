@@ -5,12 +5,12 @@ require_once "vendor/autoload.php";
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\Notification;
-use Reddit\models\Image;
 use Reddit\models\Like;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 $userRepository = new UserRepository();
 $community = new CommunityRepository();
@@ -19,7 +19,7 @@ $comment = new CommentRepository();
 $notification = new Notification();
 $session = new SessionService();
 $time = new TimeService();
-$image = new Image();
+$image = new ImageRepository();
 $like = new Like();
 
 if(isset($_SESSION['user_id'])) {
@@ -198,7 +198,7 @@ $posts = $post->getAllPosts($limit);
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="images/icons/arrowLeft.png">
         </div>
-        <img src="images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+        <img src="images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
         <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="images/icons/arrowRight.png">
         </div>

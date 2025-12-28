@@ -4,18 +4,18 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Image;
 use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
-$image = new Image();
+$image = new ImageRepository();
 $post = new PostRepository();
 $comment = new CommentRepository();
 $user = new UserRepository();
@@ -64,7 +64,7 @@ $nottNumber = count($notifications);
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$communityImage["name"]?>">
+            <img src="../images/community/<?=$communityImage->name?>">
             <p>r/<?= $selectedCommunity->name ?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
@@ -175,7 +175,7 @@ $nottNumber = count($notifications);
     <div class="banner" style="background-image: url('../images/community/banner.jpg');"></div>
     <div class="title-container">
         <div class="image-container">
-            <img src="../images/community/<?=$communityImage["name"]?>">
+            <img src="../images/community/<?=$communityImage->name?>">
         </div>
         <div class="name-container">
             <p><span>r/</span><?=$selectedCommunity->name?></p>
@@ -222,7 +222,7 @@ $nottNumber = count($notifications);
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
-        <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay-<?= $postId ?>">
+        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
         <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="../images/icons/arrowRight.png">
         </div>

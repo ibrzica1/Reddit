@@ -4,11 +4,11 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\models\Notification;
-use Reddit\models\Image;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 $session = new SessionService();
 $user = new UserRepository();
@@ -16,7 +16,7 @@ $community = new CommunityRepository();
 $post = new PostRepository();
 $comment = new CommentRepository();
 $notification = new Notification();
-$image = new Image();
+$image = new ImageRepository();
 $communityId = "";
 
 if(!empty($_GET["comm_id"]))
@@ -62,7 +62,7 @@ $nottNumber = count($notifications);
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$commImage["name"]?>">
+            <img src="../images/community/<?=$commImage->name?>">
             <p>r/<?= $selectedCommunity->name?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
@@ -188,7 +188,7 @@ $nottNumber = count($notifications);
 
 <?php if(!empty($selectedCommunity)): ?>
 <div class="community-container">
-    <img src="../images/community/<?=$commImage["name"]?>">
+    <img src="../images/community/<?=$commImage->name?>">
     <p><span>r/</span><?= $selectedCommunity->name ?></p>
 </div>
 <?php endif; ?>

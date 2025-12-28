@@ -4,7 +4,6 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\models\Notification;
-use Reddit\models\Post;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;

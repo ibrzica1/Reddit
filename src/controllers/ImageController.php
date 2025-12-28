@@ -2,10 +2,9 @@
 
 namespace Reddit\controllers;
 
-use Reddit\models\Image;
-use Reddit\services\SessionService;
+use Reddit\repositories\ImageRepository;
 
-class ImageController extends Image
+class ImageController extends ImageRepository
 {
     public function communityImage($communityId)
     {

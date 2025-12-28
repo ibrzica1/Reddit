@@ -4,18 +4,18 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Image;
 use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
-$image = new Image();
+$image = new ImageRepository();
 $post = new PostRepository();
 $user = new UserRepository();
 $like = new Like();
@@ -72,7 +72,7 @@ $nottNumber = count($notifications);
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$communityImage["name"]?>">
+            <img src="../images/community/<?=$communityImage->name?>">
             <p>r/<?= $postCommunity->name ?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $postCommunity->name ?>" id="searchInput">
@@ -189,7 +189,7 @@ $nottNumber = count($notifications);
             <img src="../images/icons/back.png">
         </button>
         <div class="comm-image">
-            <img src="../images/community/<?= $communityImage["name"] ?>">
+            <img src="../images/community/<?= $communityImage->name ?>">
         </div>
         <div class="comm-user-info">
             <div class="comm-name-time">
@@ -227,7 +227,7 @@ $nottNumber = count($notifications);
         <div class="left-arrow" id="leftArrow">
             <img src="../images/icons/arrowLeft.png">
         </div>
-        <img src="../images/uploaded/<?= $postImages[0]["name"] ?>" id="imageDisplay">
+        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay">
         <div class="right-arrow" id="rightArrow">
             <img src="../images/icons/arrowRight.png">
         </div>

@@ -8,6 +8,7 @@ use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\controllers\NotificationController;
 use Reddit\repositories\PostRepository;
+use Reddit\repositories\ImageRepository;
 
 class PostController extends PostRepository
 {
@@ -81,7 +82,7 @@ class PostController extends PostRepository
     public function imagePost($title, $files,$communityId)
     {
         $session = new SessionService();
-        $image = new Image();
+        $image = new ImageRepository();
         $timeStamp = new TimeService();
         $notificationController = new NotificationController();
 
@@ -130,7 +131,7 @@ class PostController extends PostRepository
                 'size' => $files['size'][$key]
             ];
 
-            if(!$image->isValidSize($uploadedImages['size']))
+            if(!Image::isValidSize($uploadedImages['size']))
             {
             $message = "Picture {$uploadedImages['name']} is to big";
             $session->setSession("message",$message);
@@ -138,7 +139,7 @@ class PostController extends PostRepository
             exit();
             }
 
-            if(!$image->isValidDimension($uploadedImages['tmp_name']))
+            if(!Image::isValidDimension($uploadedImages['tmp_name']))
             {
             $message = "Picture {$uploadedImages['name']} 
             cant be wider than 1920 or higher than 1024";
@@ -147,7 +148,7 @@ class PostController extends PostRepository
             exit();
             }
 
-            if(!$image->isValidExtension($uploadedImages['name']))
+            if(!Image::isValidExtension($uploadedImages['name']))
             {
             $message = "Picture {$uploadedImages['name']} 
             has invalid extension";
@@ -178,7 +179,7 @@ class PostController extends PostRepository
                 'size' => $files['size'][$key]
             ];
 
-            $randomName = $image->generateRandomName('jpg');
+            $randomName = Image::generateRandomName('jpg');
             $imageFolder = "../images/uploaded/";
 
             if(!is_dir($imageFolder))
@@ -197,7 +198,7 @@ class PostController extends PostRepository
     public function deletePostController($postId,$location)
     {
         $session = new SessionService();
-        $image = new Image();
+        $image = new ImageRepository();
 
         if(!isset($postId))
         {
@@ -219,7 +220,7 @@ class PostController extends PostRepository
         $postImages = $image->getPostImage($postId);
         foreach($postImages as $postImage)
         {
-            $fileName = $postImage['name'];
+            $fileName = $postImage->name;
             $path = 'images/uploaded/'. $fileName;
 
             if (file_exists($path)) {
