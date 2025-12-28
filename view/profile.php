@@ -4,13 +4,13 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
+use Reddit\repositories\LikeRepository;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -18,7 +18,7 @@ $user = new UserRepository();
 $community = new CommunityRepository();
 $image = new ImageRepository();
 $post = new PostRepository();
-$like = new Like();
+$like = new LikeRepository();
 $comment = new CommentRepository();
 $notification = new Notification();
 
@@ -253,7 +253,7 @@ $nottNumber = count($notifications);
     <?php $postId = $postItem->id ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$id) ?>
     <?php $likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"]; ?>
-    <?php $likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
+    <?php $likeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
     <?php $postImages = []; ?>
     
     <?php $communityImg = $image->getCommunityImage($postItem->community_id) ?>
@@ -441,7 +441,7 @@ fetch('../decisionMaker.php', {
     <?php $commentCommunity = $community->getCommunity("id",$commentPost->community_id); ?>
     <?php $commentCommunityImg = $image->getCommunityImage($commentCommunity->id); ?>
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id);  ?>
-    <?php $commentLikeStatus = empty($commentLikes["status"]) ? "neutral" : $commentLikes["status"] ?>
+    <?php $commentLikeStatus = empty($commentLikes->status) ? "neutral" : $commentLikes->status ?>
 
     <div class="single-comment">
         <div class="post-info">

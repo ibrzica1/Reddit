@@ -4,13 +4,13 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
+use Reddit\repositories\LikeRepository;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -19,7 +19,7 @@ $image = new ImageRepository();
 $post = new PostRepository();
 $comment = new CommentRepository();
 $user = new UserRepository();
-$like = new Like();
+$like = new LikeRepository();
 $notification = new Notification();
 
 if(!$session->sessionExists("username"))
@@ -203,7 +203,7 @@ $nottNumber = count($notifications);
     <?php $postUser = $user->getUserByAttribute("id",$postItem->user_id); ?>
     <?php $postId = $postItem->id; ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->user_id); ?>
-    <?php $postLikeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
+    <?php $postLikeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">

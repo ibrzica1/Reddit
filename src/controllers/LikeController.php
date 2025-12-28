@@ -2,10 +2,10 @@
 
 namespace Reddit\controllers;
 
-use Reddit\models\Like;
 use Reddit\services\KarmaService;
+use Reddit\repositories\LikeRepository;
 
-class LikeController extends Like
+class LikeController extends LikeRepository
 {
     public function addCommentDislikeController($userId,$commId)
     {

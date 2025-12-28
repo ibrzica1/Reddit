@@ -1,0 +1,95 @@
+<?php
+
+namespace Reddit\repositories;
+
+use Reddit\models\Db;
+use Reddit\models\Like;
+
+class LikeRepository extends Db
+{
+     public function getLike(string $attribute,mixed $value,int $userId): Like
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE $attribute = :value
+        AND user_id = :user_id");
+        $stmt->bindParam(':value',$value);
+        $stmt->bindParam(':user_id',$userId);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        $like = new Like($result);
+        return $like;
+    }
+
+    public function addLikeComment(Like $like): void
+    {
+        $stmt = $this->connection->prepare("INSERT INTO likes (user_id,comment_id,status)
+        VALUES (:user_id, :comment_id, :status)");
+        $stmt->bindParam(':user_id', $like->user_id);
+        $stmt->bindParam(':comment_id', $like->comment_id);
+        $stmt->bindParam(':status', $like->status);
+
+        $stmt->execute();
+    }
+
+    public function addLikePost(Like $like): void
+    {
+        $stmt = $this->connection->prepare("INSERT INTO likes (user_id,post_id,status)
+        VALUES (:user_id, :post_id, :status)");
+        $stmt->bindParam(':user_id', $like->user_id);
+        $stmt->bindParam(':post_id', $like->post_id);
+        $stmt->bindParam(':status', $like->status);
+
+        $stmt->execute();
+    }
+
+    public function updateLike($attribute,$value,$status,$userId)
+    {
+        $stmt = $this->connection->prepare("UPDATE likes 
+        SET status = :status
+        WHERE user_id = :user_id
+        AND $attribute = :value");
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->bindParam(':value', $value);
+        $stmt->bindParam(':status', $status);
+
+        $stmt->execute();
+    }
+
+    public function getLikeCount($attribute,$value)
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
+        $stmt->execute();
+        
+        $likes = $stmt->fetchAll();
+
+        if(empty($likes))
+        {
+            $count = 0;
+            return $count;
+        }    
+        $positive = 0;
+        $negative = 0;
+        foreach($likes as $like)
+        {
+            if($like["status"] == "liked")
+            {
+                $positive++;
+            }
+            if($like["status"] == "disliked")
+            {
+                $negative++;
+            }
+        }
+        $count = $positive - $negative;
+        $count = $count < 0 ? 0 : $count;
+        return $count;
+    }
+
+    public function deleteLike($likeId)
+    {
+        $stmt = $this->connection->prepare("DELETE FROM likes WHERE id = :id");
+        $stmt->bindParam(':id',$likeId);
+        $stmt->execute();
+    }
+}

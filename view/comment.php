@@ -4,13 +4,13 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
+use Reddit\repositories\LikeRepository;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -18,7 +18,7 @@ $community = new CommunityRepository();
 $image = new ImageRepository();
 $post = new PostRepository();
 $user = new UserRepository();
-$like = new Like();
+$like = new LikeRepository();
 $comment = new CommentRepository();
 $notification = new Notification();
 
@@ -43,7 +43,7 @@ $postUserId = $selectedPost->user_id;
 $postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
-$likeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"];
+$likeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status;
 $comments = $comment->getComments("post_id",$postId);
 $imgNum = 0;
 $notifications = $notification->unreadNotifications($userId);
@@ -272,7 +272,7 @@ $nottNumber = count($notifications);
     <?php $commId = $commentItem->id; ?>
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem->user_id) ?>
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id)  ?>
-    <?php $commentLikeStatus = empty($commentLikes["status"]) ? "neutral" : $commentLikes["status"] ?>
+    <?php $commentLikeStatus = empty($commentLikes->status) ? "neutral" : $commentLikes->status ?>
     
     <div class="single-comment">
         <div class="comment-author-info">
@@ -313,7 +313,7 @@ $nottNumber = count($notifications);
         <?php $replyId = $replyItem->id; ?>
         <?php $replyUser = $user->getUserByAttribute("id",$replyItem->user_id) ?>
         <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->user_id)  ?>
-        <?php $replyLikeStatus = empty($replyLikes["status"]) ? "neutral" : $replyLikes["status"] ?>
+        <?php $replyLikeStatus = empty($replyLikes->status) ? "neutral" : $replyLikes->status ?>
             <div class="single-comment">
             <div class="comment-author-info">
                 <img src="../images/avatars/<?= $replyUser->avatar ?>.webp" class="comment-avatar">
