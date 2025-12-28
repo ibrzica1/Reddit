@@ -4,16 +4,16 @@ require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Post;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
+use Reddit\repositories\PostRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
-$post = new Post();
+$post = new PostRepository();
 $user = new UserRepository();
 $comment = new CommentRepository();
 $notification = new Notification();
@@ -69,15 +69,15 @@ $allNotifications = $notification->getUserNotifications($userId);
         <?php if($notificationItem["seen"] == "false"): ?>
         <?php if($notificationItem["type"] == "like"): ?>
         <?php if(!empty($notificationItem["post_id"])): ?>
-        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
-        <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
+        <?php $notificationPost = $post->getPostById($notificationItem["post_id"]) ?>
+        <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem["id"] ?>" 
         onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> liked your post 
-            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+            r/<span><?= $notificationPost->title ?></span></p>
         </div>  
         </a>
         <?php else: ?>
@@ -93,14 +93,14 @@ $allNotifications = $notification->getUserNotifications($userId);
         </a>
         <?php endif; ?>
         <?php elseif($notificationItem["type"] == "comment"): ?>
-        <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
-        <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php $notificationPost = $post->getPostById($notificationItem["post_id"]); ?>
+        <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
         <div class="notification-body">
             <p>u/<span><?= $senderInfo->username ?></span> commented on your post
-            r/<span><?= $notificationPost[0]["title"] ?></span></p>
+            r/<span><?= $notificationPost->title ?></span></p>
         </div>
         </a>
         <?php elseif($notificationItem["type"] == "post"): ?>
@@ -172,15 +172,15 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php $senderInf = $user->getUserByAttribute("id",$singleNott["sender_id"]); ?>
     <?php if($singleNott["type"] == "like"): ?>
     <?php if(!empty($singleNott["post_id"])): ?>
-    <?php $notificationPos = $post->getPost("id",$singleNott["post_id"]) ?>
-    <a href="community.php?comm_id=<?= $notificationPos[0]["community_id"] ?>&nott_id=<?= $singleNott["id"] ?>" 
+    <?php $notificationPos = $post->getPostById($singleNott["post_id"]) ?>
+    <a href="community.php?comm_id=<?= $notificationPos->community_id ?>&nott_id=<?= $singleNott["id"] ?>" 
     onclick="<?php $notification->changeSeenStatus($singleNott["id"],"true") ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
     </div>
     <div class="nott-body">
         <p>u/<span><?= $senderInf->username ?></span> liked your post </p>
-        <h4><?= $notificationPos[0]["title"] ?></h4>
+        <h4><?= $notificationPos->title ?></h4>
         <h4><?= $time->calculateTime($singleNott["time"]) ?></h4>
     </div>  
     </a>
@@ -198,14 +198,14 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php endif; ?>
     <?php elseif($singleNott["type"] == "comment"): ?>
-    <?php $notificationPos = $post->getPost("id",$singleNott["post_id"]); ?>
-    <a href="comment.php?post_id=<?= $notificationPos[0]["id"] ?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
+    <?php $notificationPos = $post->getPostById($singleNott["post_id"]); ?>
+    <a href="comment.php?post_id=<?= $notificationPos->id?>&nott_id=<?= $singleNott["id"] ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
     </div>
     <div class="nott-body">
         <p>u/<span><?= $senderInf->username ?></span> commented on your post</p>
-        <h4><?= $notificationPos[0]["title"] ?></h4>
+        <h4><?= $notificationPos->title ?></h4>
         <h4><?= $time->calculateTime($singleNott["time"]) ?></h4>
     </div>
     </a>
@@ -215,7 +215,7 @@ $allNotifications = $notification->getUserNotifications($userId);
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
     </div>
-    <div class="nott-body">
+    <div class="nott-body"> 
         <p>u/<span><?= $senderInf->username ?></span> posted in your community</p>
         <h4><?= $notificationCommunit->name ?></h4>
         <h4><?= $time->calculateTime($singleNott["time"]) ?></h4>

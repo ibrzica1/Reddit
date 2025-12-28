@@ -7,8 +7,9 @@ use Reddit\models\Image;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\controllers\NotificationController;
+use Reddit\repositories\PostRepository;
 
-class PostController extends Post
+class PostController extends PostRepository
 {
     public function textPost(string $title,string $text,int $communityId): void
     {
@@ -44,7 +45,7 @@ class PostController extends Post
         exit();
         }
 
-        if(!$this->titleLength($title))
+        if(!Post::titleLength($title))
         {
         $message = "Title cant be bigger then 300 letters and smaller then 2 letter";
         $session->setSession("message",$message);
@@ -52,7 +53,7 @@ class PostController extends Post
         exit();
         }
 
-        if(!$this->textLength($text))
+        if(!Post::textLength($text))
         {
         $message = "Text cant be bigger then 1000 letters and smaller then 2 letter";
         $session->setSession("message",$message);
@@ -60,7 +61,16 @@ class PostController extends Post
         exit();
         }
 
-        $this->registerTextPost($title,$text,$user_id,$communityId,$time);
+        $newPost = new Post([
+            'id' => NULL,
+            'title' => $title,
+            'text' => $text,
+            'user_id' => $user_id,
+            'community_id' => $communityId,
+            'time' => $time
+        ]);
+
+        $this->registerTextPost($newPost);
         $postId = $this->connection->lastInsertId();
         $notificationController->postNotification($user_id,$postId,$communityId,$time);
 
@@ -77,7 +87,6 @@ class PostController extends Post
 
         $userId = $session->getFromSession('user_id');
         $time = $timeStamp->time;
-        $likes = 0;
 
         if(!isset($title))
         {
@@ -103,7 +112,7 @@ class PostController extends Post
         exit();
         }
 
-        if(!$this->titleLength($title))
+        if(!Post::titleLength($title))
         {
         $message = "Title cant be bigger then 300 letters and smaller then 2 letter";
         $session->setSession("message",$message);
@@ -148,7 +157,15 @@ class PostController extends Post
             }
         }
 
-        $this->registerImagePost($title,$userId,$communityId,$time);
+        $newPost = new Post([
+            'id' => NULL,
+            'title' => $title,
+            'user_id' => $userId,
+            'community_id' => $communityId,
+            'time' => $time
+        ]);
+
+        $this->registerImagePost($newPost);
         $postId = $this->connection->lastInsertId();
 
         foreach($files['name'] as $key => $file)

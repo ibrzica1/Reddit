@@ -1,86 +1,34 @@
 <?php
 
 namespace Reddit\models;
-use Reddit\models\Db;
 
-class Post extends Db
+class Post
 {
+    public $id;
     public $title;
     public $text;
-    public $image;
     public $user_id;
     public $community_id;
     public $time;
 
-    public function getAllPosts(int $limit)
+    public function __construct($array)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM post ORDER BY time DESC LIMIT :limit");
-        $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        $this->id = $array['id'];
+        $this->title = $array['title'];
+        $this->text = $array['text'];
+        $this->user_id = $array['user_id'];
+        $this->community_id = $array['community_id'];
+        $this->time = $array['time'];
     }
 
-    public function countPosts()
-    {
-        $stmt = $this->connection->prepare("SELECT COUNT(*) FROM post");
-        $stmt->execute();
-
-        return (int) $stmt->fetchColumn();
-    }
-
-    public function getPost(string $attribute, mixed $value): array
-    {
-        $stmt = $this->connection->prepare("SELECT * FROM post WHERE $attribute = :value");
-        $stmt->bindParam(':value',$value);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    public function titleLength($title)
+    public static function titleLength($title)
     {
         return strlen($title) >= 2 && strlen($title) <= 300;
     }
 
-    public function textLength($text)
+    public static function textLength($text)
     {
         return strlen($text) >= 2 && strlen($text) <= 1000;
     }
 
-    public function registerTextPost($title, $text, $user_id, $community_id, $time)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time)
-        VALUES (:title, :text, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$title);
-        $stmt->bindParam(':text',$text);
-        $stmt->bindParam(':user_id',$user_id);
-        $stmt->bindParam(':community_id',$community_id);
-        $stmt->bindParam(':time',$time);
-
-        $stmt->execute();
-
-       
-    }
-
-    public function registerImagePost($title, $user_id, $community_id, $time)
-    {
-        $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time)
-        VALUES (:title, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$title);
-        $stmt->bindParam(':user_id',$user_id);
-        $stmt->bindParam(':community_id',$community_id);
-        $stmt->bindParam(':time',$time);
-
-        $stmt->execute();
-
-    }
-
-    public function deletePost($postId)
-    {
-        $stmt = $this->connection->prepare("DELETE FROM post WHERE id = :id");
-        $stmt->bindParam(':id',$postId);
-
-        $stmt->execute();
-    }
 }

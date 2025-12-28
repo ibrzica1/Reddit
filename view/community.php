@@ -5,18 +5,18 @@ require_once "../vendor/autoload.php";
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\models\Image;
-use Reddit\models\Post;
 use Reddit\models\Like;
 use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
+use Reddit\repositories\PostRepository;
 
 $session = new SessionService();
 $time = new TimeService();
 $community = new CommunityRepository();
 $image = new Image();
-$post = new Post();
+$post = new PostRepository();
 $comment = new CommentRepository();
 $user = new UserRepository();
 $like = new Like();
@@ -92,15 +92,15 @@ $nottNumber = count($notifications);
             <?php if($notificationItem["seen"] == "false"): ?>
             <?php if($notificationItem["type"] == "like"): ?>
             <?php if(!empty($notificationItem["post_id"])): ?>
-            <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]) ?>
-            <a href="community.php?comm_id=<?= $notificationPost[0]["community_id"] ?>&nott_id=<?= $notificationItem["id"] ?>" 
+            <?php $notificationPost = $post->getPostById($notificationItem["post_id"]) ?>
+            <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem["id"] ?>" 
             onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> liked your post 
-                r/<span><?= $notificationPost[0]["title"] ?></span></p>
+                r/<span><?= $notificationPost->title ?></span></p>
             </div>  
             </a>
             <?php else: ?>
@@ -116,14 +116,14 @@ $nottNumber = count($notifications);
             </a>
             <?php endif; ?>
             <?php elseif($notificationItem["type"] == "comment"): ?>
-            <?php $notificationPost = $post->getPost("id",$notificationItem["post_id"]); ?>
-            <a href="comment.php?post_id=<?= $notificationPost[0]["id"] ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+            <?php $notificationPost = $post->getPostById($notificationItem["post_id"]); ?>
+            <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
             <div class="sender-avatar">
             <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
             </div>
             <div class="notification-body">
                 <p>u/<span><?= $senderInfo->username ?></span> commented on your post
-                r/<span><?= $notificationPost[0]["title"] ?></span></p>
+                r/<span><?= $notificationPost->title ?></span></p>
             </div>
             </a>
             <?php elseif($notificationItem["type"] == "post"): ?>
@@ -200,21 +200,21 @@ $nottNumber = count($notifications);
 <main class="posts-grid">
     <?php if(!empty($communityPosts)): ?>
     <?php foreach($communityPosts as $postItem): ?>
-    <?php $postUser = $user->getUserByAttribute("id",$postItem["user_id"]); ?>
-    <?php $postId = $postItem["id"]; ?>
-    <?php $postLikes = $like->getLike("post_id",$postId,$postItem["user_id"]); ?>
+    <?php $postUser = $user->getUserByAttribute("id",$postItem->user_id); ?>
+    <?php $postId = $postItem->id; ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$postItem->user_id); ?>
     <?php $postLikeStatus = empty($postLikes["status"]) ? "neutral" : $postLikes["status"] ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
         <img src="../images/avatars/<?=$postUser->avatar?>.webp">
         <p><span>u/</span><?= $postUser->username ?></p>
-        <h3><?= $time->calculateTime($postItem["time"]); ?></h3>
+        <h3><?= $time->calculateTime($postItem->time); ?></h3>
     </div>
     <div class="post-content-container">
-        <h3><?= $postItem["title"] ?></h3>
-    <?php if(!empty($postItem["text"])): ?>
-        <p><?= $postItem["text"] ?></p>
+        <h3><?= $postItem->title ?></h3>
+    <?php if(!empty($postItem->text)): ?>
+        <p><?= $postItem->text ?></p>
     <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
     <?php $imgCount = count($postImages); ?>
@@ -246,7 +246,7 @@ $nottNumber = count($notifications);
             <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
         </a>
         </div>
-        <?php if($postItem["user_id"] == $userId): ?>
+        <?php if($postItem->user_id == $userId): ?>
         <div class="delete-btn">
         <img src="../images/icons/set.png">
         </div>
