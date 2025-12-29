@@ -4,23 +4,24 @@ require_once "vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\models\Notification;
 use Reddit\repositories\UserRepository;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
 use Reddit\repositories\LikeRepository;
+use Reddit\repositories\NotificationRepository;
 
 $userRepository = new UserRepository();
 $community = new CommunityRepository();
 $post = new PostRepository();
 $comment = new CommentRepository();
-$notification = new Notification();
+$notification = new NotificationRepository();
 $session = new SessionService();
 $time = new TimeService();
 $image = new ImageRepository();
 $like = new LikeRepository();
+
 
 if(isset($_SESSION['user_id'])) {
     $id = $session->getFromSession('user_id');
@@ -80,13 +81,13 @@ $posts = $post->getAllPosts($limit);
         <p class="empty-notification">There is no new notifications</p>
         <?php else: ?>
         <?php foreach($notifications as $notificationItem): ?>
-        <?php $senderInfo = $userRepository->getUserByAttribute("id",$notificationItem["sender_id"]); ?>
-        <?php if($notificationItem["seen"] == "false"): ?>
-        <?php if($notificationItem["type"] == "like"): ?>
-        <?php if(!empty($notificationItem["post_id"])): ?>
-        <?php $notificationPost = $post->getPostById($notificationItem["post_id"]) ?>
-        <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem["id"] ?>" 
-        onclick="<?php $notification->changeSeenStatus($notificationItem["id"],"true") ?>" class="single-notification">
+        <?php $senderInfo = $userRepository->getUserByAttribute("id",$notificationItem->sender_id); ?>
+        <?php if($notificationItem->seen == "false"): ?>
+        <?php if($notificationItem->type == "like"): ?>
+        <?php if(!empty($notificationItem->post_id)): ?>
+        <?php $notificationPost = $post->getPostById($notificationItem->post_id) ?>
+        <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem->id ?>" 
+        onclick="<?php $notification->changeSeenStatus($notificationItem->id,"true") ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
@@ -96,8 +97,8 @@ $posts = $post->getAllPosts($limit);
         </div>  
         </a>
         <?php else: ?>
-        <?php $notificationComment = $comment->getComment("id",$notificationItem["comment_id"]) ?>
-        <a href="comment.php?post_id=<?= $notificationComment->$post_id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php $notificationComment = $comment->getComment("id",$notificationItem->comment_id) ?>
+        <a href="comment.php?post_id=<?= $notificationComment->$post_id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
@@ -107,9 +108,9 @@ $posts = $post->getAllPosts($limit);
         </div>
         </a>
         <?php endif; ?>
-        <?php elseif($notificationItem["type"] == "comment"): ?>
-        <?php $notificationPost = $post->getPostById($notificationItem["post_id"]); ?>
-        <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php elseif($notificationItem->type == "comment"): ?>
+        <?php $notificationPost = $post->getPostById($notificationItem->post_id); ?>
+        <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>
@@ -118,9 +119,9 @@ $posts = $post->getAllPosts($limit);
             r/<span><?= $notificationPost->title ?></span></p>
         </div>
         </a>
-        <?php elseif($notificationItem["type"] == "post"): ?>
-        <?php $notificationCommunity = $community->getCommunity("id",$notificationItem["community_id"]); ?>
-        <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem["id"] ?>" class="single-notification">
+        <?php elseif($notificationItem->type == "post"): ?>
+        <?php $notificationCommunity = $community->getCommunity("id",$notificationItem->community_id); ?>
+        <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
         <div class="sender-avatar">
            <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
         </div>

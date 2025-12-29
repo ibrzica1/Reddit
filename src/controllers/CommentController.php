@@ -60,7 +60,7 @@ class CommentController extends CommentRepository
           'time' => $time
         ]);
 
-        $this->registerReply($text,$userId,$postId,$commentId,$time);
+        $this->registerReply($newComment);
         $commentId = $this->connection->lastInsertId();
         $notificationController->commentNotification($userId,$commentId,$postId,$time);
 
@@ -109,7 +109,7 @@ class CommentController extends CommentRepository
           'time' => $time
         ]);
 
-        $this->registerComment($text,$userId,$postId,$time);
+        $this->registerComment($newComment);
         $commentId = $this->connection->lastInsertId();
         $notificationController->commentNotification($userId,$commentId,$postId,$time);
 

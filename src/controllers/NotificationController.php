@@ -3,20 +3,22 @@
 namespace Reddit\controllers;
 
 use Reddit\models\Notification;
-use Reddit\models\Community;
-use Reddit\models\Post;
-use Reddit\models\Comment;
 use Reddit\services\TimeService;
+use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\CommentRepository;
+use Reddit\repositories\PostRepository;
+use Reddit\repositories\NotificationRepository;
 
-class NotificationController extends Notification
+
+class NotificationController extends NotificationRepository
 {
     public function likeCommentNotification($senderId,$likeId,$commentId)
     {
         $timeStamp = new TimeService();
-        $comment = new Comment();
+        $comment = new CommentRepository();
 
-        $selectedComment = $comment->getComments("id",$commentId);
-        $recieverId = $selectedComment[0]["user_id"];
+        $selectedComment = $comment->getComment("id",$commentId);
+        $recieverId = $selectedComment->user_id;
         $time = $timeStamp->time;
 
         if($this->existNotification($recieverId,"like","comment_id",$commentId))
@@ -32,17 +34,30 @@ class NotificationController extends Notification
         $type = "like";
         $seen = "false";
 
-        $this->registerLikeCommentNotification($recieverId,$senderId,$likeId,$commentId,$type,$seen,$time);
+        $newNotification = new Notification([
+            'id' => NULL,
+            'reciever_id' => $recieverId,
+            'sender_id' => $senderId,
+            'like_id' => $likeId,
+            'comment_id' => $commentId,
+            'post_id' => NULL,
+            'community_id' => NULL,
+            'type' => $type,
+            'seen' => $seen,
+            'time' => $time
+        ]);
+
+        $this->registerLikeCommentNotification($newNotification);
     }
 
     public function likePostNotification($senderId,$likeId,$postId)
     {
         $timeStamp = new TimeService();
-        $post = new Post();
+        $post = new PostRepository();
 
-        $selectedPost = $post->getPost("id",$postId);
+        $selectedPost = $post->getPostById($postId);
         
-        $recieverId = $selectedPost[0]["user_id"];
+        $recieverId = $selectedPost->user_id;
         $time = $timeStamp->time;
 
         if($this->existNotification($recieverId,"like","post_id",$postId))
@@ -58,15 +73,28 @@ class NotificationController extends Notification
         $type = "like";
         $seen = "false";
 
-        $this->registerLikePostNotification($recieverId,$senderId,$likeId,$postId,$type,$seen,$time);
+        $newNotification = new Notification([
+            'id' => NULL,
+            'reciever_id' => $recieverId,
+            'sender_id' => $senderId,
+            'like_id' => $likeId,
+            'comment_id' => NULL,
+            'post_id' => $postId,
+            'community_id' => NULL,
+            'type' => $type,
+            'seen' => $seen,
+            'time' => $time
+        ]);
+
+        $this->registerLikePostNotification($newNotification);
     }
 
     public function commentNotification($senderId,$commentId,$postId,$time)
     {
-        $post = new Post();
+        $post = new PostRepository();
 
-        $selectedPost = $post->getPost("id",$postId);
-        $recieverId = $selectedPost[0]["user_id"];
+        $selectedPost = $post->getPostById($postId);
+        $recieverId = $selectedPost->user_id;
 
         if($recieverId == $senderId || empty($recieverId))
         {
@@ -76,15 +104,28 @@ class NotificationController extends Notification
         $type = "comment";
         $seen = "false";
 
-        $this->registerCommentNotification($recieverId,$senderId,$commentId,$postId,$type,$seen,$time);
+        $newNotification = new Notification([
+            'id' => NULL,
+            'reciever_id' => $recieverId,
+            'sender_id' => $senderId,
+            'like_id' => NULL,
+            'comment_id' => $commentId,
+            'post_id' => $postId,
+            'community_id' => NULL,
+            'type' => $type,
+            'seen' => $seen,
+            'time' => $time
+        ]);
+
+        $this->registerCommentNotification($newNotification);
     }
 
     public function postNotification($senderId,$postId,$communityId,$time)
     {
-        $community = new Community();
+        $community = new CommunityRepository();
         
         $selectedCommunity = $community->getCommunity("id",$communityId);
-        $recieverId = $selectedCommunity[0]["user_id"];
+        $recieverId = $selectedCommunity->user_id;
         
         
         if($recieverId == $senderId || empty($recieverId))
@@ -95,7 +136,20 @@ class NotificationController extends Notification
         $type = "post";
         $seen = "false";
 
-        $this->registerPostNotification($recieverId,$senderId,$postId,$communityId,$type,$seen,$time);
+        $newNotification = new Notification([
+            'id' => NULL,
+            'reciever_id' => $recieverId,
+            'sender_id' => $senderId,
+            'like_id' => NULL,
+            'comment_id' => NULL,
+            'post_id' => $postId,
+            'community_id' => $communityId,
+            'type' => $type,
+            'seen' => $seen,
+            'time' => $time
+        ]);
+
+        $this->registerPostNotification($newNotification);
     }
 
     public function markAllNottSeen($userId)
