@@ -2,6 +2,7 @@
 
 namespace Reddit\controllers;
 
+use Reddit\models\Like;
 use Reddit\services\KarmaService;
 use Reddit\repositories\LikeRepository;
 
@@ -12,19 +13,26 @@ class LikeController extends LikeRepository
         $likeItem = $this->getLike("comment_id",$commId,$userId);
         $karmaService = new KarmaService();
 
-        if(empty($likeItem))
+        if($likeItem === null)
         {
             $status = "disliked";
-            $this->addLikeComment($commId,$status,$userId);
+            $newLike = new Like([
+                'id' => null,
+                'user_id' => $userId,
+                'post_id' => NULL,
+                'comment_id' => $commId,
+                'status' => $status
+            ]);
+            $this->addLikeComment($newLike);
             $karmaService->updateUserKarma($userId);
             $newCount = $this->getLikeCount("comment_id",$commId);
             $data = [$newCount,$status];
             return $data;
         }
         
-        if($likeItem['status'] == "disliked")
+        if($likeItem !== null && $likeItem->status === "disliked")
         {
-            $likeId = $likeItem['id'];
+            $likeId = $likeItem->id;
             $this->deleteLike($likeId);
             $karmaService->updateUserKarma($userId);
             $status = "neutral";
@@ -33,7 +41,7 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "liked")
+        if($likeItem !== null && $likeItem->status === "liked")
         {
             $status = "disliked";
             $this->updateLike("comment_id",$commId,$status,$userId);
@@ -50,10 +58,17 @@ class LikeController extends LikeRepository
         $karmaService = new KarmaService();
         $likeItem = $this->getLike("comment_id",$commId,$userId);
 
-        if(empty($likeItem))
+        if($likeItem === null)
         {
             $status = "liked";
-            $this->addLikeComment($commId,$status,$userId);
+            $newLike = new Like([
+                'id' => null,
+                'user_id' => $userId,
+                'post_id' => NULL,
+                'comment_id' => $commId,
+                'status' => $status
+            ]);
+            $this->addLikeComment($newLike);
             $karmaService->updateUserKarma($userId);
             $likeId = $this->connection->lastInsertId();
             $notificationController->likeCommentNotification($userId,$likeId,$commId);
@@ -62,9 +77,9 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "liked")
+        if($likeItem !== null && $likeItem->status === "liked")
         {
-            $likeId = $likeItem['id'];
+            $likeId = $likeItem->id;
             $this->deleteLike($likeId);
             $karmaService->updateUserKarma($userId);
             $status = "neutral";
@@ -73,7 +88,7 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "disliked")
+        if($likeItem !== null && $likeItem->status === "disliked")
         {
             $status = "liked";
             $this->updateLike("comment_id",$commId,$status,$userId);
@@ -89,19 +104,26 @@ class LikeController extends LikeRepository
         $karmaService = new KarmaService();
         $likeItem = $this->getLike("post_id",$postId,$userId);
 
-        if(empty($likeItem))
+        if($likeItem === null)
         {
             $status = "disliked";
-            $this->addLikePost($postId,$status,$userId);
+            $newLike = new Like([
+                'id' => null,
+                'user_id' => $userId,
+                'post_id' => $postId,
+                'comment_id' => NULL,
+                'status' => $status
+            ]);
+            $this->addLikePost($newLike);
             $karmaService->updateUserKarma($userId);
             $newCount = $this->getLikeCount("post_id",$postId);
             $data = [$newCount,$status];
             return $data;
         }
         
-        if($likeItem['status'] == "disliked")
+        if($likeItem !== null && $likeItem->status === "disliked")
         {
-            $likeId = $likeItem['id'];
+            $likeId = $likeItem->id;
             $this->deleteLike($likeId);
             $karmaService->updateUserKarma($userId);
             $status = "neutral";
@@ -110,7 +132,7 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "liked")
+        if($likeItem !== null && $likeItem->status === "liked")
         {
             $status = "disliked";
             $this->updateLike("post_id",$postId,$status,$userId);
@@ -128,10 +150,17 @@ class LikeController extends LikeRepository
         $karmaService = new KarmaService();
         $likeItem = $this->getLike("post_id",$postId,$userId);
 
-        if(empty($likeItem))
+        if($likeItem === false ||$likeItem === null)
         {
             $status = "liked";
-            $this->addLikePost($postId,$status,$userId);
+            $newLike = new Like([
+                'id' => null,
+                'user_id' => $userId,
+                'post_id' => $postId,
+                'comment_id' => NULL,
+                'status' => $status
+            ]);
+            $this->addLikePost($newLike);
             $karmaService->updateUserKarma($userId);
             $likeId = $this->connection->lastInsertId();
             $notificationController->likePostNotification($userId,$likeId,$postId);
@@ -140,9 +169,9 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "liked")
+        if($likeItem !== false && $likeItem->status === "liked")
         {
-            $likeId = $likeItem['id'];
+            $likeId = $likeItem->id;
             $this->deleteLike($likeId);
             $karmaService->updateUserKarma($userId);
             $status = "neutral";
@@ -151,7 +180,7 @@ class LikeController extends LikeRepository
             return $data;
         }
 
-        if($likeItem['status'] == "disliked")
+        if($likeItem !== false && $likeItem->status === "disliked")
         {
             $status = "liked";
             $this->updateLike("post_id",$postId,$status,$userId);

@@ -286,8 +286,13 @@ $nottNumber = count($notifications);
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `post-${liketype}=${postId}` 
     })
-    .then(response => response.json())
+    .then(res => res.text())
+    .then(text => {
+        console.log("SERVER RESPONSE:", text);
+    })
+
     .then(data => {
+        
     if(data.status === "success") {
         let count = data.new_count < 0 ? 0 : data.new_count;
         likeCount.textContent = count;
@@ -307,7 +312,7 @@ $nottNumber = count($notifications);
         downBtn.style.backgroundColor = "#dee8fe";
     }
     }})
-    .catch(error => console.error('Network error:', error));
+    .catch(error => console.error('Network er:', error));
     };
 
     upBtn.addEventListener('click', () => handleLike('like'));

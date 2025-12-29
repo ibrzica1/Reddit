@@ -176,11 +176,8 @@ if(isset($_POST['post-like']))
 
   $likeController = new LikeController();
 
-  
-  
-
   $data = $likeController->addPostLikeController($userId,$postId);
- 
+  
   header('Content-Type: application/json');
   echo json_encode([
       'status' => 'success',

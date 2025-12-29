@@ -252,7 +252,7 @@ $nottNumber = count($notifications);
     <?php $postCommunity = $community->getCommunity("id",$commId); ?>
     <?php $postId = $postItem->id ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$id) ?>
-    <?php $likeId = empty($postLikes["user_id"]) ? 0 : $postLikes["user_id"]; ?>
+    <?php $likeId = empty($postLikes->user_id) ? 0 : $postLikes->user_id; ?>
     <?php $likeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
     <?php $postImages = []; ?>
     
