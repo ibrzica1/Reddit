@@ -83,30 +83,7 @@ $imgNum = 0;
             <p>Create</p>
         </a>
     <?php include __DIR__ . "/partials/notificationHtml.php" ?>
-    <div class="user-info" id="userInfo">
-    <div class="green-dot"></div>
-    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-                    
-    </div>
-    <div class="menu-container" id="userMenu">
-        <a class="profile-container" href="profile.php">
-        <div class="avatar-container">
-            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-        </div>
-        <div class="info-container">
-            <h3>View Profile</h3>
-            <p>u/<?= $session->getFromSession("username") ?></p>
-        </div>
-        </a>
-        <a class="edit-container" href="../view/editAvatar.php">
-            <img src="../images/icons/shirt.png">
-            <p>Edit Avatar</p>
-        </a>
-        <a class="logout-container" href="../src/controllers/Logout.php">
-            <img src="../images/icons/house-door.png">
-            <p>Log Out</p>
-        </a>
-    </div>
+    <?php include __DIR__ . "/partials/menuHtml.php" ?>
     </div>
 </div>   
 
@@ -419,9 +396,8 @@ replyCancel.addEventListener('click', () => {
 </div>
 
 <script type="module">
-import { toggleMenu, toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
+import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
 const commId = <?= $postCommunityId ?>;
-const menu = document.getElementById("userInfo");
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
 const idPost = <?= $postId ?>;
@@ -492,7 +468,6 @@ searchEnter.addEventListener('input', () => {
 let currentImgIndex = 0;
 console.log(likeCount);
 
-menu.addEventListener('click',toggleMenu);
 bellIcon.addEventListener('click',toggleNotification);
 
 const updateImageDisplay = () => {

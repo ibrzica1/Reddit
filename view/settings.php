@@ -51,30 +51,8 @@ $userId = $session->getFromSession('user_id');
         </a>
     
     <?php include __DIR__ . "/partials/notificationHtml.php" ?>
-
-        <div class="user-info" id="userInfo">
-            <div class="green-dot"></div>
-            <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-        </div>
-        <div class="menu-container" id="userMenu">
-            <a class="profile-container" href="profile.php">
-                <div class="avatar-container">
-                    <img class="user-avatar" src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-                </div>
-                <div class="info-container">
-                    <h3>View Profile</h3>
-                    <p>u/<?= $session->getFromSession("username") ?></p>
-                </div>
-            </a>
-            <a class="edit-container" href="../view/editAvatar.php">
-                <img src="../images/icons/shirt.png">
-                <p>Edit Avatar</p>
-</a>
-            <a class="logout-container" href="../src/controllers/Logout.php">
-                <img src="../images/icons/house-door.png">
-                <p>Log Out</p>
-            </a>
-        </div>
+    <?php include __DIR__ . "/partials/menuHtml.php" ?>
+        
     </div>
 </div>
 
@@ -170,8 +148,7 @@ $userId = $session->getFromSession('user_id');
 </div>
 
 <script type="module">
-    import { toggleMenu, toggleNotification, toggleSearch } from "../script/tools.js";
-    const menu = document.getElementById("userInfo");
+    import {toggleNotification, toggleSearch } from "../script/tools.js";
     const editBtn = document.querySelectorAll(".edit-btn");
     const bio = document.getElementById("bioId");
     const letters = document.querySelector(".letters");
@@ -183,7 +160,6 @@ $userId = $session->getFromSession('user_id');
     let checkboxes = [];
 
     bellIcon.addEventListener('click',toggleNotification);
-    menu.addEventListener('click', toggleMenu);
 
     searchEnter.addEventListener('input', () => {
         let search = searchEnter.value.trim();
