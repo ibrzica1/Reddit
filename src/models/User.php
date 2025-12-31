@@ -26,6 +26,16 @@ class User
     $this->time = $array['time'];
   }
 
+  public function get(string $attribute): mixed
+  {
+    return $this->$attribute;
+  }
+
+  public function set(string $attribute,mixed $value): void
+  {
+    $this->$attribute = $value;
+  }
+
   public static function usernameLength(string $username): bool
   {
     return strlen($username) > 2 && strlen($username) < 16;

@@ -144,12 +144,12 @@ $imgNum = 0;
 <?php endif; ?>
 <div class="post-button-container">
 <div class="like-comment-btns">
-    <div class="like-btn" id="like-<?= $postId ?>">
-        <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'liked' ? 'liked' : '' ?>">
+    <div class="like-btn" id="like-post-<?= $commId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $likeStatus ?>">
+        <button class="up-btn" id="up-post-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'liked' ? 'liked' : '' ?>">
             <img src="../images/icons/arrow-up.png">
         </button>
-        <p class="likes" id="count-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
-        <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'disliked' ? 'disliked' : '' ?>">
+        <p class="likes" id="count-post-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
+        <button class="down-btn" id="down-post-<?= $postId ?>" data-post-id="<?= $postId ?>" data-active="<?= $likeStatus == 'disliked' ? 'disliked' : '' ?>">
             <img src="../images/icons/arrow-down.png">
         </button>
     </div>
@@ -178,8 +178,11 @@ $imgNum = 0;
 <?php foreach($comments as $commentItem): ?>
 <?php if(empty($commentItem->comment_id)): ?>
     <?php $commId = $commentItem->id; ?>
+  
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem->user_id) ?>
+    
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id)  ?>
+  
     <?php $commentLikeStatus = empty($commentLikes->status) ? "neutral" : $commentLikes->status ?>
     
     <div class="single-comment">
@@ -192,12 +195,12 @@ $imgNum = 0;
             <p><?= $commentItem->text ?></p>
         </div>
         <div class="comment-actions">
-            <div class="like-btn" id="comm-like-<?= $commId ?>">
-                <button class="up-btn" id="comm-up-<?= $commId ?>" data-comm-id="<?= $commId ?>">
+            <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">
+                <button class="up-btn" id="up-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-up.png">
                 </button>
-                <p class="likes" id="comm-count-<?= $commId ?>"><?= $like->getLikeCount("comment_id",$commId) ?></p>
-                <button class="down-btn" id="comm-down-<?= $commId ?>" data-comm-id="<?= $commId ?>">
+                <p class="likes" id="count-comment-<?= $commId ?>"><?= $like->getLikeCount("comment_id",$commId) ?></p>
+                <button class="down-btn" id="down-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-down.png">
                 </button>
             </div>
@@ -232,73 +235,17 @@ $imgNum = 0;
                 <p><?= $replyItem->text ?></p>
             </div>
             <div class="comment-actions">
-            <div class="like-btn" id="comm-like-<?= $replyId ?>">
-                <button class="up-btn" id="comm-up-<?= $replyId ?>" data-comm-id="<?= $replyId ?>">
+            <div class="like-btn" id="like-comment-<?= $replyId ?>" data-id="<?= $replyId ?>" data-type="comment" data-status="<?= $replyLikeStatus ?>">
+                <button class="up-btn" id="up-comment-<?= $replyId ?>" data-comm-id="<?= $replyId ?>">
                 <img src="../images/icons/arrow-up.png">
                 </button>
-                <p class="likes" id="comm-count-<?= $replyId ?>"><?= $like->getLikeCount("comment_id",$replyId) ?></p>
-                <button class="down-btn" id="comm-down-<?= $replyId ?>" data-comm-id="<?= $replyId ?>">
+                <p class="likes" id="count-comment-<?= $replyId ?>"><?= $like->getLikeCount("comment_id",$replyId) ?></p>
+                <button class="down-btn" id="down-comment-<?= $replyId ?>" data-comm-id="<?= $replyId ?>">
                 <img src="../images/icons/arrow-down.png">
                 </button>
             </div>
         </div>  
         </div>
-    <script>
-    {
-      const replyId = <?= $replyId ?>;
-      const replyLikeCount = document.getElementById(`comm-count-${replyId}`);
-      const replyLikeContainer = document.getElementById(`comm-like-${replyId}`);
-      const replyUpBtn = document.getElementById(`comm-up-${replyId}`);
-      const replyDownBtn = document.getElementById(`comm-down-${replyId}`);
-
-    if("<?= $replyLikeStatus ?>" === "liked")
-    {
-        replyLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        replyUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-        replyDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    }
-    if("<?= $replyLikeStatus ?>" === "disliked")
-    {
-        replyLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        replyUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        replyDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-    }
-
-    const handleReplyLike = (liketype)=>{
-                                    
-        fetch('../decisionMaker.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `comment-${liketype}=${replyId}` 
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === "success") {
-                let count = data.new_count < 0 ? 0 : data.new_count;
-                replyLikeCount.textContent = count;
-                const status = data.like_status; 
-
-            if (status === "liked") {
-                replyLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                replyUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-                replyDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-            } else if (status === "disliked") {
-                replyLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                replyUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                replyDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-            } else { 
-                replyLikeContainer.style.backgroundColor = "#dee8fe";
-                replyUpBtn.style.backgroundColor = "#dee8fe";
-                replyDownBtn.style.backgroundColor = "#dee8fe";
-            }
-        }})
-        .catch(error => console.error('Network error:', error));
-    };
-
-    replyUpBtn.addEventListener('click', () => handleReplyLike('like'));
-    replyDownBtn.addEventListener('click', () => handleReplyLike('dislike'));
-    }
-    </script>
         <?php endif; ?>
         <?php endforeach; ?>
         </div>
@@ -306,63 +253,12 @@ $imgNum = 0;
 <script>
 {
 const commentId = <?= $commId ?>;
-const commLikeCount = document.getElementById(`comm-count-${commentId}`);
-const commLikeContainer = document.getElementById(`comm-like-${commentId}`);
-const commUpBtn = document.getElementById(`comm-up-${commentId}`);
-const commDownBtn = document.getElementById(`comm-down-${commentId}`);
 const commReplyBtn = document.getElementById(`commentReplyBtn-${commentId}`);
 const replyText =document.getElementById(`replyText-${commentId}`);
 const replyForm = document.getElementById(`replyForm-${commentId}`);
 const replyCancel = document.getElementById(`replyCancel-${commentId}`);
 const replySubmit = document.getElementById(`replySubmit-${commentId}`);
 
-
-if("<?= $commentLikeStatus ?>" === "liked")
-{
-    commLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    commUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-    commDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-}
-if("<?= $commentLikeStatus ?>" === "disliked")
-{
-    commLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    commUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    commDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-}
-
-const handleCommLike = (liketype)=>{
-                                
-    fetch('../decisionMaker.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `comment-${liketype}=${commentId}` 
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.status === "success") {
-            let count = data.new_count < 0 ? 0 : data.new_count;
-            commLikeCount.textContent = count;
-            const status = data.like_status; 
-
-        if (status === "liked") {
-            commLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-            commUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-            commDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        } else if (status === "disliked") {
-            commLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-            commUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-            commDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-        } else { 
-            commLikeContainer.style.backgroundColor = "#dee8fe";
-            commUpBtn.style.backgroundColor = "#dee8fe";
-            commDownBtn.style.backgroundColor = "#dee8fe";
-        }
-    }})
-    .catch(error => console.error('Network error:', error));
-};
-
-commUpBtn.addEventListener('click', () => handleCommLike('like'));
-commDownBtn.addEventListener('click', () => handleCommLike('dislike'));
 commReplyBtn.addEventListener('click', () => {
     replyForm.style.display = 'flex';
     replyText.focus();
@@ -397,14 +293,11 @@ replyCancel.addEventListener('click', () => {
 
 <script type="module">
 import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
+import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
 const commId = <?= $postCommunityId ?>;
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
 const idPost = <?= $postId ?>;
-const likeCount = document.getElementById(`count-${idPost}`);
-const likeContainer = document.getElementById(`like-${idPost}`);
-const upBtn = document.getElementById(`up-${idPost}`);
-const downBtn = document.getElementById(`down-${idPost}`);
 const deletePost = document.getElementById(`delete-post-${idPost}`);
 const imgDisplay = document.getElementById(`imageDisplay`);
 const leftArrow = document.getElementById(`leftArrow`);
@@ -413,6 +306,9 @@ const postImages = <?= isset($postImages) ? json_encode($postImages) : '[]' ?>;
 const imageCount = postImages.length;
 const searchEnter = document.getElementById('searchInput');
 const searchResults = document.getElementById('searchResults');
+
+likeStatus();
+manageLikes();
 
 searchEnter.addEventListener('input', () => {
     let search = searchEnter.value.trim();
@@ -466,7 +362,6 @@ searchEnter.addEventListener('input', () => {
 });
 
 let currentImgIndex = 0;
-console.log(likeCount);
 
 bellIcon.addEventListener('click',toggleNotification);
 
@@ -515,55 +410,6 @@ if (leftArrow) {
         }
     });
 }
-
-if("<?= $likeStatus ?>" === "liked")
-{
-    likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-    downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-}
-if("<?= $likeStatus ?>" === "disliked")
-{
-    likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-}
-
-const handleLike = (liketype)=>{
-                                
-    fetch('../decisionMaker.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `post-${liketype}=${idPost}` 
-    })
-    .then(response => response.json())
-    .then(data => {
-    if(data.status === "success") {
-        let count = data.new_count < 0 ? 0 : data.new_count;
-        likeCount.textContent = count;
-        const status = data.like_status; 
-
-        if (status === "liked") {
-            likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-            upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-            downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        } else if (status === "disliked") {
-            likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-            upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-            downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-        } else { 
-            likeContainer.style.backgroundColor = "#dee8fe";
-            upBtn.style.backgroundColor = "#dee8fe";
-            downBtn.style.backgroundColor = "#dee8fe";
-        }
-        }})
-    .catch(error => console.error('Network error:', error));
-    };
-
-upBtn.addEventListener('click', () => handleLike('like'));
-downBtn.addEventListener('click', () => handleLike('dislike'));
-
-
 
 </script>
 </body>
