@@ -132,6 +132,7 @@ $imgNum = 0;
     <?php $imgCount = count($postImages); ?>
     
     <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+        <input type="hidden" id="index-<?= $postId ?>" value="0">
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
@@ -294,15 +295,13 @@ replyCancel.addEventListener('click', () => {
 <script type="module">
 import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
-import {imageDisplay, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
+import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 const commId = <?= $postCommunityId ?>;
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
 const idPost = <?= $postId ?>;
 const deletePost = document.getElementById(`delete-post-${idPost}`);
 const imgDisplay = document.getElementById(`imageDisplay`);
-const leftArrow = document.querySelector('.left-arrow');
-const rightArrow = document.querySelector('.right-arrow');
 const postImages = <?= isset($postImages) ? json_encode($postImages) : '[]' ?>;
 const imageCount = postImages.length;
 const searchEnter = document.getElementById('searchInput');
@@ -310,7 +309,7 @@ const searchResults = document.getElementById('searchResults');
 
 likeStatus();
 manageLikes();
-
+stageImages();
 imageScroll();
 
 searchEnter.addEventListener('input', () => {
@@ -364,26 +363,8 @@ searchEnter.addEventListener('input', () => {
 });
 });
 
-let currentImgIndex = 0;
-
 bellIcon.addEventListener('click',toggleNotification);
-
- if (currentImgIndex > 0) {
-        leftArrow.style.display = "flex";
-    } else {
-        leftArrow.style.display = "none";
-    }
-
-    if (currentImgIndex < imageCount - 1) {
-        rightArrow.style.display = "flex";
-    } else {
-        rightArrow.style.display = "none";
-    }
-    
-    if (imageCount <= 1) {
-        leftArrow.style.display = "none";
-        rightArrow.style.display = "none";
-    }
+ 
 
 </script>
 </body>

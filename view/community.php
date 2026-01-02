@@ -125,7 +125,8 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
     <?php $imgCount = count($postImages); ?>
-    <div class="image">
+    <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+        <input type="hidden" id="index-<?= $postId ?>" value="0">
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
@@ -160,64 +161,6 @@ $communityPosts = $post->getPost("community_id",$communityId);
         <?php endif; ?>
     </div>
     </div>
-<script>
-{
-    const postId = <?= $postId ?>;
-    const imgDisplay = document.getElementById(`imageDisplay-${postId}`);
-    const leftArrow = document.getElementById(`leftArrow-${postId}`);
-    const rightArrow = document.getElementById(`rightArrow-${postId}`);
-    const postImages = <?= json_encode($postImages) ?>;
-    const imageCount = postImages.length;
-
-    
-
-    let currentImgIndex = 0;
-
-    let updateImageDisplay = () => {
-        imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
-
-        if(currentImgIndex > 0){
-            leftArrow.style.display = "flex";
-        } else{
-            leftArrow.style.display = "none";
-        }
-        if(currentImgIndex < imageCount - 1){
-            rightArrow.style.display = "flex";
-        } else {
-            rightArrow.style.display = "none";
-        }
-        if(imageCount <= 1){
-            rightArrow.style.display = "none";
-            leftArrow.style.display = "none";
-        }
-    };
-
-    if (imageCount > 0) {
-        updateImageDisplay();
-    } else {
-        if (leftArrow) leftArrow.style.display = "none";
-        if (rightArrow) rightArrow.style.display = "none";
-    }
-
-    if (rightArrow) {
-    rightArrow.addEventListener('click', () => {
-        if (currentImgIndex < imageCount - 1) {
-            currentImgIndex++;
-            updateImageDisplay();
-        }
-    });
-    }
-
-    if (leftArrow) {
-        leftArrow.addEventListener('click', () => {
-            if (currentImgIndex > 0) {
-                currentImgIndex--;
-                updateImageDisplay();
-            }
-        });
-    }
-}
-</script>
     <?php endforeach; ?>
     <?php else: ?>
         <div class="no-posts">
@@ -245,6 +188,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
 <script type="module">
 import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
+import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 
 const commId = <?= $communityId ?>;
 const deleteBtn = document.querySelector('.delete-container');
@@ -255,6 +199,8 @@ const searchResults = document.getElementById('searchResults');
 
 likeStatus();
 manageLikes();
+stageImages();
+imageScroll();
 
 bellIcon.addEventListener('click',toggleNotification);
 deleteBtn.addEventListener('click',()=>{

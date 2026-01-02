@@ -180,7 +180,8 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
     <?php $imgCount = count($postImages); ?>
-        <div class="image">
+        <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+            <input type="hidden" id="index-<?= $postId ?>" value="0">
             <div class="left-arrow" id="leftArrow-<?= $postId ?>">
                 <img src="../images/icons/arrowLeft.png">
             </div>
@@ -226,57 +227,7 @@ const likeContainer = document.getElementById(`like-${idPost}`);
 const upBtn = document.getElementById(`up-${idPost}`);
 const downBtn = document.getElementById(`down-${idPost}`);
 const deletePost = document.getElementById(`delete-post-${idPost}`);
-const imgDisplay = document.getElementById(`imageDisplay-${idPost}`);
-const leftArrow = document.getElementById(`leftArrow-${idPost}`);
-const rightArrow = document.getElementById(`rightArrow-${idPost}`);
-const postImages = <?= json_encode($postImages) ?>;
-const imageCount = postImages.length;
 
-let currentImgIndex = 0;
-
-let updateImageDisplay = () => {
-    imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
-
-    if(currentImgIndex > 0){
-        leftArrow.style.display = "flex";
-    } else{
-        leftArrow.style.display = "none";
-    }
-    if(currentImgIndex < imageCount - 1){
-        rightArrow.style.display = "flex";
-    } else {
-        rightArrow.style.display = "none";
-    }
-    if(imageCount <= 1){
-        rightArrow.style.display = "none";
-        leftArrow.style.display = "none";
-    }
-};
-
-if (imageCount > 0) {
-    updateImageDisplay();
-} else {
-    if (leftArrow) leftArrow.style.display = "none";
-    if (rightArrow) rightArrow.style.display = "none";
-}
-
-if (rightArrow) {
-rightArrow.addEventListener('click', () => {
-    if (currentImgIndex < imageCount - 1) {
-        currentImgIndex++;
-        updateImageDisplay();
-    }
-});
-}
-
-if (leftArrow) {
-    leftArrow.addEventListener('click', () => {
-        if (currentImgIndex > 0) {
-            currentImgIndex--;
-            updateImageDisplay();
-        }
-    });
-}
 
 if(<?= $likeId ?> === <?= $userId ?> && "<?= $likeStatus ?>" === "liked")
 {
@@ -412,6 +363,7 @@ fetch('../decisionMaker.php', {
 <script type="module">
     import {changeBanner, toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
     import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
+    import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
     const userId = <?= $userId ?>;
     const postBtn = document.getElementById("posts");
     const communityBtn = document.getElementById("communities");
@@ -424,6 +376,8 @@ fetch('../decisionMaker.php', {
 
     likeStatus();
     manageLikes();
+    stageImages();
+    imageScroll();
     
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
