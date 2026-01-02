@@ -208,13 +208,13 @@ $posts = $post->getAllPosts($limit);
     </div>
     <div class="post-button-container">
         <div class="like-comment-btns">
-        <div class="like-btn" id="like-<?= $postId ?>">
-        <div class="up-btn" id="up-<?= $postId ?>">
+        <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $postLikeStatus ?>">
+        <div class="up-btn" id="up-post-<?= $postId ?>">
             <img src="images/icons/arrow-up.png">
         </div>
-        <p id="count-<?= $postId ?>">
+        <p id="count-post-<?= $postId ?>">
             <?= $like->getLikeCount("post_id",$postId) ?></p>
-        <div class="down-btn" id="down-<?= $postId ?>">
+        <div class="down-btn" id="down-post-<?= $postId ?>">
             <img src="images/icons/arrow-down.png">
         </div>
         </div>
@@ -238,57 +238,6 @@ $posts = $post->getAllPosts($limit);
     const rightArrow = document.getElementById(`rightArrow-${postId}`);
     const postImages = <?= json_encode($postImages) ?>;
     const imageCount = postImages.length;
-    const likeCount = document.getElementById(`count-${postId}`);
-    const likeContainer = document.getElementById(`like-${postId}`);
-    const upBtn = document.getElementById(`up-${postId}`);
-    const downBtn = document.getElementById(`down-${postId}`);
-
-    if("<?= $postLikeStatus ?>" === "liked")
-    {
-        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    }
-    if("<?= $postLikeStatus ?>" === "disliked")
-    {
-        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-    }
-
-    const handleLike = (liketype)=>{
-                    
-    fetch('decisionMaker.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `post-${liketype}=${postId}` 
-    })
-    .then(response => response.json())
-    .then(data => {
-    if(data.status === "success") {
-        let count = data.new_count < 0 ? 0 : data.new_count;
-        likeCount.textContent = count;
-        const status = data.like_status; 
-
-    if (status === "liked") {
-        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    } else if (status === "disliked") {
-        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-    } else { 
-        likeContainer.style.backgroundColor = "#dee8fe";
-        upBtn.style.backgroundColor = "#dee8fe";
-        downBtn.style.backgroundColor = "#dee8fe";
-    }
-    }})
-    .catch(error => console.error('Network error:', error));
-    };
-
-    upBtn.addEventListener('click', () => handleLike('like'));
-    downBtn.addEventListener('click', () => handleLike('dislike'));
 
     let currentImgIndex = 0;
 
@@ -343,11 +292,15 @@ $posts = $post->getAllPosts($limit);
     
   <script type="module">
     import { toggleMenu, toggleNotification, toggleSearch } from "./script/tools.js";
+    import {likeStatus, manageLikes} from "./script/like.js?v=<?php echo time(); ?>";
     const  menu = document.getElementById("userInfo");
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
     const searchEnter = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+
+    likeStatus();
+    manageLikes();
 
     bellIcon.addEventListener('click',toggleNotification);
     menu.addEventListener('click',toggleMenu);

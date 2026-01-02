@@ -14,7 +14,8 @@ export function manageLikes()
         const downBtn = document.getElementById(`down-${type}-${id}`);
         const count = document.getElementById(`count-${type}-${id}`);
 
-        fetch('../decisionMaker.php', {
+        
+        fetch('/Reddit/decisionMaker.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `${type}-${action}=${id}` 

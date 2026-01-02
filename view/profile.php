@@ -193,12 +193,12 @@ $activeTab = $_GET['tab'] ?? "posts";
     </div>
     <div class="post-button-container">
     <div class="like-comment-btns">
-        <div class="like-btn" id="like-<?= $postId ?>">
-            <button class="up-btn" id="up-<?= $postId ?>" data-post-id="<?= $postId ?>">
+        <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $likeStatus ?>">
+            <button class="up-btn" id="up-post-<?= $postId ?>" data-post-id="<?= $postId ?>">
             <img src="../images/icons/arrow-up.png">
             </button>
-            <p class="likes" id="count-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
-            <button class="down-btn" id="down-<?= $postId ?>" data-post-id="<?= $postId ?>">
+            <p class="likes" id="count-post-<?= $postId ?>"><?= $like->getLikeCount("post_id",$postId) ?></p>
+            <button class="down-btn" id="down-post-<?= $postId ?>" data-post-id="<?= $postId ?>">
             <img src="../images/icons/arrow-down.png">
             </button>
         </div>
@@ -367,12 +367,12 @@ fetch('../decisionMaker.php', {
             <p><?= $commentItem->text ?></p>
         </div>
         <div class="comment-actions">
-            <div class="like-btn" id="comm-like-<?= $commId ?>">
-                <button class="up-btn" id="comm-up-<?= $commId ?>" data-comm-id="<?= $commId ?>">
+            <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">
+                <button class="up-btn" id="up-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-up.png">
                 </button>
-                <p class="likes" id="comm-count-<?= $commId ?>"><?= $like->getLikeCount("comment_id",$commId) ?></p>
-                <button class="down-btn" id="comm-down-<?= $commId ?>" data-comm-id="<?= $commId ?>">
+                <p class="likes" id="count-comment-<?= $commId ?>"><?= $like->getLikeCount("comment_id",$commId) ?></p>
+                <button class="down-btn" id="down-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-down.png">
                 </button>
             </div>
@@ -383,62 +383,6 @@ fetch('../decisionMaker.php', {
             
         </div>
     </div>
-    <script>
-    {
-    const commentId = <?= $commId ?>;
-    const commLikeCount = document.getElementById(`comm-count-${commentId}`);
-    const commLikeContainer = document.getElementById(`comm-like-${commentId}`);
-    const commUpBtn = document.getElementById(`comm-up-${commentId}`);
-    const commDownBtn = document.getElementById(`comm-down-${commentId}`);
-
-    if("<?= $commentLikeStatus ?>" === "liked")
-    {
-        commLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        commUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-        commDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    }
-    if("<?= $commentLikeStatus ?>" === "disliked")
-    {
-        commLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        commUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        commDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-    }
-
-    const handleCommLike = (liketype)=>{
-                                    
-        fetch('../decisionMaker.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `comment-${liketype}=${commentId}` 
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.status === "success") {
-                let count = data.new_count < 0 ? 0 : data.new_count;
-                commLikeCount.textContent = count;
-                const status = data.like_status; 
-
-            if (status === "liked") {
-                commLikeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-                commUpBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-                commDownBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-            } else if (status === "disliked") {
-                commLikeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                commUpBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-                commDownBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-            } else { 
-                commLikeContainer.style.backgroundColor = "#dee8fe";
-                commUpBtn.style.backgroundColor = "#dee8fe";
-                commDownBtn.style.backgroundColor = "#dee8fe";
-            }
-        }})
-        .catch(error => console.error('Network error:', error));
-    };
-
-    commUpBtn.addEventListener('click', () => handleCommLike('like'));
-    commDownBtn.addEventListener('click', () => handleCommLike('dislike'));
-    }
-    </script>
     <?php endforeach; ?>
     <?php endif; ?> 
     <?php endif; ?>   
@@ -467,6 +411,7 @@ fetch('../decisionMaker.php', {
 
 <script type="module">
     import {changeBanner, toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
     const userId = <?= $userId ?>;
     const postBtn = document.getElementById("posts");
     const communityBtn = document.getElementById("communities");
@@ -476,6 +421,9 @@ fetch('../decisionMaker.php', {
     const notificationNum = document.querySelector('.notification-number');
     const searchEnter = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+
+    likeStatus();
+    manageLikes();
     
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
