@@ -10,8 +10,6 @@ export function manageLikes()
         const id = container.dataset.id;
         const type = container.dataset.type;
         const action = btn.classList.contains('up-btn')?'like':'dislike';
-        const upBtn = document.getElementById(`up-${type}-${id}`);
-        const downBtn = document.getElementById(`down-${type}-${id}`);
         const count = document.getElementById(`count-${type}-${id}`);
 
         

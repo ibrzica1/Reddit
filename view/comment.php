@@ -131,12 +131,12 @@ $imgNum = 0;
     <?php $postImages = $image->getUploadedImages("post_id",$postId) ?>
     <?php $imgCount = count($postImages); ?>
     
-    <div class="image">
-        <div class="left-arrow" id="leftArrow">
+    <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+        <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
-        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay">
-        <div class="right-arrow" id="rightArrow">
+        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
+        <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="../images/icons/arrowRight.png">
         </div>
     </div>
@@ -294,14 +294,15 @@ replyCancel.addEventListener('click', () => {
 <script type="module">
 import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
+import {imageDisplay, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 const commId = <?= $postCommunityId ?>;
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
 const idPost = <?= $postId ?>;
 const deletePost = document.getElementById(`delete-post-${idPost}`);
 const imgDisplay = document.getElementById(`imageDisplay`);
-const leftArrow = document.getElementById(`leftArrow`);
-const rightArrow = document.getElementById(`rightArrow`);
+const leftArrow = document.querySelector('.left-arrow');
+const rightArrow = document.querySelector('.right-arrow');
 const postImages = <?= isset($postImages) ? json_encode($postImages) : '[]' ?>;
 const imageCount = postImages.length;
 const searchEnter = document.getElementById('searchInput');
@@ -309,6 +310,8 @@ const searchResults = document.getElementById('searchResults');
 
 likeStatus();
 manageLikes();
+
+imageScroll();
 
 searchEnter.addEventListener('input', () => {
     let search = searchEnter.value.trim();
@@ -365,10 +368,7 @@ let currentImgIndex = 0;
 
 bellIcon.addEventListener('click',toggleNotification);
 
-const updateImageDisplay = () => {
-    imgDisplay.src = `../images/uploaded/${postImages[currentImgIndex].name}`;
-
-    if (currentImgIndex > 0) {
+ if (currentImgIndex > 0) {
         leftArrow.style.display = "flex";
     } else {
         leftArrow.style.display = "none";
@@ -384,32 +384,6 @@ const updateImageDisplay = () => {
         leftArrow.style.display = "none";
         rightArrow.style.display = "none";
     }
-};
-
-if (imageCount > 0) {
-    updateImageDisplay();
-} else {
-    if (leftArrow) leftArrow.style.display = "none";
-    if (rightArrow) rightArrow.style.display = "none";
-}
-
-if (rightArrow) {
-    rightArrow.addEventListener('click', () => {
-        if (currentImgIndex < imageCount - 1) {
-            currentImgIndex++;
-            updateImageDisplay();
-        }
-    });
-}
-
-if (leftArrow) {
-    leftArrow.addEventListener('click', () => {
-        if (currentImgIndex > 0) {
-            currentImgIndex--;
-            updateImageDisplay();
-        }
-    });
-}
 
 </script>
 </body>
