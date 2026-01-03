@@ -361,10 +361,11 @@ fetch('../decisionMaker.php', {
 </div>
 
 <script type="module">
-    import {changeBanner, toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
     import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
     import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
     import {profileSearch} from "../script/search.js?v=<?php echo time(); ?>";
+    import {changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
     const userId = <?= $userId ?>;
     const postBtn = document.getElementById("posts");
     const communityBtn = document.getElementById("communities");
@@ -377,7 +378,8 @@ fetch('../decisionMaker.php', {
     manageLikes();
     stageImages();
     imageScroll();
-    profileSearch()
+    profileSearch();
+    changeBanner('<?=$session->getFromSession('avatar')?>');
     
     deleteBtn.forEach(btn => {
         btn.addEventListener('click',()=>{
@@ -396,7 +398,7 @@ fetch('../decisionMaker.php', {
     
     "<?=$activeTab?>" == "comments" && commentsBtn.classList.add("active");
 
-    changeBanner('<?=$session->getFromSession('avatar')?>');
+    
 
    
 </script>

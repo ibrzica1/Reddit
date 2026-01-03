@@ -94,30 +94,19 @@ $userId = $session->getFromSession('user_id');
 </div>
 
 <script type="module">
-    import {changeBanner, toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>"; 
-    const avatarOptions = document.querySelectorAll(".image-wrapper");
-    const avatarSelected = document.querySelector(".selected-avatar");
-    const formInput = document.querySelector(".form-input");
+    import {changeAvatar, changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
+    
+    
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
 
     generalSearch(); 
-
+    changeAvatar();
     changeBanner('<?=$session->getFromSession('avatar')?>');
 
     bellIcon.addEventListener('click',toggleNotification);
-
-    avatarOptions.forEach(option => {
-        const avatarColor = option.getAttribute('data-target');
-
-        option.addEventListener('click',() => {
-            avatarSelected.src = `../images/avatars/${avatarColor}.webp`;
-            formInput.value = avatarColor;
-            changeBanner(avatarColor);
-        });
-    });
-
 
 </script>
 </body>
