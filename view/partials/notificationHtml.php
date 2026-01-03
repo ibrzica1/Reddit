@@ -3,19 +3,9 @@
 require_once "../vendor/autoload.php";
 
 use Reddit\services\SessionService;
-use Reddit\repositories\UserRepository;
-use Reddit\repositories\CommunityRepository;
-use Reddit\repositories\CommentRepository;
-use Reddit\repositories\PostRepository;
-use Reddit\repositories\LikeRepository;
 use Reddit\repositories\NotificationRepository;
 
 $session = new SessionService();
-$community = new CommunityRepository();
-$post = new PostRepository();
-$comment = new CommentRepository();
-$user = new UserRepository();
-$like = new LikeRepository();
 $notification = new NotificationRepository();
 if(!empty($_GET['nott_id']))
 {
@@ -95,3 +85,10 @@ $nottNumber = count($notifications);
     <?php endif; ?>
     <a href="notification.php" class="see-all-nott">see all notifications</a>
 </div>
+
+<script type="module">
+    import { toggleNotification } from "../script/tools.js?v=<?php echo time(); ?>";
+    const bellIcon = document.querySelector('.notifications-container');
+
+    bellIcon.addEventListener('click',toggleNotification);
+</script>

@@ -64,3 +64,33 @@ export function changeBanner(color)
     }
   }
 }
+
+export function checkboxesAvatar()
+{
+    const images = document.querySelectorAll(".image-wrapper");
+    let checkboxes = [];
+
+    images.forEach(image => {
+        const avatarColor = image.getAttribute('data-target');
+        const avatarCheckbox = document.getElementById(avatarColor);
+
+        checkboxes.push(avatarCheckbox);
+    });
+
+    images.forEach(image => {
+        image.addEventListener('click', ()=>{
+            const avatarColor = image.getAttribute('data-target');
+            const avatarCheckbox = document.getElementById(avatarColor);
+
+            if(avatarCheckbox.checked)
+            {
+              checkboxes.forEach(cb => cb.checked = false);
+            }
+            else
+            {
+              checkboxes.forEach(cb => cb.checked = false);
+              avatarCheckbox.checked = true;
+            }
+        });
+    })
+}

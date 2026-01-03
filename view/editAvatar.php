@@ -97,10 +97,6 @@ $userId = $session->getFromSession('user_id');
     import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>"; 
     import {changeAvatar, changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
-    
-    
-    const bellIcon = document.querySelector('.notifications-container');
-    const notificationNum = document.querySelector('.notification-number');
 
     generalSearch(); 
     changeAvatar();

@@ -262,6 +262,7 @@ body {
 }
 
 .notifications-container:hover {
+    cursor: pointer;
     background-color: rgb(225, 231, 233);
 }
 

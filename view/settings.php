@@ -148,75 +148,17 @@ $userId = $session->getFromSession('user_id');
 </div>
 
 <script type="module">
-    import {toggleNotification} from "../script/tools.js";
+    import {toggleEditForms, checkBioLength} from "../script/tools.js?v=<?php echo time(); ?>";
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";  
-    const editBtn = document.querySelectorAll(".edit-btn");
-    const bio = document.getElementById("bioId");
-    const letters = document.querySelector(".letters");
-    const images = document.querySelectorAll(".image-wrapper");
+    import {checkboxesAvatar} from "../script/avatar.js?v=<?php echo time(); ?>"; 
+    
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
-    let checkboxes = [];
 
     generalSearch();
-
-    bellIcon.addEventListener('click',toggleNotification);
-
-    images.forEach(image => {
-        const avatarColor = image.getAttribute('data-target');
-        const avatarCheckbox = document.getElementById(avatarColor);
-
-        checkboxes.push(avatarCheckbox);
-    });
-
-    images.forEach(image => {
-        image.addEventListener('click', ()=>{
-            const avatarColor = image.getAttribute('data-target');
-            const avatarCheckbox = document.getElementById(avatarColor);
-
-            if(avatarCheckbox.checked)
-            {
-              checkboxes.forEach(cb => cb.checked = false);
-            }
-            else
-            {
-              checkboxes.forEach(cb => cb.checked = false);
-              avatarCheckbox.checked = true;
-            }
-        });
-    })
-
-    editBtn.forEach(button => {
-      button.addEventListener('click', ()=>{
-        const targetFormId = button.getAttribute('data-target');
-        const targetForm = document.getElementById(targetFormId);
-
-        if (targetForm) {
-                if (targetForm.style.display === "none" || targetForm.style.display === "") {
-                    targetForm.style.display = "flex"; 
-                    button.textContent = "Cancel"; 
-                } else {
-                    targetForm.style.display = "none"; 
-                    button.textContent = "Edit";
-                }
-            }
-        });
-    });
-
-    bio.addEventListener('keydown', ()=>{
-        let maxLetters = 235;
-        let used = bio.value.length;
-        let remaining = maxLetters - used;
-        letters.innerHTML = remaining;
-    });
-    
-   bio.addEventListener('input', () => {
-        const maxLetters = 235;
-        if (bio.value.length > maxLetters) {
-            bio.value = bio.value.slice(0, maxLetters);
-        }
-        letters.textContent = maxLetters - bio.value.length;
-    });
+    checkboxesAvatar();
+    toggleEditForms();
+    checkBioLength();
 
 </script>
 </body>
