@@ -19,12 +19,6 @@ document.addEventListener("click", function (event) {
     }
 });
 
-export function toggleSearch()
-{
-    const searchResults = document.getElementById('searchResults');
-    searchResults.classList.toggle("active");
-}
-
 export function toggleNotification()
 {
     const notificationNum = document.querySelector('.notification-number');

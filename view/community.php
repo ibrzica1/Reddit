@@ -64,7 +64,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
             <img src="../images/community/<?=$communityImage->name?>">
             <p>r/<?= $selectedCommunity->name ?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput" id="searchInput" data-comm_id="<?= $communityId ?>">
          <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -186,21 +186,22 @@ $communityPosts = $post->getPost("community_id",$communityId);
 </div>
 
 <script type="module">
-import {toggleNotification, toggleSearch} from "../script/tools.js?v=<?php echo time(); ?>";
+import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
 import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
+import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
 
 const commId = <?= $communityId ?>;
 const deleteBtn = document.querySelector('.delete-container');
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
-const searchEnter = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
+
 
 likeStatus();
 manageLikes();
 stageImages();
 imageScroll();
+postSearch();
 
 bellIcon.addEventListener('click',toggleNotification);
 deleteBtn.addEventListener('click',()=>{
@@ -208,57 +209,6 @@ deleteBtn.addEventListener('click',()=>{
     {
         deleteBtn.disabled = false;
     }
-});
-
-searchEnter.addEventListener('input', () => {
-    let search = searchEnter.value.trim();
-    if(search.length >= 2)
-    {
-    toggleSearch();
-    }
-
-    fetch("../decisionMaker.php?post-search=" + search + "&comm-id=" + commId)
-    .then(res => res.json())
-    .then(data => {
-    searchResults.innerHTML = "";
-    if(data.length === 0)
-    {
-        const div = document.createElement('div');
-        div.innerHTML = "No results...";
-        searchResults.appendChild(div);
-        div.className = "search-no-result";
-    }
-    data.forEach(result => {
-        const div = document.createElement('div');
-        const divImg = document.createElement('div');
-        const divInfo = document.createElement('div');
-        const img = document.createElement('img');
-        const h3 = document.createElement('h3');
-        const p = document.createElement('p');
-        const span = document.createElement('span');
-
-        div.className = "search-result-container";
-        divImg.className = "search-image-container";
-        divInfo.className = "search-info-container";
-
-        h3.innerHTML = "p/" + result['title'];
-        if(result['text'].length > 0) {
-            p.innerHTML = result['text'];
-        }
-        img.src = "../images/reddit.png";
-        
-        div.appendChild(divImg);
-        divImg.appendChild(img);
-        div.appendChild(divInfo);
-        divInfo.appendChild(h3);
-        divInfo.appendChild(p);
-        searchResults.appendChild(div);
-
-        div.addEventListener("click",()=>{
-            window.location.href = "community.php?comm_id=" + result['community_id'];
-        });
-     });
-});
 });
 
 </script>

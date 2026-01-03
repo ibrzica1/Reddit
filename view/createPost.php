@@ -62,7 +62,7 @@ $userId = $session->getFromSession('user_id');
             <img src="../images/community/<?=$commImage->name?>">
             <p>r/<?= $selectedCommunity->name?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput">
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput" data-comm_id="<?= $communityId ?>">
         <div class="search-results" id="searchResults"></div>
     </div>
     <?php else: ?>
@@ -72,9 +72,6 @@ $userId = $session->getFromSession('user_id');
         <div class="search-results" id="searchResults"></div>
     </div>   
     <?php endif; ?>
-        
-    
-    
       <div class="buttons-container">
         <a href="../view/createPost.php" class="create-post-btn" title="Create Post">
             <img class='plus-icon' src="../images/icons/plus.png">
@@ -134,7 +131,8 @@ $userId = $session->getFromSession('user_id');
 
 <script type="module">
 
-import {toggleNotification, toggleSearch  } from "../script/tools.js?v=<?php echo time(); ?>";
+import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
 const commId = <?= $communityId ?>;
 const textOption = document.querySelector('.text-option');
 const imageOption = document.querySelector('.image-option');
@@ -149,63 +147,11 @@ const communityContainer = document.querySelector(".community-container");
 const seekContainer = document.querySelector(".seek-container");
 const bellIcon = document.querySelector('.notifications-container');
 const notificationNum = document.querySelector('.notification-number');
-const searchEnter = document.getElementById('searchInput');
-const searchResults = document.getElementById('searchResults');
-
 const isCommunitySelected = <?php echo json_encode(!empty($selectedCommunity)); ?>;
 
+postSearch();
+
 bellIcon.addEventListener('click',toggleNotification);
-
-searchEnter.addEventListener('input', () => {
-    let search = searchEnter.value.trim();
-    if(search.length >= 2)
-    {
-    toggleSearch();
-    }
-
-    fetch("../decisionMaker.php?post-search=" + search + "&comm-id=" + commId)
-    .then(res => res.json())
-    .then(data => {
-    searchResults.innerHTML = "";
-    if(data.length === 0)
-    {
-        const div = document.createElement('div');
-        div.innerHTML = "No results...";
-        searchResults.appendChild(div);
-        div.className = "search-no-result";
-    }
-    data.forEach(result => {
-        const div = document.createElement('div');
-        const divImg = document.createElement('div');
-        const divInfo = document.createElement('div');
-        const img = document.createElement('img');
-        const h3 = document.createElement('h3');
-        const p = document.createElement('p');
-        const span = document.createElement('span');
-
-        div.className = "search-result-container";
-        divImg.className = "search-image-container";
-        divInfo.className = "search-info-container";
-
-        h3.innerHTML = "p/" + result['title'];
-        if(result['text'].length > 0) {
-            p.innerHTML = result['text'];
-        }
-        img.src = "../images/reddit.png";
-        
-        div.appendChild(divImg);
-        divImg.appendChild(img);
-        div.appendChild(divInfo);
-        divInfo.appendChild(h3);
-        divInfo.appendChild(p);
-        searchResults.appendChild(div);
-
-        div.addEventListener("click",()=>{
-            window.location.href = "community.php?comm_id=" + result['community_id'];
-        });
-     });
-});
-});
 
 if (isCommunitySelected) {
     if (communityContainer) communityContainer.style.display = "flex";

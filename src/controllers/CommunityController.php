@@ -7,6 +7,7 @@ use Reddit\models\Image;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\repositories\CommunityRepository;
+use Reddit\repositories\ImageRepository;
 
 class CommunityController extends CommunityRepository
 {
@@ -14,7 +15,7 @@ class CommunityController extends CommunityRepository
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
-        $image = new Image();
+        $image = new ImageRepository();
 
         $user_id = $session->getFromSession('user_id');
         $time = $timeStamp->time;
@@ -67,7 +68,7 @@ class CommunityController extends CommunityRepository
                 'size' => $files['size']
             ];
         
-            if(!$image->isValidSize($uploadedImages['size']))
+            if(!Image::isValidSize($uploadedImages['size']))
             {
             $message = "Picture {$uploadedImages['name']} is to big";
             $session->setSession("message",$message);
@@ -75,7 +76,7 @@ class CommunityController extends CommunityRepository
             exit();
             }
 
-            if(!$image->isValidDimension($uploadedImages['tmp_name']))
+            if(!Image::isValidDimension($uploadedImages['tmp_name']))
             {
             $message = "Picture {$uploadedImages['name']} 
             cant be wider than 1920 or higher than 1024";
@@ -84,7 +85,7 @@ class CommunityController extends CommunityRepository
             exit();
             }
 
-            if(!$image->isValidExtension($uploadedImages['name']))
+            if(!Image::isValidExtension($uploadedImages['name']))
             {
             $message = "Picture {$uploadedImages['name']} 
             has invalid extension";
