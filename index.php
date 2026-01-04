@@ -84,7 +84,7 @@ $posts = $post->getAllPosts($limit);
     <?php endif; ?>
   </div>
 
-  <main class="posts-grid">
+  <main class="posts-grid" data-count="<?= $postCount ?>" data-limit="<?= $limit ?>">
     <?php if(!empty($posts)): ?>
     <?php foreach($posts as $postItem): ?>
     <?php $postUser = $user->getUserByAttribute("id",$postItem->user_id); ?>   
@@ -146,7 +146,7 @@ $posts = $post->getAllPosts($limit);
   </main>
     
   <script type="module">
-    import {toggleSearch } from "/Reddit/script/tools.js";
+    import {loadPosts} from "/Reddit/script/tools.js?v=<?php echo time(); ?>";
     import {likeStatus, manageLikes} from "/Reddit/script/like.js?v=<?php echo time(); ?>";
     import {stageImages, imageScroll} from "/Reddit/script/image.js?v=<?php echo time(); ?>";
     import {generalSearch} from "/Reddit/script/search.js?v=<?php echo time(); ?>";
@@ -155,31 +155,9 @@ $posts = $post->getAllPosts($limit);
     manageLikes();
     stageImages();
     imageScroll();
-    generalSearch()
-
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedScrollPos = localStorage.getItem('scrollPosition');
-        if (savedScrollPos) {
-            window.scrollTo(0, parseInt(savedScrollPos));
-            localStorage.removeItem('scrollPosition');
-        }
-    });
-
-    if(<?= $postCount ?> > <?= $limit ?> ) {
-    window.addEventListener('scroll', () => {
-        const scrollHeight = document.documentElement.scrollHeight;
-        const scrollPos = window.innerHeight + window.scrollY;
-
-        if(scrollPos >= scrollHeight - 50) {
-            const urlParams = new URLSearchParams(window.location.search);
-            let currentLimit = parseInt(urlParams.get('limit')) || 5;
-            let newLimit = currentLimit + 5;
-
-            localStorage.setItem('scrollPosition', window.scrollY);
-            window.location.href = `index.php?limit=${newLimit}`;
-        }
-    });
-};
+    generalSearch();
+    loadPosts();
+    
   </script>
 </body>
 

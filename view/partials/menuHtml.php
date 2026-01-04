@@ -13,7 +13,7 @@ $session = new SessionService();
     <img class="user-avatar" src="/Reddit/images/avatars/<?= $session->getFromSession('avatar')?>.webp">
 </div>
 <div class="menu-container" id="userMenu">
-    <a class="profile-container" href="profile.php">
+    <a class="profile-container" href="/Reddit/view/profile.php">
     <div class="avatar-container">
         <img class="user-avatar" src="/Reddit/images/avatars/<?= $session->getFromSession('avatar')?>.webp">
     </div>

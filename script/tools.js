@@ -1,4 +1,37 @@
 
+export function loadPosts()
+{
+    const container = document.querySelector(".posts-grid");
+    const count = parseInt(container.dataset.count);
+    const limit = parseInt(container.dataset.limit);
+    console.log(count);
+    console.log(limit);
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedScrollPos = localStorage.getItem('scrollPosition');
+        if (savedScrollPos) {
+            window.scrollTo(0, parseInt(savedScrollPos));
+            localStorage.removeItem('scrollPosition');
+        }
+    });
+
+    if(count > limit ) {
+    window.addEventListener('scroll', () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollPos = window.innerHeight + window.scrollY;
+
+        if(scrollPos >= scrollHeight - 50) {
+            const urlParams = new URLSearchParams(window.location.search);
+            let currentLimit = parseInt(urlParams.get('limit')) || 5;
+            let newLimit = currentLimit + 5;
+
+            localStorage.setItem('scrollPosition', window.scrollY);
+            window.location.href = `index.php?limit=${newLimit}`;
+        }
+    });
+    };
+}
+
 export function toggleReply()
 {
     const replys = document.querySelectorAll(".reply-form");

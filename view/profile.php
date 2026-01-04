@@ -139,7 +139,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     </div>
     <form action="../decisionMaker.php" method="post">
         <input type="hidden" name="delete-community" value="<?=$community->id?>">
-        <button class="delete-container">
+        <button class="delete-container" onclick='confirm("Are you sure you want do delete this community")'>
             <img src="../images/icons/set.png">
         </button>
     </form>
@@ -209,10 +209,11 @@ $activeTab = $_GET['tab'] ?? "posts";
         </a>
     </div>
     <?php if($postItem->user_id == $userId): ?>
-    <form action="../decisionMaker.php" method="post">
+    <form action="../decisionMaker.php" method="post" class="delete-post-form" data-id="<?= $postId ?>">
         <input type="hidden" name="location" value="profile">
         <input type="hidden" name="post-delete" value="<?= $postId ?>">
-        <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>" data-id="<?= $postId ?>">
+        <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>" 
+        onclick="return confirm('Are you sure you want to delete this post?')">
         <img src="../images/icons/set.png">
         </button>
     </form>
@@ -297,18 +298,11 @@ $activeTab = $_GET['tab'] ?? "posts";
 </div>
 
 <script type="module">
-    import {deleteCommunity} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {} from "../script/tools.js?v=<?php echo time(); ?>";
     import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
     import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
     import {profileSearch} from "../script/search.js?v=<?php echo time(); ?>";
     import {changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
-    const userId = <?= $userId ?>;
-    const postBtn = document.getElementById("posts");
-    const communityBtn = document.getElementById("communities");
-    const commentsBtn = document.getElementById("comments");
-    const deleteBtn = document.querySelectorAll('.delete-container');
-    const bellIcon = document.querySelector('.notifications-container');
-    const notificationNum = document.querySelector('.notification-number');
 
     likeStatus();
     manageLikes();
@@ -316,23 +310,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     imageScroll();
     profileSearch();
     changeBanner('<?=$session->getFromSession('avatar')?>');
-    deleteCommunity();
-
-    const deleteBtns = document.querySelectorAll(".delete-btn");
-
-    deleteBtns.forEach((btn)=>{
-        const postId = btn.dataset.id;
-        const deletePost = document.getElementById(`delete-post-${postId}`);
-        deletePost.addEventListener('click',(e)=>{
-            const confirmed = confirm("Are you sure you want to delete this post?");
-            if (!confirmed) {
-                e.preventDefault();
-            }
-        });
-    })
-    
-    
-   
+  
 </script>
 
 </body>

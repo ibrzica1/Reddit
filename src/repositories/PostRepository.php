@@ -49,7 +49,7 @@ class PostRepository extends Db
         return $posts;
     }
 
-    public function getPostById(int $id): Post
+    public function getPostById(int $id): ?Post
     {
         $stmt = $this->connection->prepare("SELECT * FROM post WHERE id = :value");
         $stmt->bindParam(':value',$id);
@@ -57,6 +57,7 @@ class PostRepository extends Db
 
         $result = $stmt->fetch();
         $post = new Post($result);
+         
         return $post;
     }
 
