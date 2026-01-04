@@ -154,12 +154,9 @@ $allNotifications = $notification->getUserNotifications($userId);
 <script type="module">
     import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";  
-    const bellIcon = document.querySelector('.notifications-container');
-    const notificationNum = document.querySelector('.notification-number');
     
     generalSearch();
 
-    bellIcon.addEventListener('click',toggleNotification);
 </script>
 </body>
 </html>

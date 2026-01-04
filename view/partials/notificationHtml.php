@@ -1,6 +1,6 @@
 <?php
 
-require_once "../vendor/autoload.php";
+require_once __DIR__ . "/../../vendor/autoload.php";
 
 use Reddit\services\SessionService;
 use Reddit\repositories\NotificationRepository;
@@ -13,12 +13,13 @@ if(!empty($_GET['nott_id']))
     if(!empty($notificationId)) $notification->changeSeenStatus($notificationId,"true");
 }
 $notifications = $notification->unreadNotifications($userId);
+
 $nottNumber = count($notifications);
 
 ?>
 
 <div class="notifications-container">
-    <img src="../images/icons/bell.png">
+    <img src="/Reddit/images/icons/bell.png">
 <?php if($nottNumber > 0): ?>
     <div class="notification-number"><?= $nottNumber ?></div>
 <?php endif; ?>
@@ -28,7 +29,9 @@ $nottNumber = count($notifications);
     <?php if(empty($notifications)): ?>
     <p class="empty-notification">There is no new notifications</p>
     <?php else: ?>
+        
     <?php foreach($notifications as $notificationItem): ?>
+        
     <?php $senderInfo = $user->getUserByAttribute("id",$notificationItem->sender_id); ?>
     <?php if($notificationItem->seen == "false"): ?>
     <?php if($notificationItem->type == "like"): ?>
@@ -37,7 +40,7 @@ $nottNumber = count($notifications);
     <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem->id ?>" 
     onclick="<?php $notification->changeSeenStatus($notificationItem->id,"true") ?>" class="single-notification">
     <div class="sender-avatar">
-    <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
+    <img src="/Reddit/images/avatars/<?= $senderInfo->avatar ?>.webp">
     </div>
     <div class="notification-body">
         <p>u/<span><?= $senderInfo->username ?></span> liked your post 
@@ -48,7 +51,7 @@ $nottNumber = count($notifications);
     <?php $notificationComment = $comment->getComment("id",$notificationItem->comment_id) ?>
     <a href="comment.php?post_id=<?= $notificationComment->post_id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
     <div class="sender-avatar">
-    <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
+    <img src="/Reddit/images/avatars/<?= $senderInfo->avatar ?>.webp">
     </div>
     <div class="notification-body">
         <p>u/<span><?= $senderInfo->username ?></span> liked your comment
@@ -60,7 +63,7 @@ $nottNumber = count($notifications);
     <?php $notificationPost = $post->getPostById($notificationItem->post_id); ?>
     <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
     <div class="sender-avatar">
-    <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
+    <img src="/Reddit/images/avatars/<?= $senderInfo->avatar ?>.webp">
     </div>
     <div class="notification-body">
         <p>u/<span><?= $senderInfo->username ?></span> commented on your post
@@ -71,7 +74,7 @@ $nottNumber = count($notifications);
     <?php $notificationCommunity = $community->getCommunity("id",$notificationItem->community_id); ?>
     <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
     <div class="sender-avatar">
-    <img src="../images/avatars/<?= $senderInfo->avatar ?>.webp">
+    <img src="/Reddit/images/avatars/<?= $senderInfo->avatar ?>.webp">
     </div>
     <div class="notification-body">
         <p>u/<span><?= $senderInfo->username ?></span> posted in your community
@@ -87,8 +90,11 @@ $nottNumber = count($notifications);
 </div>
 
 <script type="module">
-    import { toggleNotification } from "../script/tools.js?v=<?php echo time(); ?>";
+    import { toggleNotification } from "/Reddit/script/tools.js?v=<?php echo time(); ?>";
     const bellIcon = document.querySelector('.notifications-container');
 
+    console.log("JS notification loaded");
     bellIcon.addEventListener('click',toggleNotification);
+
+    
 </script>

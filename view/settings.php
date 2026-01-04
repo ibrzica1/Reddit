@@ -148,9 +148,10 @@ $userId = $session->getFromSession('user_id');
 </div>
 
 <script type="module">
-    import {toggleEditForms, checkBioLength} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {toggleEditForms} from "../script/tools.js?v=<?php echo time(); ?>";
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";  
     import {checkboxesAvatar} from "../script/avatar.js?v=<?php echo time(); ?>"; 
+    import {checkBioLength} from "../script/textLength.js?v=<?php echo time(); ?>";
     
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');

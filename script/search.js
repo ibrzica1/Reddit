@@ -1,4 +1,74 @@
 
+export function toggleCommunitySearch()
+{
+    const communityContainer = document.querySelector(".community-container");
+    const seekContainer = document.querySelector(".seek-container");
+    const selectedCommunity = seekContainer.dataset.selected;
+    
+    if (selectedCommunity) {
+        if (communityContainer) communityContainer.style.display = "flex";
+        if (seekContainer) seekContainer.style.display = "none";
+    } else {
+        if (communityContainer) communityContainer.style.display = "none";
+        if (seekContainer) seekContainer.style.display = "flex";
+    }
+}
+
+export function communitySearch()
+{
+    const searchInput = document.getElementById("search-input");
+    const displayInput = document.getElementById("search-display");
+    const communityContainer = document.querySelector(".community-container");
+    const seekContainer = document.querySelector(".seek-container");
+
+    searchInput.addEventListener("input",()=>{
+    let search = searchInput.value.trim();
+
+    if(search.length < 2)
+    {
+        displayInput.style.display = "none";
+    }
+    else
+    {
+        displayInput.style.display = "block";
+    }
+
+    fetch("../decisionMaker.php?community-search=" + search)
+        .then(res => res.json())
+        .then(data => {
+            displayInput.innerHTML = "";
+            data.forEach(community => {
+
+                const communityId = community["id"];
+                const div = document.createElement('div');
+                const p = document.createElement('p');
+                const span = document.createElement('span');
+                span.innerHTML = "u/";
+                p.innerHTML = community['name'];
+                div.appendChild(span);
+                div.appendChild(p);
+                displayInput.appendChild(div);
+
+                div.addEventListener("click",()=>{
+                    window.location.href = "createPost.php?comm_id=" + communityId;
+                });
+            });
+        });
+    });
+
+    if(communityContainer) {
+        communityContainer.addEventListener("click",()=>{
+            communityContainer.style.display = "none";
+            if(seekContainer) {
+            seekContainer.style.display = "flex";
+        }
+            if(searchInput) {
+                searchInput.focus();
+            }
+    });
+    }
+}
+
 export function profileSearch()
 {
     const searchEnter = document.getElementById('searchInput');

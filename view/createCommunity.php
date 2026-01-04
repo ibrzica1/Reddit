@@ -101,48 +101,14 @@ $userId = $session->getFromSession('user_id');
 <script type="module">
     import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>"; 
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";  
-    const nameInput = document.getElementById("nameInput");
-    const nameLetters = document.querySelector(".name-letters");
-    const descriptionInput = document.getElementById("descriptionInput");
-    const descriptionLetters = document.querySelector(".description-letters");
-    const namePreview = document.querySelector('.prw-name-span');
-    const descriptionPreview = document.querySelector('.prw-description');
+    import {checkDescriptionLength, checkNameLength} from "../script/textLength.js?v=<?php echo time(); ?>"; 
+    
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
 
     generalSearch();
-
-    bellIcon.addEventListener('click',toggleNotification);
-
-    descriptionInput.addEventListener('keydown', ()=>{
-        let used = descriptionInput.value.length;
-        descriptionLetters.innerHTML = used;
-        descriptionPreview.textContent = descriptionInput.value;
-    });
-
-    descriptionInput.addEventListener('input', ()=>{
-        const maxLetters = 500;
-        if (descriptionInput.value.length > maxLetters) {
-            descriptionInput.value = descriptionInput.value.slice(0, maxLetters);
-        }
-        descriptionLetters.textContent = maxLetters - descriptionInput.value.length;
-    });
-
-    nameInput.addEventListener('keydown', ()=>{
-        let maxLetters = 21;
-        let used = nameInput.value.length;
-        let remaining = maxLetters - used;
-        nameLetters.innerHTML = remaining;
-        namePreview.innerHTML = nameInput.value;
-    });
-
-    nameInput.addEventListener('input', ()=>{
-        const maxLetters = 21;
-        if (nameInput.value.length > maxLetters) {
-            nameInput.value = nameInput.value.slice(0, maxLetters);
-        }
-        nameLetters.textContent = maxLetters - nameInput.value.length;
-    });
+    checkDescriptionLength();
+    checkNameLength();
 
 </script>
     

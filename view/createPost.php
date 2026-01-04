@@ -48,9 +48,6 @@ $userId = $session->getFromSession('user_id');
 
 <body>
 
-
-<body>
-
 <div class="header-container">
     <a class="logo-container" href="../index.php">
         <img src="../images/logo.png" alt="Reddit Logo" class="reddit-logo">
@@ -99,7 +96,7 @@ $userId = $session->getFromSession('user_id');
 </div>
 <?php endif; ?>
     
-<div class="seek-container">
+<div class="seek-container" data-selected="<?= !empty($selectedCommunity) ?>">
     <input type="text" name="community-search" id="search-input" placeholder="Search for community">
     <p id="search-display"></p>
 </div>
@@ -131,116 +128,15 @@ $userId = $session->getFromSession('user_id');
 
 <script type="module">
 
-import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
-import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
-const commId = <?= $communityId ?>;
-const textOption = document.querySelector('.text-option');
-const imageOption = document.querySelector('.image-option');
-const textContainer = document.querySelector('.text-container');
-const imageContainer = document.querySelector('.image-container');
-const title = document.getElementById('titleId');
-const letters = document.querySelector(".letters");
-const searchInput = document.getElementById("search-input");
-const displayInput = document.getElementById("search-display");
-const communitySelect = document.getElementById("selectedCommunity");
-const communityContainer = document.querySelector(".community-container");
-const seekContainer = document.querySelector(".seek-container");
-const bellIcon = document.querySelector('.notifications-container');
-const notificationNum = document.querySelector('.notification-number');
-const isCommunitySelected = <?php echo json_encode(!empty($selectedCommunity)); ?>;
+import {togglePostOptions} from "../script/tools.js?v=<?php echo time(); ?>";
+import {postSearch, toggleCommunitySearch, communitySearch} from "../script/search.js?v=<?php echo time(); ?>";
+import {checkTitleLength} from "../script/textLength.js?v=<?php echo time(); ?>";
 
 postSearch();
-
-bellIcon.addEventListener('click',toggleNotification);
-
-if (isCommunitySelected) {
-    if (communityContainer) communityContainer.style.display = "flex";
-    if (seekContainer) seekContainer.style.display = "none";
-} else {
-    if (communityContainer) communityContainer.style.display = "none";
-    if (seekContainer) seekContainer.style.display = "flex";
-}
-
-searchInput.addEventListener("input",()=>{
-  let search = searchInput.value.trim();
-
-  if(search.length < 2)
-  {
-    displayInput.style.display = "none";
-  }
-  else
-  {
-    displayInput.style.display = "block";
-  }
-
-  fetch("../decisionMaker.php?community-search=" + search)
-        .then(res => res.json())
-        .then(data => {
-            displayInput.innerHTML = "";
-            data.forEach(community => {
-
-                const communityId = community["id"];
-                const div = document.createElement('div');
-                const p = document.createElement('p');
-                const span = document.createElement('span');
-                span.innerHTML = "u/";
-                p.innerHTML = community['name'];
-                div.appendChild(span);
-                div.appendChild(p);
-                displayInput.appendChild(div);
-
-
-
-                div.addEventListener("click",()=>{
-                    window.location.href = "createPost.php?comm_id=" + communityId;
-                });
-            });
-        });
-});
-
-if(communityContainer) {
-    communityContainer.addEventListener("click",()=>{
-        communityContainer.style.display = "none";
-        if(seekContainer) {
-        seekContainer.style.display = "flex";
-    }
-        if(searchInput) {
-            searchInput.focus();
-        }
-});
-}
-
-title.addEventListener('keydown', ()=>{
-    let maxLetters = 300;
-    let used = title.value.length;
-    let remaining = maxLetters - used;
-    letters.innerHTML = remaining;
-});
-    
-title.addEventListener('input', () => {
-    const maxLetters = 300;
-     if (title.value.length > maxLetters) {
-        title.value = title.value.slice(0, maxLetters);
-    }
-    letters.textContent = maxLetters - title.value.length;
-});
-
-textOption.classList.add('active');
-imageContainer.style.display = 'none';
-
-textOption.addEventListener('click', () => {
-  textOption.classList.add('active');
-  imageOption.classList.remove('active');
-  textContainer.style.display = 'block';
-  imageContainer.style.display = 'none';
-});
-
-imageOption.addEventListener('click', () => {
-  imageOption.classList.add('active');
-  textOption.classList.remove('active');
-  textContainer.style.display = 'none';
-  imageContainer.style.display = 'block';
-});
+toggleCommunitySearch();
+communitySearch();
+checkTitleLength();
+togglePostOptions();
 
 </script>
     

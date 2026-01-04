@@ -186,30 +186,17 @@ $communityPosts = $post->getPost("community_id",$communityId);
 </div>
 
 <script type="module">
-import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+import {deleteCommunity} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
 import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
-
-const commId = <?= $communityId ?>;
-const deleteBtn = document.querySelector('.delete-container');
-const bellIcon = document.querySelector('.notifications-container');
-const notificationNum = document.querySelector('.notification-number');
-
 
 likeStatus();
 manageLikes();
 stageImages();
 imageScroll();
 postSearch();
-
-bellIcon.addEventListener('click',toggleNotification);
-deleteBtn.addEventListener('click',()=>{
-    if(confirm("Are you sure you want do delete this community"))
-    {
-        deleteBtn.disabled = false;
-    }
-});
+deleteCommunity();
 
 </script>
 </body>

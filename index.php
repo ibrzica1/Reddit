@@ -12,7 +12,7 @@ use Reddit\repositories\ImageRepository;
 use Reddit\repositories\LikeRepository;
 use Reddit\repositories\NotificationRepository;
 
-$userRepository = new UserRepository();
+$user = new UserRepository();
 $community = new CommunityRepository();
 $post = new PostRepository();
 $comment = new CommentRepository();
@@ -24,11 +24,11 @@ $like = new LikeRepository();
 
 
 if(isset($_SESSION['user_id'])) {
-    $id = $session->getFromSession('user_id');
-    $notifications = $notification->unreadNotifications($id);
+    $userId = $session->getFromSession('user_id');
+    $notifications = $notification->unreadNotifications($userId);
     $nottNumber = count($notifications);
 } else {
-    $id = 0;
+    $userId = 0;
 }
 $postCount = $post->countPosts();
 $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
@@ -69,98 +69,8 @@ $posts = $post->getAllPosts($limit);
         <img class='plus-icon' src="images/icons/plus.png">
         <p>Create</p>
     </a>
-     <div class="notifications-container">
-        <img src="images/icons/bell.png">
-        <?php if($nottNumber > 0): ?>
-            <div class="notification-number"><?= $nottNumber ?></div>
-        <?php endif; ?>
-    </div>
-    <div class="notification-grid" id="notificatioGrid">
-        
-        <?php if(empty($notifications)): ?>
-        <p class="empty-notification">There is no new notifications</p>
-        <?php else: ?>
-        <?php foreach($notifications as $notificationItem): ?>
-        <?php $senderInfo = $userRepository->getUserByAttribute("id",$notificationItem->sender_id); ?>
-        <?php if($notificationItem->seen == "false"): ?>
-        <?php if($notificationItem->type == "like"): ?>
-        <?php if(!empty($notificationItem->post_id)): ?>
-        <?php $notificationPost = $post->getPostById($notificationItem->post_id) ?>
-        <a href="community.php?comm_id=<?= $notificationPost->community_id ?>&nott_id=<?= $notificationItem->id ?>" 
-        onclick="<?php $notification->changeSeenStatus($notificationItem->id,"true") ?>" class="single-notification">
-        <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
-        </div>
-        <div class="notification-body">
-            <p>u/<span><?= $senderInfo->username ?></span> liked your post 
-            r/<span><?= $notificationPost->title ?></span></p>
-        </div>  
-        </a>
-        <?php else: ?>
-        <?php $notificationComment = $comment->getComment("id",$notificationItem->comment_id) ?>
-        <a href="comment.php?post_id=<?= $notificationComment->$post_id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
-        <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
-        </div>
-        <div class="notification-body">
-            <p>u/<span><?= $senderInfo->username ?></span> liked your comment
-            r/<span><?= $notificationComment->text ?></span></p>
-        </div>
-        </a>
-        <?php endif; ?>
-        <?php elseif($notificationItem->type == "comment"): ?>
-        <?php $notificationPost = $post->getPostById($notificationItem->post_id); ?>
-        <a href="comment.php?post_id=<?= $notificationPost->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
-        <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
-        </div>
-        <div class="notification-body">
-            <p>u/<span><?= $senderInfo->username ?></span> commented on your post
-            r/<span><?= $notificationPost->title ?></span></p>
-        </div>
-        </a>
-        <?php elseif($notificationItem->type == "post"): ?>
-        <?php $notificationCommunity = $community->getCommunity("id",$notificationItem->community_id); ?>
-        <a href="community.php?comm_id=<?= $notificationCommunity->id ?>&nott_id=<?= $notificationItem->id ?>" class="single-notification">
-        <div class="sender-avatar">
-           <img src="images/avatars/<?= $senderInfo->avatar ?>.webp">
-        </div>
-        <div class="notification-body">
-            <p>u/<span><?= $senderInfo->username ?></span> posted in your community
-            r/<span><?= $notificationCommunity->name ?></span></p>
-        </div>
-        </a>
-        <?php else: ?>
-        <?php endif; ?>
-        <?php endif; ?>
-        <?php endforeach; ?>
-        <?php endif; ?>
-        <a href="view/notification.php" class="see-all-nott">see all notifications</a>
-    </div>
-    <div class="user-info" id="userInfo">
-        <div class="green-dot"></div>
-        <img class="user-avatar" src="images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-        
-    </div>
-    <div class="menu-container" id="userMenu">
-        <a class="profile-container" href="view/profile.php">
-            <div class="avatar-container">
-                <img class="user-avatar" src="images/avatars/<?= $session->getFromSession('avatar')?>.webp">
-            </div>
-            <div class="info-container">
-                <h3>View Profile</h3>
-                <p>u/<?= $session->getFromSession("username") ?></p>
-            </div>
-        </a>
-        <a class="edit-container" href="view/editAvatar.php">
-            <img src="images/icons/shirt.png">
-            <p>Edit Avatar</p>
-        </a>
-        <a class="logout-container" href="src/controllers/Logout.php">
-            <img src="images/icons/house-door.png">
-            <p>Log Out</p>
-        </a>
-    </div>
+    <?php include __DIR__ . "/view/partials/notificationHtml.php" ?>
+    <?php include __DIR__ . "/view/partials/menuHtml.php" ?>
     </div>
     <?php else: ?>
     <div class="buttons-container">
@@ -177,7 +87,7 @@ $posts = $post->getAllPosts($limit);
   <main class="posts-grid">
     <?php if(!empty($posts)): ?>
     <?php foreach($posts as $postItem): ?>
-    <?php $postUser = $userRepository->getUserByAttribute("id",$postItem->user_id); ?>   
+    <?php $postUser = $user->getUserByAttribute("id",$postItem->user_id); ?>   
     <?php $postId = $postItem->id; ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->user_id); ?>
     <?php $postLikeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
@@ -224,7 +134,7 @@ $posts = $post->getAllPosts($limit);
             <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
         </a>
         </div>
-        <?php if($postItem->user_id == $id): ?>
+        <?php if($postItem->user_id == $userId): ?>
         <div class="delete-btn">
         <img src="images/icons/set.png">
         </div>
@@ -236,24 +146,16 @@ $posts = $post->getAllPosts($limit);
   </main>
     
   <script type="module">
-    import { toggleMenu, toggleNotification, toggleSearch } from "./script/tools.js";
-    import {likeStatus, manageLikes} from "./script/like.js?v=<?php echo time(); ?>";
-    import {stageImages, imageScroll} from "./script/image.js?v=<?php echo time(); ?>";
-    import {generalSearch} from "./script/search.js?v=<?php echo time(); ?>";
-    const  menu = document.getElementById("userInfo");
-    const bellIcon = document.querySelector('.notifications-container');
-    const notificationNum = document.querySelector('.notification-number');
+    import {toggleSearch } from "/Reddit/script/tools.js";
+    import {likeStatus, manageLikes} from "/Reddit/script/like.js?v=<?php echo time(); ?>";
+    import {stageImages, imageScroll} from "/Reddit/script/image.js?v=<?php echo time(); ?>";
+    import {generalSearch} from "/Reddit/script/search.js?v=<?php echo time(); ?>";
 
     likeStatus();
     manageLikes();
     stageImages();
     imageScroll();
     generalSearch()
-
-    bellIcon.addEventListener('click',toggleNotification);
-    menu.addEventListener('click',toggleMenu);
-
-   
 
     window.addEventListener('DOMContentLoaded', () => {
         const savedScrollPos = localStorage.getItem('scrollPosition');

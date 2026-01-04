@@ -208,7 +208,7 @@ $imgNum = 0;
             <button class="comment-reply-btn" id="commentReplyBtn-<?= $commId ?>">
                 Reply</button>
         </div>
-        <form action="../decisionMaker.php" method="post" class="reply-form" id="replyForm-<?= $commId ?>">
+        <form action="../decisionMaker.php" method="post" class="reply-form" id="replyForm-<?= $commId ?>" data-id="<?= $commId ?>">
             <input type="hidden" name="post_id" value="<?= $postId ?>">
             <input type="hidden" name="comment_id" value="<?= $commId ?>">
             <textarea name="reply-text" rows="1" id="replyText-<?= $commId ?>"></textarea>
@@ -253,20 +253,7 @@ $imgNum = 0;
     </div>
 <script>
 {
-const commentId = <?= $commId ?>;
-const commReplyBtn = document.getElementById(`commentReplyBtn-${commentId}`);
-const replyText =document.getElementById(`replyText-${commentId}`);
-const replyForm = document.getElementById(`replyForm-${commentId}`);
-const replyCancel = document.getElementById(`replyCancel-${commentId}`);
-const replySubmit = document.getElementById(`replySubmit-${commentId}`);
 
-commReplyBtn.addEventListener('click', () => {
-    replyForm.style.display = 'flex';
-    replyText.focus();
-});
-replyCancel.addEventListener('click', () => {
-    replyForm.style.display = 'none';
-});
 }
 </script>
     <?php endif; ?>
@@ -292,27 +279,17 @@ replyCancel.addEventListener('click', () => {
 </div>
 
 <script type="module">
-import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+import {toggleReply} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
 import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
-const commId = <?= $postCommunityId ?>;
-const bellIcon = document.querySelector('.notifications-container');
-const notificationNum = document.querySelector('.notification-number');
-const idPost = <?= $postId ?>;
-const deletePost = document.getElementById(`delete-post-${idPost}`);
-const imgDisplay = document.getElementById(`imageDisplay`);
-const postImages = <?= isset($postImages) ? json_encode($postImages) : '[]' ?>;
-const imageCount = postImages.length;
 
 likeStatus();
 manageLikes();
 stageImages();
 imageScroll();
 postSearch();
-
-bellIcon.addEventListener('click',toggleNotification);
- 
+toggleReply();
 
 </script>
 </body>

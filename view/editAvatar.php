@@ -102,8 +102,6 @@ $userId = $session->getFromSession('user_id');
     changeAvatar();
     changeBanner('<?=$session->getFromSession('avatar')?>');
 
-    bellIcon.addEventListener('click',toggleNotification);
-
 </script>
 </body>
 

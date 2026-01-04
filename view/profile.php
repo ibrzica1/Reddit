@@ -212,77 +212,13 @@ $activeTab = $_GET['tab'] ?? "posts";
     <form action="../decisionMaker.php" method="post">
         <input type="hidden" name="location" value="profile">
         <input type="hidden" name="post-delete" value="<?= $postId ?>">
-        <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>">
+        <button type="submit" class="delete-btn" id="delete-post-<?= $postId ?>" data-id="<?= $postId ?>">
         <img src="../images/icons/set.png">
         </button>
     </form>
     <?php endif; ?>
 </div>
 </div>
-<script>
-{
-const idPost = <?= $postId ?>;
-const likeCount = document.getElementById(`count-${idPost}`);
-const likeContainer = document.getElementById(`like-${idPost}`);
-const upBtn = document.getElementById(`up-${idPost}`);
-const downBtn = document.getElementById(`down-${idPost}`);
-const deletePost = document.getElementById(`delete-post-${idPost}`);
-
-
-if(<?= $likeId ?> === <?= $userId ?> && "<?= $likeStatus ?>" === "liked")
-{
-    likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-    downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-}
-if(<?= $likeId ?> === <?= $userId ?> && "<?= $likeStatus ?>" === "disliked")
-{
-    likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-    downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-}
-
-const handleLike = (liketype)=>{
-                
-fetch('../decisionMaker.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: `post-${liketype}=${idPost}` 
-})
-.then(response => response.json())
-.then(data => {
-    if(data.status === "success") {
-        let count = data.new_count < 0 ? 0 : data.new_count;
-        likeCount.textContent = count;
-        const status = data.like_status; 
-
-    if (status === "liked") {
-        likeContainer.style.backgroundColor = "rgba(223, 120, 120, 1)";
-        upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
-        downBtn.style.backgroundColor = "rgba(223, 120, 120, 1)";
-    } else if (status === "disliked") {
-        likeContainer.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        upBtn.style.backgroundColor = "rgba(112, 148, 220, 1)";
-        downBtn.style.backgroundColor = "rgba(66, 117, 220, 1)";
-    } else { 
-        likeContainer.style.backgroundColor = "#dee8fe";
-        upBtn.style.backgroundColor = "#dee8fe";
-        downBtn.style.backgroundColor = "#dee8fe";
-    }
-    }})
-    .catch(error => console.error('Network error:', error));
-    };
-
-    upBtn.addEventListener('click', () => handleLike('like'));
-    downBtn.addEventListener('click', () => handleLike('dislike'));
-    deletePost.addEventListener('click',()=>{
-    if(confirm("Are you sure you want do delete this post"))
-    {
-        deletePost.disabled = false;
-    }
-    });
-    }
-</script>
         <?php endforeach; ?>    
         <?php endif; ?>    
         <?php endif; ?> 
@@ -361,7 +297,7 @@ fetch('../decisionMaker.php', {
 </div>
 
 <script type="module">
-    import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
+    import {deleteCommunity} from "../script/tools.js?v=<?php echo time(); ?>";
     import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
     import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
     import {profileSearch} from "../script/search.js?v=<?php echo time(); ?>";
@@ -380,26 +316,22 @@ fetch('../decisionMaker.php', {
     imageScroll();
     profileSearch();
     changeBanner('<?=$session->getFromSession('avatar')?>');
-    
-    deleteBtn.forEach(btn => {
-        btn.addEventListener('click',()=>{
-            if(confirm("Are you sure you want do delete this community"))
-            {
-                btn.disabled = false;
+    deleteCommunity();
+
+    const deleteBtns = document.querySelectorAll(".delete-btn");
+
+    deleteBtns.forEach((btn)=>{
+        const postId = btn.dataset.id;
+        const deletePost = document.getElementById(`delete-post-${postId}`);
+        deletePost.addEventListener('click',(e)=>{
+            const confirmed = confirm("Are you sure you want to delete this post?");
+            if (!confirmed) {
+                e.preventDefault();
             }
         });
-    });
-
-    bellIcon.addEventListener('click',toggleNotification);
-
-    "<?=$activeTab?>" == "posts" && postBtn.classList.add("active");
-        
-    "<?=$activeTab?>" == "communities" && communityBtn.classList.add("active");
+    })
     
-    "<?=$activeTab?>" == "comments" && commentsBtn.classList.add("active");
-
     
-
    
 </script>
 
