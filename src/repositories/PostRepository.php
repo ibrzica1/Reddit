@@ -65,11 +65,11 @@ class PostRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time)
         VALUES (:title, :text, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$post->title);
-        $stmt->bindParam(':text',$post->text);
-        $stmt->bindParam(':user_id',$post->user_id);
-        $stmt->bindParam(':community_id',$post->community_id);
-        $stmt->bindParam(':time',$post->time);
+        $stmt->bindParam(':title',$post->getTitle());
+        $stmt->bindParam(':text',$post->getText());
+        $stmt->bindParam(':user_id',$post->getUser_id());
+        $stmt->bindParam(':community_id',$post->getCommunity_id());
+        $stmt->bindParam(':time',$post->getTime());
 
         $stmt->execute();
 
@@ -80,10 +80,10 @@ class PostRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time)
         VALUES (:title, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$post->title);
-        $stmt->bindParam(':user_id',$post->user_id);
-        $stmt->bindParam(':community_id',$post->community_id);
-        $stmt->bindParam(':time',$post->time);
+        $stmt->bindParam(':title',$post->getTitle());
+        $stmt->bindParam(':user_id',$post->getUser_id());
+        $stmt->bindParam(':community_id',$post->getCommunity_id());
+        $stmt->bindParam(':time',$post->getTime());
 
         $stmt->execute();
 

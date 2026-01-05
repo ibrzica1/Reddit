@@ -35,11 +35,11 @@ if(!empty($_GET['nott_id']))
 }
 $postId = intval($getPost);
 $selectedPost = $post->getPostById($postId);
-$postCommunityId = $selectedPost->community_id;
+$postCommunityId = $selectedPost->getCommunity_id();
 $postCommunity = $community->getCommunity("id",$postCommunityId);
 $communityImage = $image->getCommunityImage($postCommunityId);
 $userId = $session->getFromSession("user_id");
-$postUserId = $selectedPost->user_id;
+$postUserId = $selectedPost->getUser_id();
 $postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
@@ -102,14 +102,14 @@ $imgNum = 0;
         <div class="comm-user-info">
             <div class="comm-name-time">
                 <h4>r/<?= $postCommunity->getName() ?></h4>
-                <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost->time); ?></p>
+                <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost->getTime()); ?></p>
             </div>
             <div class="user-name">
                 <p><?= $postUser->getUsername() ?></p>
             </div>
         </div>
     </div>
-    <?php if($selectedPost->user_id == $userId): ?>
+    <?php if($selectedPost->getUser_id() == $userId): ?>
         <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Are you sure you want to delete this post?')">
             <input type="hidden" name="location" value="profile">
             <input type="hidden" name="post-delete" value="<?= $postId ?>">
@@ -120,12 +120,12 @@ $imgNum = 0;
     <?php endif; ?>
 </div>
 <div class="post-title">
-    <h3><?= $selectedPost->title ?></h3>
+    <h3><?= $selectedPost->getTitle() ?></h3>
 </div>
-<?php if(!empty($selectedPost->text)): ?>
+<?php if(!empty($selectedPost->getText())): ?>
 
 <div class="post-text">
-    <p><?= $selectedPost->text ?></p>
+    <p><?= $selectedPost->getText() ?></p>
 </div>
 <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId) ?>

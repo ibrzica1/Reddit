@@ -87,21 +87,21 @@ $posts = $post->getAllPosts($limit);
   <main class="posts-grid" data-count="<?= $postCount ?>" data-limit="<?= $limit ?>">
     <?php if(!empty($posts)): ?>
     <?php foreach($posts as $postItem): ?>
-    <?php $postUser = $user->getUserByAttribute("id",$postItem->user_id); ?>   
-    <?php $postId = $postItem->id; ?>
-    <?php $postLikes = $like->getLike("post_id",$postId,$postItem->user_id); ?>
+    <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>   
+    <?php $postId = $postItem->getId(); ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
     <?php $postLikeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
         <img src="images/avatars/<?=$postUser->getAvatar()?>.webp">
         <p><span>u/</span><?= $postUser->getUsername() ?></p>
-        <h3><?= $time->calculateTime($postItem->time); ?></h3>
+        <h3><?= $time->calculateTime($postItem->getTime()); ?></h3>
     </div>
     <div class="post-content-container">
-        <h3><?= $postItem->title ?></h3>
-    <?php if(!empty($postItem->text)): ?>
-        <p><?= $postItem->text ?></p>
+        <h3><?= $postItem->getTitle() ?></h3>
+    <?php if(!empty($postItem->getText())): ?>
+        <p><?= $postItem->getText() ?></p>
     <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
     <?php $imgCount = count($postImages); ?>
@@ -134,7 +134,7 @@ $posts = $post->getAllPosts($limit);
             <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
         </a>
         </div>
-        <?php if($postItem->user_id == $userId): ?>
+        <?php if($postItem->getUser_id() == $userId): ?>
         <div class="delete-btn">
         <img src="images/icons/set.png">
         </div>

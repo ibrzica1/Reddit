@@ -158,25 +158,25 @@ $activeTab = $_GET['tab'] ?? "posts";
         </div>
     <?php else: ?>
 <?php foreach($posts as $postItem): ?>
-    <?php $commId = $postItem->community_id; ?>
+    <?php $commId = $postItem->getCommunity_id(); ?>
     <?php $postCommunity = $community->getCommunity("id",$commId); ?>
-    <?php $postId = $postItem->id ?>
+    <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$userId) ?>
     <?php $likeId = empty($postLikes->user_id) ? 0 : $postLikes->user_id; ?>
     <?php $likeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
     <?php $postImages = []; ?>
     
-    <?php $communityImg = $image->getCommunityImage($postItem->community_id) ?>
+    <?php $communityImg = $image->getCommunityImage($postItem->getCommunity_id()) ?>
     <div class="post-container">
     <a href="community.php?comm_id=<?=$commId?>" class="post-user-container">
         <img src="../images/community/<?=$communityImg->name?>">
         <p><span>u/</span><?= $postCommunity->name ?></p>
-        <h3><?= $time->calculateTime($postItem->time); ?></h3>
+        <h3><?= $time->calculateTime($postItem->getTime()); ?></h3>
     </a>
     <div class="post-content-container">
-    <h3><?= $postItem->title ?></h3>
-    <?php if(!empty($postItem->text)): ?>
-        <p><?= $postItem->text ?></p> 
+    <h3><?= $postItem->getTitle() ?></h3>
+    <?php if(!empty($postItem->getText())): ?>
+        <p><?= $postItem->getText() ?></p> 
     <?php else: ?>
     <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
     <?php $imgCount = count($postImages); ?>
@@ -208,7 +208,7 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
         </a>
     </div>
-    <?php if($postItem->user_id == $userId): ?>
+    <?php if($postItem->getUser_id() == $userId): ?>
     <form action="../decisionMaker.php" method="post" class="delete-post-form" data-id="<?= $postId ?>">
         <input type="hidden" name="location" value="profile">
         <input type="hidden" name="post-delete" value="<?= $postId ?>">
@@ -236,7 +236,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $commId = $commentItem->id; ?>
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem->user_id); ?>
     <?php $commentPost = $post->getPostById($commentItem->post_id); ?>
-    <?php $commentCommunity = $community->getCommunity("id",$commentPost->community_id); ?>
+    <?php $commentCommunity = $community->getCommunity("id",$commentPost->getCommunity_id()); ?>
     <?php $commentCommunityImg = $image->getCommunityImage($commentCommunity->id); ?>
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id);  ?>
     <?php $commentLikeStatus = empty($commentLikes->status) ? "neutral" : $commentLikes->status ?>
@@ -245,7 +245,7 @@ $activeTab = $_GET['tab'] ?? "posts";
         <div class="post-info">
             <img src="../images/community/<?= $commentCommunityImg->name ?>" class="community-img">
             <p class="comment-community-name">r/<?= $commentCommunity->name ?></p>
-            <p class="post-title"><?= $commentPost->title ?></p>
+            <p class="post-title"><?= $commentPost->getTitle() ?></p>
         </div>
         <div class="comment-user-info">
             <h3><?= $commentUser->getUsername() ?></h3>
@@ -264,7 +264,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <img src="../images/icons/arrow-down.png">
                 </button>
             </div>
-            <a href="comment.php?post_id=<?= $commentPost->id ?>" class="comment-reply-btn" id="commentReplyBtn-<?= $commId ?>">
+            <a href="comment.php?post_id=<?= $commentPost->getId() ?>" class="comment-reply-btn" id="commentReplyBtn-<?= $commId ?>">
                 <img src="../images/icons/bubble.png">
                 <p>Reply</p>
             </a>
