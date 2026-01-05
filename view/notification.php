@@ -123,13 +123,13 @@ $allNotifications = $notification->getUserNotifications($userId);
     </a>
     <?php elseif($singleNott->type == "post"): ?>
     <?php $notificationCommunit = $community->getCommunity("id",$singleNott->community_id); ?>
-    <a href="community.php?comm_id=<?= $notificationCommunit->id ?>&nott_id=<?= $singleNott->id ?>" class="single-nott" id="singleNot-<?= $singleNott->id ?>">
+    <a href="community.php?comm_id=<?= $notificationCommunit->getId() ?>&nott_id=<?= $singleNott->id ?>" class="single-nott" id="singleNot-<?= $singleNott->id ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
     <div class="nott-body"> 
         <p>u/<span><?= $senderInf->getUsername() ?></span> posted in your community</p>
-        <h4><?= $notificationCommunit->name ?></h4>
+        <h4><?= $notificationCommunit->getName() ?></h4>
         <h4><?= $time->calculateTime($singleNott->time) ?></h4>
     </div>
     </a>

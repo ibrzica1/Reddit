@@ -126,19 +126,19 @@ $activeTab = $_GET['tab'] ?? "posts";
         
         <?php else: ?>
         <?php foreach($communities as $community): ?>
-            <?php $communityImg = $image->getCommunityImage($community->id); ?>
+            <?php $communityImg = $image->getCommunityImage($community->getId()); ?>
             <div class="community-card">
     <div class="community-icon">
         <img src='../images/community/<?=$communityImg->name?>' alt="">
     </div>
     <div class="community-info">
-        <a href="community.php?comm_id=<?=$community->id?>" class="community-name">
-            <span>r/</span><?= $community->name ?></a>
-        <p class="community-desc"><?= $community->description ?></p>
-        <p class="community-time">Created <?= $time->calculateTime($community->time); ?></p>
+        <a href="community.php?comm_id=<?=$community->getId()?>" class="community-name">
+            <span>r/</span><?= $community->getName() ?></a>
+        <p class="community-desc"><?= $community->getDescription() ?></p>
+        <p class="community-time">Created <?= $time->calculateTime($community->getTime()); ?></p>
     </div>
     <form action="../decisionMaker.php" method="post">
-        <input type="hidden" name="delete-community" value="<?=$community->id?>">
+        <input type="hidden" name="delete-community" value="<?=$community->getId()?>">
         <button class="delete-container" onclick='confirm("Are you sure you want do delete this community")'>
             <img src="../images/icons/set.png">
         </button>

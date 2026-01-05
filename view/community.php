@@ -35,7 +35,7 @@ $communityId = intval($get);
 $selectedCommunity = $community->getCommunity("id",$communityId);
 $communityImage = $image->getCommunityImage($communityId);
 $userId = $session->getFromSession("user_id");
-$communityUserId = $selectedCommunity->user_id;
+$communityUserId = $selectedCommunity->getUser_id();
 $communityPosts = $post->getPost("community_id",$communityId);
 
 
@@ -62,9 +62,9 @@ $communityPosts = $post->getPost("community_id",$communityId);
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
             <img src="../images/community/<?=$communityImage->name?>">
-            <p>r/<?= $selectedCommunity->name ?></p>
+            <p>r/<?= $selectedCommunity->getName() ?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $selectedCommunity->name ?>" id="searchInput" id="searchInput" data-comm_id="<?= $communityId ?>">
+        <input type="text" placeholder="Search in r/<?= $selectedCommunity->getName() ?>" id="searchInput" id="searchInput" data-comm_id="<?= $communityId ?>">
          <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -85,17 +85,17 @@ $communityPosts = $post->getPost("community_id",$communityId);
             <img src="../images/community/<?=$communityImage->name?>">
         </div>
         <div class="name-container">
-            <p><span>r/</span><?=$selectedCommunity->name?></p>
+            <p><span>r/</span><?=$selectedCommunity->getName()?></p>
         </div>
         
-        <a href="createPost.php?comm_id=<?=$selectedCommunity->id?>" class="create-post-container">
+        <a href="createPost.php?comm_id=<?=$selectedCommunity->getId()?>" class="create-post-container">
             <img src="../images/icons/add.png">
             <p>Create Post</p>
         </a>
 
         <?php if($communityUserId == $userId): ?>
             <form action="../decisionMaker.php" method="post">
-                <input type="hidden" name="delete-community" value="<?=$selectedCommunity->id?>">
+                <input type="hidden" name="delete-community" value="<?=$selectedCommunity->getId()?>">
                 <button class="delete-container">
                      <img src="../images/icons/set.png">
                 </button>
@@ -172,12 +172,12 @@ $communityPosts = $post->getPost("community_id",$communityId);
 
     <aside class="community-info">
         <div class="info-box">
-            <h3><span>r/</span><?=$selectedCommunity->name?></h3>
-            <p class="desc"><?=$selectedCommunity->description?></p>
+            <h3><span>r/</span><?=$selectedCommunity->getName()?></h3>
+            <p class="desc"><?=$selectedCommunity->getDescription()?></p>
 
             <div class="created">
                 <img src="../images/icons/cake.png">
-                <p>Created: <?=$selectedCommunity->time?></p>
+                <p>Created: <?=$selectedCommunity->getTime()?></p>
             </div>
         </div>
     </aside>

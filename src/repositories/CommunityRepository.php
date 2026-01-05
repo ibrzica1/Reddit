@@ -36,10 +36,10 @@ class CommunityRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO community (name, description, user_id, time)
         VALUES (:name, :description, :user_id, :time)");
-        $stmt->bindParam(':name',$community->name);
-        $stmt->bindParam(':description',$community->description);
-        $stmt->bindParam(':user_id',$community->user_id);
-        $stmt->bindParam(':time',$community->time);
+        $stmt->bindParam(':name',$community->getName());
+        $stmt->bindParam(':description',$community->getDescription());
+        $stmt->bindParam(':user_id',$community->getUser_id());
+        $stmt->bindParam(':time',$community->getTime());
 
         $stmt->execute();
     }

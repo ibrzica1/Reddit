@@ -71,9 +71,9 @@ $imgNum = 0;
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
             <img src="../images/community/<?=$communityImage->name?>">
-            <p>r/<?= $postCommunity->name ?></p>
+            <p>r/<?= $postCommunity->getName() ?></p>
         </div>
-        <input type="text" placeholder="Search in r/<?= $postCommunity->name ?>" id="searchInput" data-comm_id="<?= $postCommunityId ?>">
+        <input type="text" placeholder="Search in r/<?= $postCommunity->getName() ?>" id="searchInput" data-comm_id="<?= $postCommunityId ?>">
          <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -101,7 +101,7 @@ $imgNum = 0;
         </div>
         <div class="comm-user-info">
             <div class="comm-name-time">
-                <h4>r/<?= $postCommunity->name ?></h4>
+                <h4>r/<?= $postCommunity->getName() ?></h4>
                 <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost->time); ?></p>
             </div>
             <div class="user-name">
@@ -263,15 +263,15 @@ $imgNum = 0;
 
 <div class="body-community">
     <div class="community-card-header">
-        <h4 class="community-name">About r/<?= $postCommunity->name ?></h4>
+        <h4 class="community-name">About r/<?= $postCommunity->getName() ?></h4>
     </div>
     <div class="community-description">
-        <p><?= $postCommunity->description ?></p>
+        <p><?= $postCommunity->getDescription() ?></p>
     </div>
     <div class="community-created">
         <p class="community-stats">
             <img src="../images/icons/cake.png" alt="Cake Day">
-            Created: <?= $time->calculateTime($postCommunity->time); ?>
+            Created: <?= $time->calculateTime($postCommunity->getTime()); ?>
         </p>
     </div>
     <a href="community.php?comm_id=<?= $postCommunityId ?>" class="community-view-btn">View Community</a>

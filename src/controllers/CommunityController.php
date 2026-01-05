@@ -105,7 +105,7 @@ class CommunityController extends CommunityRepository
         $this->registerCommunity($newCommunity);
         $communityId = $this->connection->lastInsertId();
         
-        $randomName = $image->generateRandomName('jpg');
+        $randomName = Image::generateRandomName('jpg');
         $imageFolder = "../images/community/";
 
         if(!is_dir($imageFolder))
@@ -122,7 +122,7 @@ class CommunityController extends CommunityRepository
     public function deleteCommunityController(int $communityId): void
     {
         $session = new SessionService();
-        $image = new Image();
+        $image = new ImageRepository();
 
         if(!isset($communityId))
         {
