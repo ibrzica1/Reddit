@@ -44,7 +44,7 @@ class UserController extends UserRepository
       exit();
     }
 
-    $dbPassword = $user->password;
+    $dbPassword = $user->getPassword();
 
     if(!password_verify($password,$dbPassword))
     {
@@ -54,9 +54,9 @@ class UserController extends UserRepository
       exit();
     }
 
-    $session->setSession("user_id",$user->id);
-    $session->setSession("username",$user->username);
-    $session->setSession("avatar",$user->avatar);
+    $session->setSession("user_id",$user->getId());
+    $session->setSession("username",$user->getUsername());
+    $session->setSession("avatar",$user->getAvatar());
 
     header('Location: index.php');
   }
@@ -169,7 +169,7 @@ class UserController extends UserRepository
     $this->registerUser($newUser);
     $user = $this->getUser($username);
     
-    $session->setSession("user_id",$user->id);
+    $session->setSession("user_id",$user->getId());
     $session->setSession("username",$username);
     $session->setSession("avatar",$avatar);
 
@@ -209,15 +209,15 @@ class UserController extends UserRepository
       exit();
     }
 
-    $oldUsername = $user->username;
-    $user->username = $username;
+    $oldUsername = $user->getUsername();
+    $user->setUsername($username);
 
     $this->updateUser($user,$id);
 
     $newUser = $this->getUserById($id);
-    $newUsername = $newUser->username;
+    $newUsername = $newUser->getUsername();
     
-    if($oldUsername[0] !== $newUsername[0])
+    if($oldUsername !== $newUsername)
     {
       $message = "Username was succesfully changed";
       $session->setSession("message",$message);
@@ -256,15 +256,15 @@ class UserController extends UserRepository
       exit();
     }
 
-    $oldEmail = $user->email;
-    $user->email = $email;
+    $oldEmail = $user->getEmail();
+    $user->setEmail($email);
 
     $this->updateUser($user, $id);
     
     $newUser = $this->getUserById($id);
-    $newEmail = $newUser->email;
+    $newEmail = $newUser->getEmail();
 
-    if($oldEmail[0] !== $newEmail[0])
+    if($oldEmail !== $newEmail)
     {
       $message = "Email was succesfully changed";
       $session->setSession("message",$message);
@@ -309,7 +309,7 @@ class UserController extends UserRepository
     }
    
 
-    $dbPassword = $user->password;
+    $dbPassword = $user->getPassword();
 
     if(!password_verify($oldPass,$dbPassword))
     {
@@ -343,15 +343,15 @@ class UserController extends UserRepository
       exit();
     }
 
-    $beforePass = $user->password;
-    $user->password = password_hash($newPass,PASSWORD_BCRYPT);
+    $beforePass = $user->getPassword();
+    $user->setPassword($newPass);
     
     $this->updateUser($user, $id);
 
     $newUser = $this->getUserById($id);
-    $afterPass = $newUser->password;
+    $afterPass = $newUser->getPassword();
 
-    if($beforePass[0] !== $afterPass[0])
+    if($beforePass !== $afterPass)
     {
       $message = "Password was succesfully changed";
       $session->setSession("message",$message);
@@ -389,7 +389,7 @@ class UserController extends UserRepository
       exit();
     }
 
-    $user->bio = $bio;
+    $user->setBio($bio);
     $this->updateUser($user, $id);
     header("Location: view/settings.php");
     exit();
@@ -417,7 +417,7 @@ class UserController extends UserRepository
       exit();
     }
 
-    $user->avatar = $avatar;
+    $user->setAvatar($avatar);
     $this->updateUser($user, $id);
     $session->setSession('avatar',$avatar);
     header("Location: view/profile.php");

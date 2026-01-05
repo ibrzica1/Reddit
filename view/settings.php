@@ -119,7 +119,7 @@ $userId = $session->getFromSession('user_id');
                 </div>
                 <div class="image-wrapper" data-target="greenBlue">
                     <img src="../images\avatars\greenBlue.webp">
-                    <input type="checkbox" name="avatar-update" id="greenBlue" value="greenBLue">
+                    <input type="checkbox" name="avatar-update" id="greenBlue" value="greenBlue">
                 </div>
                 <div class="image-wrapper" data-target="lightBlue">
                     <img src="../images\avatars\lightBlue.webp">

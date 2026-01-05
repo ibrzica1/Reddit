@@ -94,8 +94,8 @@ $posts = $post->getAllPosts($limit);
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
-        <img src="images/avatars/<?=$postUser->avatar?>.webp">
-        <p><span>u/</span><?= $postUser->username ?></p>
+        <img src="images/avatars/<?=$postUser->getAvatar()?>.webp">
+        <p><span>u/</span><?= $postUser->getUsername() ?></p>
         <h3><?= $time->calculateTime($postItem->time); ?></h3>
     </div>
     <div class="post-content-container">

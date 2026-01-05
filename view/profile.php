@@ -31,10 +31,10 @@ $userId = $session->getFromSession('user_id');
 $profile = $user->getUserById($userId);
 
 $username = $session->getFromSession("username");
-$timeCreated = $user->getUserAtribute('time',$userId);
+$timeCreated = $profile->getTime();
 $accountAge = $time->calculateTime($timeCreated[0]); 
-$bio = $profile->bio;
-$karma = $profile->karma;
+$bio = $profile->getBio();
+$karma = $profile->getKarma();
 $activeTab = $_GET['tab'] ?? "posts";
 
 
@@ -60,10 +60,10 @@ $activeTab = $_GET['tab'] ?? "posts";
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/avatars/<?= $profile->avatar ?>.webp">
-            <p>u/<?= $profile->username ?></p>
+            <img src="../images/avatars/<?= $profile->getAvatar() ?>.webp">
+            <p>u/<?= $profile->getUsername() ?></p>
         </div>
-        <input type="text" placeholder="Search in u/<?= $profile->username ?>" id="searchInput" data-user_id="<?= $userId ?>">
+        <input type="text" placeholder="Search in u/<?= $profile->getUsername() ?>" id="searchInput" data-user_id="<?= $userId ?>">
         <div class="search-results" id="searchResults"></div>
     </div>
     
@@ -248,7 +248,7 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p class="post-title"><?= $commentPost->title ?></p>
         </div>
         <div class="comment-user-info">
-            <h3><?= $commentUser->username ?></h3>
+            <h3><?= $commentUser->getUsername() ?></h3>
             <p>commented <?= $time->calculateTime($commentItem->time) ?></p>
         </div>
         <div class="comment-content">

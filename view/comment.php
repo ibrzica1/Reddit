@@ -105,7 +105,7 @@ $imgNum = 0;
                 <p class="post-time-ago"> • <?= $time->calculateTime($selectedPost->time); ?></p>
             </div>
             <div class="user-name">
-                <p><?= $postUser->username ?></p>
+                <p><?= $postUser->getUsername() ?></p>
             </div>
         </div>
     </div>
@@ -188,8 +188,8 @@ $imgNum = 0;
     
     <div class="single-comment">
         <div class="comment-author-info">
-            <img src="../images/avatars/<?= $commentUser->avatar ?>.webp" class="comment-avatar">
-            <span class="comment-username">u/<?= $commentUser->username ?></span>
+            <img src="../images/avatars/<?= $commentUser->getAvatar() ?>.webp" class="comment-avatar">
+            <span class="comment-username">u/<?= $commentUser->getUsername() ?></span>
             <span class="comment-time"><?= $time->calculateTime($commentItem->time) ?></span>
         </div>
         <div class="comment-content">
@@ -228,8 +228,8 @@ $imgNum = 0;
         <?php $replyLikeStatus = empty($replyLikes->status) ? "neutral" : $replyLikes->status ?>
             <div class="single-comment">
             <div class="comment-author-info">
-                <img src="../images/avatars/<?= $replyUser->avatar ?>.webp" class="comment-avatar">
-                <span class="comment-username">u/<?= $replyUser->username?></span>
+                <img src="../images/avatars/<?= $replyUser->getAvatar() ?>.webp" class="comment-avatar">
+                <span class="comment-username">u/<?= $replyUser->getUsername()?></span>
                 <span class="comment-time"><?= $time->calculateTime($replyItem->time) ?></span>
             </div>
             <div class="comment-content">

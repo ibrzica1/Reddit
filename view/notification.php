@@ -88,10 +88,10 @@ $allNotifications = $notification->getUserNotifications($userId);
     <a href="community.php?comm_id=<?= $notificationPos->community_id ?>&nott_id=<?= $singleNott["id"] ?>" 
     onclick="<?php $notification->changeSeenStatus($singleNott->id,"true") ?>" class="single-nott" id="singleNot-<?= $singleNott["id"] ?>">
     <div class="sender-nott-avatar">
-        <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
+        <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
     <div class="nott-body">
-        <p>u/<span><?= $senderInf->username ?></span> liked your post </p>
+        <p>u/<span><?= $senderInf->getUsername() ?></span> liked your post </p>
         <h4><?= $notificationPos->title ?></h4>
         <h4><?= $time->calculateTime($singleNott->time) ?></h4>
     </div>  
@@ -100,10 +100,10 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php $notificationCommen = $comment->getComment("id",$singleNott->comment_id) ?>
     <a href="comment.php?post_id=<?= $notificationCommen->post_id ?>&nott_id=<?= $singleNott->id ?>" class="single-nott" id="singleNot-<?= $singleNott->id ?>">
     <div class="sender-nott-avatar">
-        <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
+        <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
     <div class="nott-body">
-        <p>u/<span><?= $senderInf->username ?></span> liked your comment</p>
+        <p>u/<span><?= $senderInf->getUsername() ?></span> liked your comment</p>
         <h4><?= $notificationCommen->text ?></h4>
         <h4><?= $time->calculateTime($singleNott->time) ?></h4>
     </div>
@@ -113,10 +113,10 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php $notificationPos = $post->getPostById($singleNott->post_id); ?>
     <a href="comment.php?post_id=<?= $notificationPos->id?>&nott_id=<?= $singleNott->id ?>" class="single-nott" id="singleNot-<?= $singleNott->id ?>">
     <div class="sender-nott-avatar">
-        <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
+        <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
     <div class="nott-body">
-        <p>u/<span><?= $senderInf->username ?></span> commented on your post</p>
+        <p>u/<span><?= $senderInf->getUsername() ?></span> commented on your post</p>
         <h4><?= $notificationPos->title ?></h4>
         <h4><?= $time->calculateTime($singleNott->time) ?></h4>
     </div>
@@ -125,10 +125,10 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php $notificationCommunit = $community->getCommunity("id",$singleNott->community_id); ?>
     <a href="community.php?comm_id=<?= $notificationCommunit->id ?>&nott_id=<?= $singleNott->id ?>" class="single-nott" id="singleNot-<?= $singleNott->id ?>">
     <div class="sender-nott-avatar">
-        <img src="../images/avatars/<?= $senderInf->avatar ?>.webp">
+        <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
     <div class="nott-body"> 
-        <p>u/<span><?= $senderInf->username ?></span> posted in your community</p>
+        <p>u/<span><?= $senderInf->getUsername() ?></span> posted in your community</p>
         <h4><?= $notificationCommunit->name ?></h4>
         <h4><?= $time->calculateTime($singleNott->time) ?></h4>
     </div>

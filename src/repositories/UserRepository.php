@@ -28,14 +28,13 @@ class UserRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time, karma)
         VALUES (:username, :email, :password, :bio, :avatar, :time, :karma)");
-        $stmt->bindParam(':username',$user->username);
-        $stmt->bindParam(':email',$user->email);
-        $password = password_hash($user->password,PASSWORD_BCRYPT);
-        $stmt->bindParam(':password',$user->password);
-        $stmt->bindParam(':bio',$user->bio);
-        $stmt->bindParam(':avatar',$user->avatar);
-        $stmt->bindParam(':time',$user->time);
-        $stmt->bindParam(':karma',$user->karma);
+        $stmt->bindParam(':username',$user->getUsername());
+        $stmt->bindParam(':email',$user->getEmail());
+        $stmt->bindParam(':password',$user->getPassword());
+        $stmt->bindParam(':bio',$user->getBio());
+        $stmt->bindParam(':avatar',$user->getAvatar());
+        $stmt->bindParam(':time',$user->getTime());
+        $stmt->bindParam(':karma',$user->getKarma());
 
         $stmt->execute();
     }
@@ -73,19 +72,6 @@ class UserRepository extends Db
         return $user;
     }
 
-    public function getUserAtribute(string $attribute, int $id): mixed
-    {
-        $stmt = $this->connection->prepare(
-        "SELECT * FROM user WHERE id = :id"
-        );
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $data = $stmt->fetch();
-        $user = new User($data);
-        return $user->$attribute;
-    }
-
     public function updateUser(User $user, int $id): void
     {
         $stmt = $this->connection->prepare("UPDATE user 
@@ -97,13 +83,13 @@ class UserRepository extends Db
         karma = :karma,
         time = :time
         WHERE id = :id");
-        $stmt->bindParam(':username',$user->username);
-        $stmt->bindParam(':email',$user->email);
-        $stmt->bindParam(':password',$user->password);
-        $stmt->bindParam(':bio',$user->bio);
-        $stmt->bindParam(':avatar',$user->avatar);
-        $stmt->bindParam(':karma',$user->karma);
-        $stmt->bindParam(':time',$user->time);
+        $stmt->bindParam(':username',$user->getUsername());
+        $stmt->bindParam(':email',$user->getEmail());
+        $stmt->bindParam(':password',$user->getPassword());
+        $stmt->bindParam(':bio',$user->getBio());
+        $stmt->bindParam(':avatar',$user->getAvatar());
+        $stmt->bindParam(':karma',$user->getKarma());
+        $stmt->bindParam(':time',$user->getTime());
         $stmt->bindParam(':id',$id);
         $stmt->execute();
     }

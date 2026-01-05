@@ -5,18 +5,18 @@ namespace Reddit\models;
 
 class User
 {
-  public $id;
-  public $username;
-  public $email;
-  public $password;
-  public $bio;
-  public $avatar;
-  public $karma;
-  public $time;
+  private ?int $id;
+  private string $username;
+  private string$email;
+  private string $password;
+  private string $bio;
+  private string $avatar;
+  private int $karma;
+  private string $time;
 
   public function __construct($array)
   {
-    $this->id = $array['id'];
+    $this->id = $array['id'] ?? NULL;
     $this->username = $array['username'];
     $this->email = $array['email'];
     $this->password = $array['password'];
@@ -26,14 +26,94 @@ class User
     $this->time = $array['time'];
   }
 
-  public function get(string $attribute): mixed
+  public function setUsername(string $username): void
   {
-    return $this->$attribute;
+      if (!self::usernameLength($username)) {
+          throw new \InvalidArgumentException("Username length invalid");
+      }
+      $this->username = $username;
   }
 
-  public function set(string $attribute,mixed $value): void
+  public function setEmail(string $email): void
   {
-    $this->$attribute = $value;
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          throw new \InvalidArgumentException("Invalid email");
+      }
+      $this->email = $email;
+  }
+
+  public function setPassword(string $password): void
+  {
+      if (!self::checkPassword($password)) {
+          throw new \InvalidArgumentException("Weak password");
+      }
+      $this->password = password_hash($password, PASSWORD_BCRYPT);
+  }
+
+  public function setBio(string $bio): void
+  {
+     if (!self::lengthBio($bio)) {
+       throw new \InvalidArgumentException("Bio length is too long");
+     }
+     $this->bio = $bio;
+  }
+
+  public function setAvatar(string $avatar): void
+  {
+    if(!self::existsAvatar($avatar)){
+      throw new \InvalidArgumentException("Avatar doesnt exist");
+    }
+    $this->avatar = $avatar;
+  }
+
+  public function setKarma(string $karma): void
+  {
+    $this->karma = $karma;
+  }
+
+  public function setTime(string $time): void
+  {
+    $this->time = $time;
+  }
+
+  public function getId(): ?int
+  {
+      return $this->id;
+  }
+
+  public function getUsername(): string
+  {
+      return $this->username;
+  }
+
+  public function getEmail(): string
+  {
+      return $this->email;
+  }
+
+  public function getPassword(): string
+  {
+      return $this->password;
+  }
+
+  public function getBio(): string
+  {
+      return $this->bio;
+  }
+
+  public function getAvatar(): string
+  {
+      return $this->avatar;
+  }
+
+  public function getKarma(): string
+  {
+      return $this->karma;
+  }
+
+  public function getTime(): string
+  {
+      return $this->time;
   }
 
   public static function usernameLength(string $username): bool
