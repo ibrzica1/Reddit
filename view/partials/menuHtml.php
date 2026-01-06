@@ -36,5 +36,4 @@ $session = new SessionService();
     import { toggleMenu } from "/Reddit/script/tools.js?v=<?php echo time(); ?>";
     const menu = document.getElementById("userInfo");
     menu.addEventListener('click',toggleMenu);
-    console.log("User JS Loaded");
 </script>

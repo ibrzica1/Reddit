@@ -56,7 +56,7 @@ $userId = $session->getFromSession('user_id');
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$commImage->name?>">
+            <img src="../images/community/<?=$commImage->getName()?>">
             <p>r/<?= $selectedCommunity->getName()?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $selectedCommunity->getName() ?>" id="searchInput" data-comm_id="<?= $communityId ?>">
@@ -91,7 +91,7 @@ $userId = $session->getFromSession('user_id');
 
 <?php if(!empty($selectedCommunity)): ?>
 <div class="community-container">
-    <img src="../images/community/<?=$commImage->name?>">
+    <img src="../images/community/<?=$commImage->getName()?>">
     <p><span>r/</span><?= $selectedCommunity->getName() ?></p>
 </div>
 <?php endif; ?>

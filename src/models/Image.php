@@ -5,11 +5,11 @@ use Reddit\models\Db;
 
 class Image extends Db
 {
-    public $id;
-    public $name;
-    public $post_id;
-    public $community_id;
-    public $user_id;
+    private ?int $id;
+    private string $name;
+    private ?int $post_id;
+    private ?int $community_id;
+    private int $user_id;
 
     const ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png", "gif"];
     const MAX_FILE_SIZE = 40 * 1024 * 1024;
@@ -18,11 +18,41 @@ class Image extends Db
 
     public function __construct($array)
     {
-        $this->id = $array['id'];
+        $this->id = $array['id'] ?? NULL;
         $this->name = $array['name'];
-        $this->post_id = $array['post_id'];
-        $this->community_id = $array['community_id'];
+        $this->post_id = $array['post_id'] ?? NULL;
+        $this->community_id = $array['community_id'] ?? NULL;
         $this->user_id = $array['user_id'];
+    }
+
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getPost_id(): ?int
+    {
+        return $this->post_id;
+    }
+
+    public function getCommunity_id(): ?int
+    {
+        return $this->community_id;
+    }
+
+    public function getUser_id(): int
+    {
+        return $this->user_id;
     }
 
     public static function generateRandomName(string $extension): string

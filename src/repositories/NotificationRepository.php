@@ -30,13 +30,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, like_id, comment_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :like_id, :comment_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->reciever_id);
-        $stmt->bindParam(':sender_id',$notification->sender_id);
-        $stmt->bindParam(':like_id',$notification->like_id);
-        $stmt->bindParam(':comment_id',$notification->comment_id);
-        $stmt->bindParam(':type',$notification->type);
-        $stmt->bindParam(':seen',$notification->seen);
-        $stmt->bindParam(':time',$notification->time);
+        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
+        $stmt->bindParam(':sender_id',$notification->getSender_id());
+        $stmt->bindParam(':like_id',$notification->getLike_id());
+        $stmt->bindParam(':comment_id',$notification->getComment_id());
+        $stmt->bindParam(':type',$notification->getType());
+        $stmt->bindParam(':seen',$notification->getSeen());
+        $stmt->bindParam(':time',$notification->getTime());
 
         $stmt->execute();
     }
@@ -45,13 +45,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, like_id, post_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :like_id, :post_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->reciever_id);
-        $stmt->bindParam(':sender_id',$notification->sender_id);
-        $stmt->bindParam(':like_id',$notification->like_id);
-        $stmt->bindParam(':post_id',$notification->post_id);
-        $stmt->bindParam(':type',$notification->type);
-        $stmt->bindParam(':seen',$notification->seen);
-        $stmt->bindParam(':time',$notification->time);
+        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
+        $stmt->bindParam(':sender_id',$notification->getSender_id());
+        $stmt->bindParam(':like_id',$notification->getLike_id());
+        $stmt->bindParam(':post_id',$notification->getPost_id());
+        $stmt->bindParam(':type',$notification->getType());
+        $stmt->bindParam(':seen',$notification->getSeen());
+        $stmt->bindParam(':time',$notification->getTime());
 
         $stmt->execute();
     }
@@ -60,13 +60,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, comment_id, post_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :comment_id, :post_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->reciever_id);
-        $stmt->bindParam(':sender_id',$notification->sender_id);
-        $stmt->bindParam(':comment_id',$notification->comment_id);
-        $stmt->bindParam(':post_id',$notification->post_id);
-        $stmt->bindParam(':type',$notification->type);
-        $stmt->bindParam(':seen',$notification->seen);
-        $stmt->bindParam(':time',$notification->time);
+        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
+        $stmt->bindParam(':sender_id',$notification->getSender_id());
+        $stmt->bindParam(':comment_id',$notification->getComment_id());
+        $stmt->bindParam(':post_id',$notification->getPost_id());
+        $stmt->bindParam(':type',$notification->getType());
+        $stmt->bindParam(':seen',$notification->getSeen());
+        $stmt->bindParam(':time',$notification->getTime());
 
         $stmt->execute();
     }
@@ -75,13 +75,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, post_id, community_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :post_id, :community_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->reciever_id);
-        $stmt->bindParam(':sender_id',$notification->sender_id);
-        $stmt->bindParam(':post_id',$notification->post_id);
-        $stmt->bindParam(':community_id',$notification->community_id);
-        $stmt->bindParam(':type',$notification->type);
-        $stmt->bindParam(':seen',$notification->seen);
-        $stmt->bindParam(':time',$notification->time);
+        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
+        $stmt->bindParam(':sender_id',$notification->getSender_id());
+        $stmt->bindParam(':post_id',$notification->getPost_id());
+        $stmt->bindParam(':community_id',$notification->getCommunity_id());
+        $stmt->bindParam(':type',$notification->getType());
+        $stmt->bindParam(':seen',$notification->getSeen());
+        $stmt->bindParam(':time',$notification->getTime());
 
         $stmt->execute();
     }

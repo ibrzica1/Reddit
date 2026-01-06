@@ -20,7 +20,6 @@ class PostController extends PostRepository
 
         $user_id = $session->getFromSession('user_id');
         $time = $timeStamp->time;
-        $likes = 0;
     
         if(!isset($title))
         {

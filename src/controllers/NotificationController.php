@@ -18,7 +18,7 @@ class NotificationController extends NotificationRepository
         $comment = new CommentRepository();
 
         $selectedComment = $comment->getComment("id",$commentId);
-        $recieverId = $selectedComment->user_id;
+        $recieverId = $selectedComment->getUser_id();
         $time = $timeStamp->time;
 
         if($this->existNotification($recieverId,"like","comment_id",$commentId))
@@ -57,7 +57,7 @@ class NotificationController extends NotificationRepository
 
         $selectedPost = $post->getPostById($postId);
         
-        $recieverId = $selectedPost->user_id;
+        $recieverId = $selectedPost->getUser_id();
         $time = $timeStamp->time;
 
         if($this->existNotification($recieverId,"like","post_id",$postId))
@@ -94,7 +94,7 @@ class NotificationController extends NotificationRepository
         $post = new PostRepository();
 
         $selectedPost = $post->getPostById($postId);
-        $recieverId = $selectedPost->user_id;
+        $recieverId = $selectedPost->getUser_id();
 
         if($recieverId == $senderId || empty($recieverId))
         {
@@ -125,7 +125,7 @@ class NotificationController extends NotificationRepository
         $community = new CommunityRepository();
         
         $selectedCommunity = $community->getCommunity("id",$communityId);
-        $recieverId = $selectedCommunity->user_id;
+        $recieverId = $selectedCommunity->getUser_id();
         
         
         if($recieverId == $senderId || empty($recieverId))

@@ -27,9 +27,9 @@ class LikeRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO likes (user_id,comment_id,status)
         VALUES (:user_id, :comment_id, :status)");
-        $stmt->bindParam(':user_id', $like->user_id);
-        $stmt->bindParam(':comment_id', $like->comment_id);
-        $stmt->bindParam(':status', $like->status);
+        $stmt->bindParam(':user_id', $like->getUser_id());
+        $stmt->bindParam(':comment_id', $like->getComment_id());
+        $stmt->bindParam(':status', $like->getStatus());
 
         $stmt->execute();
     }
@@ -38,9 +38,9 @@ class LikeRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO likes (user_id,post_id,status)
         VALUES (:user_id, :post_id, :status)");
-        $stmt->bindParam(':user_id', $like->user_id);
-        $stmt->bindParam(':post_id', $like->post_id);
-        $stmt->bindParam(':status', $like->status);
+        $stmt->bindParam(':user_id', $like->getUser_id());
+        $stmt->bindParam(':post_id', $like->getPost_id());
+        $stmt->bindParam(':status', $like->getStatus());
 
         $stmt->execute();
     }

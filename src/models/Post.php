@@ -40,11 +40,6 @@ class Post
         $this->text = $text;
     }
 
-    public function setTime(string $time): void
-    {
-        $this->time = $time;
-    }
-
     public function getId(): ?int
     {
         return $this->id;

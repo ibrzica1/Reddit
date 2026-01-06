@@ -90,7 +90,7 @@ $posts = $post->getAllPosts($limit);
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>   
     <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
-    <?php $postLikeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
+    <?php $postLikeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus() ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
@@ -110,7 +110,7 @@ $posts = $post->getAllPosts($limit);
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="images/icons/arrowLeft.png">
         </div>
-        <img src="images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
+        <img src="images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
         <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="images/icons/arrowRight.png">
         </div>

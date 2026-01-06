@@ -61,7 +61,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$communityImage->name?>">
+            <img src="../images/community/<?=$communityImage->getName()?>">
             <p>r/<?= $selectedCommunity->getName() ?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $selectedCommunity->getName() ?>" id="searchInput" id="searchInput" data-comm_id="<?= $communityId ?>">
@@ -82,7 +82,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <div class="banner" style="background-image: url('../images/community/banner.jpg');"></div>
     <div class="title-container">
         <div class="image-container">
-            <img src="../images/community/<?=$communityImage->name?>">
+            <img src="../images/community/<?=$communityImage->getName()?>">
         </div>
         <div class="name-container">
             <p><span>r/</span><?=$selectedCommunity->getName()?></p>
@@ -110,7 +110,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>
     <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
-    <?php $postLikeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status ?>
+    <?php $postLikeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus() ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">
@@ -130,7 +130,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
-        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
+        <img src="../images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
         <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="../images/icons/arrowRight.png">
         </div>
@@ -154,7 +154,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
             <p><?= $comment->getCommentCount("post_id",$postId); ?></p>
         </a>
         </div>
-        <?php if($postItem->user_id == $userId): ?>
+        <?php if($postItem->getUser_id() == $userId): ?>
         <div class="delete-btn">
         <img src="../images/icons/set.png">
         </div>

@@ -43,7 +43,7 @@ $postUserId = $selectedPost->getUser_id();
 $postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
-$likeStatus = empty($postLikes->status) ? "neutral" : $postLikes->status;
+$likeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus();
 $comments = $comment->getComments("post_id",$postId);
 $imgNum = 0;
 
@@ -70,7 +70,7 @@ $imgNum = 0;
     <div class="search-container">
         <img src="../images/icons/magnifying-glass.png" alt="Search Icon" class="search-icon">
         <div class="user-search-container">
-            <img src="../images/community/<?=$communityImage->name?>">
+            <img src="../images/community/<?=$communityImage->getName()?>">
             <p>r/<?= $postCommunity->getName() ?></p>
         </div>
         <input type="text" placeholder="Search in r/<?= $postCommunity->getName() ?>" id="searchInput" data-comm_id="<?= $postCommunityId ?>">
@@ -97,7 +97,7 @@ $imgNum = 0;
             <img src="../images/icons/back.png">
         </button>
         <div class="comm-image">
-            <img src="../images/community/<?= $communityImage->name ?>">
+            <img src="../images/community/<?= $communityImage->getName() ?>">
         </div>
         <div class="comm-user-info">
             <div class="comm-name-time">
@@ -136,7 +136,7 @@ $imgNum = 0;
         <div class="left-arrow" id="leftArrow-<?= $postId ?>">
             <img src="../images/icons/arrowLeft.png">
         </div>
-        <img src="../images/uploaded/<?= $postImages[0]->name ?>" id="imageDisplay-<?= $postId ?>">
+        <img src="../images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
         <div class="right-arrow" id="rightArrow-<?= $postId ?>">
             <img src="../images/icons/arrowRight.png">
         </div>
@@ -178,22 +178,22 @@ $imgNum = 0;
 <div class="comments-grid">
 <?php foreach($comments as $commentItem): ?>
 <?php if(empty($commentItem->comment_id)): ?>
-    <?php $commId = $commentItem->id; ?>
+    <?php $commId = $commentItem->getId(); ?>
   
-    <?php $commentUser = $user->getUserByAttribute("id",$commentItem->user_id) ?>
+    <?php $commentUser = $user->getUserByAttribute("id",$commentItem->getUser_id()) ?>
     
-    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->user_id)  ?>
+    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->getUser_id())  ?>
   
-    <?php $commentLikeStatus = empty($commentLikes->status) ? "neutral" : $commentLikes->status ?>
+    <?php $commentLikeStatus = empty($commentLikes->getStatus()) ? "neutral" : $commentLikes->getStatus() ?>
     
     <div class="single-comment">
         <div class="comment-author-info">
             <img src="../images/avatars/<?= $commentUser->getAvatar() ?>.webp" class="comment-avatar">
             <span class="comment-username">u/<?= $commentUser->getUsername() ?></span>
-            <span class="comment-time"><?= $time->calculateTime($commentItem->time) ?></span>
+            <span class="comment-time"><?= $time->calculateTime($commentItem->getTime()) ?></span>
         </div>
         <div class="comment-content">
-            <p><?= $commentItem->text ?></p>
+            <p><?= $commentItem->getText() ?></p>
         </div>
         <div class="comment-actions">
             <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">
@@ -221,19 +221,19 @@ $imgNum = 0;
         </form>
         <div class="reply-comments-grid">
         <?php foreach($comments as $replyItem): ?>
-        <?php if($replyItem->comment_id === $commentItem->id): ?>
-        <?php $replyId = $replyItem->id; ?>
-        <?php $replyUser = $user->getUserByAttribute("id",$replyItem->user_id) ?>
-        <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->user_id)  ?>
-        <?php $replyLikeStatus = empty($replyLikes->status) ? "neutral" : $replyLikes->status ?>
+        <?php if($replyItem->getComment_id() === $commentItem->getId()): ?>
+        <?php $replyId = $replyItem->getId(); ?>
+        <?php $replyUser = $user->getUserByAttribute("id",$replyItem->getUser_id()) ?>
+        <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->getUser_id())  ?>
+        <?php $replyLikeStatus = empty($replyLikes->getStatus()) ? "neutral" : $replyLikes->getStatus() ?>
             <div class="single-comment">
             <div class="comment-author-info">
                 <img src="../images/avatars/<?= $replyUser->getAvatar() ?>.webp" class="comment-avatar">
                 <span class="comment-username">u/<?= $replyUser->getUsername()?></span>
-                <span class="comment-time"><?= $time->calculateTime($replyItem->time) ?></span>
+                <span class="comment-time"><?= $time->calculateTime($replyItem->getTime()) ?></span>
             </div>
             <div class="comment-content">
-                <p><?= $replyItem->text ?></p>
+                <p><?= $replyItem->getText() ?></p>
             </div>
             <div class="comment-actions">
             <div class="like-btn" id="like-comment-<?= $replyId ?>" data-id="<?= $replyId ?>" data-type="comment" data-status="<?= $replyLikeStatus ?>">
@@ -251,11 +251,6 @@ $imgNum = 0;
         <?php endforeach; ?>
         </div>
     </div>
-<script>
-{
-
-}
-</script>
     <?php endif; ?>
     <?php endforeach; ?>    
     </div>
