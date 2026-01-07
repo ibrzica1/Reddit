@@ -11,7 +11,8 @@ export function manageLikes()
         const type = container.dataset.type;
         const action = btn.classList.contains('up-btn')?'like':'dislike';
         const count = document.getElementById(`count-${type}-${id}`);
-
+        const upBtn = document.getElementById(`up-${type}-${id}`);
+        const downBtn = document.getElementById(`down-${type}-${id}`);
         
         fetch('/Reddit/decisionMaker.php', {
             method: 'POST',
@@ -24,7 +25,7 @@ export function manageLikes()
                 let newCount = data.new_count < 0 ? 0 : data.new_count;
                 count.textContent = newCount;
                 const status = data.like_status; 
-
+                console.log(status);
             if (status === "liked") {
                 container.style.backgroundColor = "rgba(223, 120, 120, 1)";
                 upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
@@ -41,9 +42,6 @@ export function manageLikes()
         }})
         .catch(error => console.error('Network error:', error));
     });
-
-
-    
 }
 
 export function likeStatus()

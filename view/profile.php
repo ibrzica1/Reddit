@@ -162,8 +162,8 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $postCommunity = $community->getCommunity("id",$commId); ?>
     <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$userId) ?>
-    <?php $likeId = empty($postLikes->getUser_id()) ? 0 : $postLikes->getUser_id(); ?>
-    <?php $likeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus() ?>
+    <?php $likeId = $postLikes?->getUser_id() ? 0 : $postLikes?->getUser_id(); ?>
+    <?php $likeStatus = $postLikes?->getStatus() ? "neutral" : $postLikes?->getStatus() ?>
     <?php $postImages = []; ?>
     
     <?php $communityImg = $image->getCommunityImage($postItem->getCommunity_id()) ?>
@@ -239,7 +239,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $commentCommunity = $community->getCommunity("id",$commentPost->getCommunity_id()); ?>
     <?php $commentCommunityImg = $image->getCommunityImage($commentCommunity->getId()); ?>
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->getUser_id());  ?>
-    <?php $commentLikeStatus = empty($commentLikes->getStatus()) ? "neutral" : $commentLikes->getStatus() ?>
+    <?php $commentLikeStatus = $commentLikes?->getStatus() ? "neutral" : $commentLikes?->getStatus() ?>
 
     <div class="single-comment">
         <div class="post-info">

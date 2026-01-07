@@ -43,7 +43,7 @@ $postUserId = $selectedPost->getUser_id();
 $postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
-$likeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus();
+$likeStatus = $postLikes?->getStatus() ? "neutral" : $postLikes?->getStatus();
 $comments = $comment->getComments("post_id",$postId);
 $imgNum = 0;
 
@@ -177,14 +177,14 @@ $imgNum = 0;
 
 <div class="comments-grid">
 <?php foreach($comments as $commentItem): ?>
-<?php if(empty($commentItem->comment_id)): ?>
+<?php if(empty($commentItem->getComment_id())): ?>
     <?php $commId = $commentItem->getId(); ?>
   
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem->getUser_id()) ?>
     
     <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->getUser_id())  ?>
   
-    <?php $commentLikeStatus = empty($commentLikes->getStatus()) ? "neutral" : $commentLikes->getStatus() ?>
+    <?php $commentLikeStatus = $commentLikes?->getStatus() ? "neutral" : $commentLikes?->getStatus() ?>
     
     <div class="single-comment">
         <div class="comment-author-info">
@@ -225,7 +225,7 @@ $imgNum = 0;
         <?php $replyId = $replyItem->getId(); ?>
         <?php $replyUser = $user->getUserByAttribute("id",$replyItem->getUser_id()) ?>
         <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->getUser_id())  ?>
-        <?php $replyLikeStatus = empty($replyLikes->getStatus()) ? "neutral" : $replyLikes->getStatus() ?>
+        <?php $replyLikeStatus = $replyLikes?->getStatus() ? "neutral" : $replyLikes?->getStatus() ?>
             <div class="single-comment">
             <div class="comment-author-info">
                 <img src="../images/avatars/<?= $replyUser->getAvatar() ?>.webp" class="comment-avatar">

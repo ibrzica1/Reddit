@@ -89,8 +89,13 @@ $posts = $post->getAllPosts($limit);
     <?php foreach($posts as $postItem): ?>
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>   
     <?php $postId = $postItem->getId(); ?>
+    
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
-    <?php $postLikeStatus = empty($postLikes->getStatus()) ? "neutral" : $postLikes->getStatus() ?>
+    <?php if($postLikes->getStatus() === NULL): ?>
+    <?php $postLikeStatus = "neutral"; ?>
+    <?php else: ?>
+    <?php $postLikeStatus = $postLikes->getStatus(); ?>
+    <?php  endif;  ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">

@@ -4,8 +4,6 @@ export function loadPosts()
     const container = document.querySelector(".posts-grid");
     const count = parseInt(container.dataset.count);
     const limit = parseInt(container.dataset.limit);
-    console.log(count);
-    console.log(limit);
 
     window.addEventListener('DOMContentLoaded', () => {
         const savedScrollPos = localStorage.getItem('scrollPosition');

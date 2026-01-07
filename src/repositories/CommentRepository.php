@@ -58,11 +58,11 @@ class CommentRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, comment_id, time)
         VALUES (:text, :user_id, :post_id, :comment_id, :time)");
-        $stmt->bindParam(':text',$comment->text);
-        $stmt->bindParam(':user_id',$comment->user_id);
-        $stmt->bindParam(':post_id',$comment->post_id);
-        $stmt->bindParam(':comment_id',$comment->comment_id);
-        $stmt->bindParam(':time',$comment->time);
+        $stmt->bindParam(':text',$comment->getText());
+        $stmt->bindParam(':user_id',$comment->getUser_id());
+        $stmt->bindParam(':post_id',$comment->getPost_id());
+        $stmt->bindParam(':comment_id',$comment->getComment_id());
+        $stmt->bindParam(':time',$comment->getTime());
 
         $stmt->execute();
     }
@@ -71,10 +71,10 @@ class CommentRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, time)
         VALUES (:text, :user_id, :post_id, :time)");
-        $stmt->bindParam(':text',$comment->text);
-        $stmt->bindParam(':user_id',$comment->user_id);
-        $stmt->bindParam(':post_id',$comment->post_id);
-        $stmt->bindParam(':time',$comment->time);
+        $stmt->bindParam(':text',$comment->getText());
+        $stmt->bindParam(':user_id',$comment->getUser_id());
+        $stmt->bindParam(':post_id',$comment->getPost_id());
+        $stmt->bindParam(':time',$comment->getTime());
 
         $stmt->execute();
     }

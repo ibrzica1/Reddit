@@ -2,6 +2,9 @@
 
 require_once "vendor/autoload.php";
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 use Reddit\controllers\CommentController;
 use Reddit\controllers\CommunityController;
 use Reddit\controllers\SearchController;
@@ -174,10 +177,18 @@ if(isset($_POST['post-like']))
   $postId = $_POST['post-like'];
   $userId = $session->getFromSession('user_id');
 
+  if (empty($userId)) {
+      echo json_encode([
+          'status' => 'error',
+          'message' => 'Not logged in'
+      ]);
+      exit;
+  }
+
   $likeController = new LikeController();
 
   $data = $likeController->addPostLikeController($userId,$postId);
-  
+
   header('Content-Type: application/json');
   echo json_encode([
       'status' => 'success',
@@ -193,6 +204,13 @@ if(isset($_POST['post-dislike']))
   $postId = $_POST['post-dislike'];
   $userId = $session->getFromSession('user_id');
 
+  if (empty($userId)) {
+      echo json_encode([
+          'status' => 'error',
+          'message' => 'Not logged in'
+      ]);
+      exit;
+  }
   $likeController = new LikeController();
 
   $data = $likeController->addPostDislikeController($userId,$postId);
@@ -211,6 +229,13 @@ if(isset($_POST['comment-like']))
   $commId = $_POST['comment-like'];
   $userId = $session->getFromSession('user_id');
 
+  if (empty($userId)) {
+      echo json_encode([
+          'status' => 'error',
+          'message' => 'Not logged in'
+      ]);
+      exit;
+  }
   $likeController = new LikeController();
   
 
@@ -231,6 +256,13 @@ if(isset($_POST['comment-dislike']))
   $postId = $_POST['comment-dislike'];
   $userId = $session->getFromSession('user_id');
 
+  if (empty($userId)) {
+      echo json_encode([
+          'status' => 'error',
+          'message' => 'Not logged in'
+      ]);
+      exit;
+  }
   $likeController = new LikeController();
 
   $data = $likeController->addCommentDislikeController($userId,$postId);
