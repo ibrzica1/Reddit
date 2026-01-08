@@ -78,4 +78,12 @@ class CommentRepository extends Db
 
         $stmt->execute();
     }
+
+    public function deleteComment(int $commentId): void
+    {
+        $stmt = $this->connection->prepare("DELETE FROM comment WHERE id = :id");
+        $stmt->bindParam(':id',$commentId);
+
+        $stmt->execute();
+    }
 }

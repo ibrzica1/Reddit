@@ -2,6 +2,7 @@
 
 namespace Reddit\controllers;
 
+use Reddit\services\SessionService;
 use Reddit\models\Like;
 use Reddit\services\KarmaService;
 use Reddit\repositories\LikeRepository;
@@ -227,5 +228,20 @@ class LikeController extends LikeRepository
             $data = [$newCount,$status];
             return $data;
         }     
+    }
+
+    public function deleteLikeController($likeId)
+    {
+        $session = new SessionService();
+
+        if(!isset($likeId))
+        {
+        $message = "You didnt send like Id";
+        $session->setSession("message",$message);
+        header("Location: view/index.php");
+        exit();
+        }
+
+        $this->deleteLike($likeId);
     }
 }

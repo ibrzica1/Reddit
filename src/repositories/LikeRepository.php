@@ -7,7 +7,26 @@ use Reddit\models\Like;
 
 class LikeRepository extends Db
 {
-     public function getLike(string $attribute,mixed $value,int $userId): ?Like
+    public function getPostLikes(int $postId): ?Array
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE post_id = :post_id");
+        $stmt->bindParam(':post_id',$postId);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        if(!$results){
+            return null;
+        } 
+        $postLikes = [];
+        foreach($results as $result)
+        {
+            $postLike = new Like($result);
+            array_push($postLikes,$postLike);
+        }
+        return $postLikes;
+    } 
+    
+    public function getLike(string $attribute,mixed $value,int $userId): ?Like
     {
         $stmt = $this->connection->prepare("SELECT * FROM likes WHERE $attribute = :value
         AND user_id = :user_id");

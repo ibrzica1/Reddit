@@ -117,4 +117,20 @@ class CommentController extends CommentRepository
 
     }
 
+    public function deleteCommentController($commentId)
+    {
+        $session = new SessionService();
+
+        if(!isset($commentId))
+        {
+        $message = "You didnt send comment Id";
+        $session->setSession("message",$message);
+        header("Location: view/index.php");
+        exit();
+        }
+
+        $this->deleteComment($commentId);
+
+    }
+
 }

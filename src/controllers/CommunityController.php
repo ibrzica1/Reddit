@@ -8,6 +8,8 @@ use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\repositories\CommunityRepository;
 use Reddit\repositories\ImageRepository;
+use Reddit\repositories\PostRepository;
+use Reddit\controllers\PostController;
 
 class CommunityController extends CommunityRepository
 {
@@ -123,6 +125,8 @@ class CommunityController extends CommunityRepository
     {
         $session = new SessionService();
         $image = new ImageRepository();
+        $post = new PostRepository();
+        $postController = new PostController();
 
         if(!isset($communityId))
         {
@@ -134,16 +138,23 @@ class CommunityController extends CommunityRepository
 
         $this->deleteCommunity($communityId);
         $commImg = $image->getCommunityImage($communityId);
-        $fileName = $commImg['name'];
+        $fileName = $commImg->getName();
         $path = 'images/community/'. $fileName;
 
         if (file_exists($path)) {
             unlink($path);
         }
-
         $image->deleteImage("community_id",$communityId);
+        $commPosts = $post->getPost("community_id",$communityId);
+        if(!empty($commPosts))
+        {
+            foreach($commPosts as $commPost)
+            {
+                $postId = $commPost->getId();
+                $postController->deletePostController($postId);
+            }
+        }
 
-        header("Location: view/profile.php");
     }
 
     public function searchCommunityConntroller(string $search): string

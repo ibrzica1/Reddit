@@ -89,7 +89,7 @@ class PostRepository extends Db
 
     }
 
-    public function deletePost($postId)
+    public function deletePost(int $postId): void
     {
         $stmt = $this->connection->prepare("DELETE FROM post WHERE id = :id");
         $stmt->bindParam(':id',$postId);

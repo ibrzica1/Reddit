@@ -9,6 +9,10 @@ use Reddit\services\TimeService;
 use Reddit\controllers\NotificationController;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
+use Reddit\repositories\CommentRepository;
+use Reddit\repositories\LikeRepository;
+use Reddit\controllers\LikeController;
+use Reddit\controllers\CommentController;
 
 class PostController extends PostRepository
 {
@@ -194,22 +198,18 @@ class PostController extends PostRepository
         exit();
     }
 
-    public function deletePostController($postId,$location)
+    public function deletePostController($postId)
     {
         $session = new SessionService();
         $image = new ImageRepository();
+        $comment = new CommentRepository();
+        $commentController = new CommentController();
+        $like = new LikeRepository();
+        $likeController = new LikeController();
 
         if(!isset($postId))
         {
         $message = "You didnt send post Id";
-        $session->setSession("message",$message);
-        header("Location: view/$location.php");
-        exit();
-        }
-
-        if(!isset($location))
-        {
-        $message = "You didnt send location";
         $session->setSession("message",$message);
         header("Location: view/index.php");
         exit();
@@ -217,20 +217,40 @@ class PostController extends PostRepository
 
         $this->deletePost($postId);
         $postImages = $image->getPostImage($postId);
-        foreach($postImages as $postImage)
+        if(!empty($postImages))
         {
-            $fileName = $postImage->name;
-            $path = 'images/uploaded/'. $fileName;
+            foreach($postImages as $postImage)
+            {
+                $fileName = $postImage->name;
+                $path = 'images/uploaded/'. $fileName;
 
-            if (file_exists($path)) {
-                unlink($path);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+
+                $image->deleteImage("post_id",$postId);
             }
+        }
+        $postComments = $comment->getComments("post_id",$postId);
+        
+        if(!empty($postComments))
+        {
+            foreach($postComments as $postComment)
+            {
+                $commentId = $postComment->getId();
+                $commentController->deleteCommentController($commentId);
+            }
+        }
+        $postLikes = $like->getPostLikes($postId);
 
-            $image->deleteImage("post_id",$postId);
+        if(!empty($postLikes))
+        {
+            foreach($postLikes as $postLike)
+            {
+                $likeId = $postLike->getId();
+                $likeController->deleteLike($likeId);
+            }
         }
 
-        header("Location: view/$location.php");
-        exit();
-        
     }
 }

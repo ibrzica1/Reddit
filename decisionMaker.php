@@ -117,6 +117,9 @@ if(isset($_POST['delete-community']))
 
   $communityController = new CommunityController();
   $communityController->deleteCommunityController($communityId);
+
+  header("Location: view/profile.php");
+  exit();
 }
 
 if(isset($_GET['community-search']))
@@ -209,7 +212,7 @@ if(isset($_POST['post-dislike']))
           'status' => 'error',
           'message' => 'Not logged in'
       ]);
-      exit;
+      exit();
   }
   $likeController = new LikeController();
 
@@ -234,7 +237,7 @@ if(isset($_POST['comment-like']))
           'status' => 'error',
           'message' => 'Not logged in'
       ]);
-      exit;
+      exit();
   }
   $likeController = new LikeController();
   
@@ -261,7 +264,7 @@ if(isset($_POST['comment-dislike']))
           'status' => 'error',
           'message' => 'Not logged in'
       ]);
-      exit;
+      exit();
   }
   $likeController = new LikeController();
 
@@ -283,6 +286,9 @@ if(isset($_POST['post-delete']))
 
   $postController = new PostController();
   $postController->deletePostController($postId,$location);
+
+  header("Location: view/$location.php");
+  exit();
 
 }
 
