@@ -7,6 +7,7 @@ use Reddit\models\Notification;
 
 class NotificationRepository extends Db
 {
+    
     public function getUserNotifications(int $recieverId): array
     {
         $stmt = $this->connection->prepare("SELECT * FROM notification 
@@ -158,6 +159,14 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("DELETE FROM notification WHERE reciever_id = :reciever_id");
         $stmt->bindParam(':reciever_id',$recieverId);
+
+        $stmt->execute();
+    }
+
+    public function deletePostNotifications(int $postId): void
+    {
+        $stmt = $this->connection->prepare("DELETE FROM notification WHERE post_id = :post_id");
+        $stmt->bindParam(':post_id',$postId);
 
         $stmt->execute();
     }

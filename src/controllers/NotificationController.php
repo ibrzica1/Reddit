@@ -168,4 +168,9 @@ class NotificationController extends NotificationRepository
         header("Location: view/notification.php");
         exit();
     }
+
+    public function deletePostNott($postId)
+    {
+        $this->deletePostNotifications($postId);
+    }
 }

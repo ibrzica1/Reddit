@@ -6,13 +6,15 @@ use Reddit\models\Post;
 use Reddit\models\Image;
 use Reddit\services\SessionService;
 use Reddit\services\TimeService;
-use Reddit\controllers\NotificationController;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
 use Reddit\repositories\CommentRepository;
 use Reddit\repositories\LikeRepository;
+use Reddit\repositories\NotificationRepository;
 use Reddit\controllers\LikeController;
 use Reddit\controllers\CommentController;
+use Reddit\controllers\NotificationController;
+
 
 class PostController extends PostRepository
 {
@@ -206,6 +208,8 @@ class PostController extends PostRepository
         $commentController = new CommentController();
         $like = new LikeRepository();
         $likeController = new LikeController();
+        $notification = new NotificationRepository();
+        $notificationController = new NotificationController();
 
         if(!isset($postId))
         {
@@ -251,6 +255,6 @@ class PostController extends PostRepository
                 $likeController->deleteLike($likeId);
             }
         }
-
+        $notificationController->deletePostNott($postId);
     }
 }
