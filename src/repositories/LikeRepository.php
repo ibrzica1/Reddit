@@ -25,6 +25,25 @@ class LikeRepository extends Db
         }
         return $postLikes;
     } 
+
+    public function getCommentLikes(int $commentId): ?Array
+    {
+        $stmt = $this->connection->prepare("SELECT * FROM likes WHERE comment_id = :comment_id");
+        $stmt->bindParam(':comment_id',$commentId);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll();
+        if(!$results){
+            return null;
+        } 
+        $commentLikes = [];
+        foreach($results as $result)
+        {
+            $commentLike = new Like($result);
+            array_push($commentLikes,$commentLike);
+        }
+        return $commentLikes;
+    } 
     
     public function getLike(string $attribute,mixed $value,int $userId): ?Like
     {

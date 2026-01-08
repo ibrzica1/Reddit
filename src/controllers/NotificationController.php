@@ -163,7 +163,7 @@ class NotificationController extends NotificationRepository
 
     public function deleteUserNott($userId)
     {
-        $this->deleteUsersNotifications($userId);
+        $this->deleteNotifications("user_id",$userId);
 
         header("Location: view/notification.php");
         exit();
@@ -171,6 +171,11 @@ class NotificationController extends NotificationRepository
 
     public function deletePostNott($postId)
     {
-        $this->deletePostNotifications($postId);
+        $this->deleteNotifications("post_id",$postId);
+    }
+
+    public function deleteCommentNott($commentId)
+    {
+        $this->deleteNotifications("comment_id",$commentId);
     }
 }

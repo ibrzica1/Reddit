@@ -155,18 +155,10 @@ class NotificationRepository extends Db
         }
     }
 
-    public function deleteUsersNotifications(int $recieverId): void
+    public function deleteNotifications(string $attribute, mixed $value): void
     {
-        $stmt = $this->connection->prepare("DELETE FROM notification WHERE reciever_id = :reciever_id");
-        $stmt->bindParam(':reciever_id',$recieverId);
-
-        $stmt->execute();
-    }
-
-    public function deletePostNotifications(int $postId): void
-    {
-        $stmt = $this->connection->prepare("DELETE FROM notification WHERE post_id = :post_id");
-        $stmt->bindParam(':post_id',$postId);
+        $stmt = $this->connection->prepare("DELETE FROM notification WHERE $attribute = :value");
+        $stmt->bindParam(':value',$value);
 
         $stmt->execute();
     }

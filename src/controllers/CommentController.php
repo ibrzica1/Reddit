@@ -7,6 +7,7 @@ use Reddit\services\SessionService;
 use Reddit\services\TimeService;
 use Reddit\controllers\NotificationController;
 use Reddit\repositories\CommentRepository;
+use Reddit\repositories\LikeRepository;
 
 class CommentController extends CommentRepository
 {
@@ -120,6 +121,9 @@ class CommentController extends CommentRepository
     public function deleteCommentController($commentId)
     {
         $session = new SessionService();
+        $like = new LikeRepository();
+        $likeController = new LikeController();
+        $notificationController = new NotificationController();
 
         if(!isset($commentId))
         {
@@ -130,7 +134,17 @@ class CommentController extends CommentRepository
         }
 
         $this->deleteComment($commentId);
+        $commentLikes = $like->getCommentLikes($commentId);
 
+        if(!empty($commentLikes))
+        {
+          foreach($commentLikes as $commentLike)
+          {
+            $likeId = $commentLike->getId();
+            $likeController->deleteLikeController($likeId);
+          }
+        }
+        $notificationController->deleteCommentNott($commentId);
     }
 
 }

@@ -208,7 +208,6 @@ class PostController extends PostRepository
         $commentController = new CommentController();
         $like = new LikeRepository();
         $likeController = new LikeController();
-        $notification = new NotificationRepository();
         $notificationController = new NotificationController();
 
         if(!isset($postId))
