@@ -31,13 +31,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, like_id, comment_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :like_id, :comment_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
-        $stmt->bindParam(':sender_id',$notification->getSender_id());
-        $stmt->bindParam(':like_id',$notification->getLike_id());
-        $stmt->bindParam(':comment_id',$notification->getComment_id());
-        $stmt->bindParam(':type',$notification->getType());
-        $stmt->bindParam(':seen',$notification->getSeen());
-        $stmt->bindParam(':time',$notification->getTime());
+        $stmt->bindValue(':reciever_id',$notification->getReciever_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':sender_id',$notification->getSender_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':like_id',$notification->getLike_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':comment_id',$notification->getComment_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':type',$notification->getType(), \PDO::PARAM_STR);
+        $stmt->bindValue(':seen',$notification->getSeen(), \PDO::PARAM_STR);
+        $stmt->bindValue(':time',$notification->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -46,13 +46,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, like_id, post_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :like_id, :post_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
-        $stmt->bindParam(':sender_id',$notification->getSender_id());
-        $stmt->bindParam(':like_id',$notification->getLike_id());
-        $stmt->bindParam(':post_id',$notification->getPost_id());
-        $stmt->bindParam(':type',$notification->getType());
-        $stmt->bindParam(':seen',$notification->getSeen());
-        $stmt->bindParam(':time',$notification->getTime());
+        $stmt->bindValue(':reciever_id',$notification->getReciever_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':sender_id',$notification->getSender_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':like_id',$notification->getLike_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id',$notification->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':type',$notification->getType(), \PDO::PARAM_STR);
+        $stmt->bindValue(':seen',$notification->getSeen(), \PDO::PARAM_STR);
+        $stmt->bindValue(':time',$notification->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -61,13 +61,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, comment_id, post_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :comment_id, :post_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
-        $stmt->bindParam(':sender_id',$notification->getSender_id());
-        $stmt->bindParam(':comment_id',$notification->getComment_id());
-        $stmt->bindParam(':post_id',$notification->getPost_id());
-        $stmt->bindParam(':type',$notification->getType());
-        $stmt->bindParam(':seen',$notification->getSeen());
-        $stmt->bindParam(':time',$notification->getTime());
+        $stmt->bindValue(':reciever_id',$notification->getReciever_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':sender_id',$notification->getSender_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':comment_id',$notification->getComment_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id',$notification->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':type',$notification->getType(), \PDO::PARAM_STR);
+        $stmt->bindValue(':seen',$notification->getSeen(), \PDO::PARAM_STR);
+        $stmt->bindValue(':time',$notification->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -76,13 +76,13 @@ class NotificationRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO notification (reciever_id, sender_id, post_id, community_id, type, seen, time)
         VALUES (:reciever_id, :sender_id, :post_id, :community_id, :type, :seen, :time)");
-        $stmt->bindParam(':reciever_id',$notification->getReciever_id());
-        $stmt->bindParam(':sender_id',$notification->getSender_id());
-        $stmt->bindParam(':post_id',$notification->getPost_id());
-        $stmt->bindParam(':community_id',$notification->getCommunity_id());
-        $stmt->bindParam(':type',$notification->getType());
-        $stmt->bindParam(':seen',$notification->getSeen());
-        $stmt->bindParam(':time',$notification->getTime());
+        $stmt->bindValue(':reciever_id',$notification->getReciever_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':sender_id',$notification->getSender_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id',$notification->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':community_id',$notification->getCommunity_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':type',$notification->getType(), \PDO::PARAM_STR);
+        $stmt->bindValue(':seen',$notification->getSeen(), \PDO::PARAM_STR);
+        $stmt->bindValue(':time',$notification->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }

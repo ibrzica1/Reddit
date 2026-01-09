@@ -91,7 +91,7 @@ $posts = $post->getAllPosts($limit);
     <?php $postId = $postItem->getId(); ?>
     
     <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
-    <?php if($postLikes->getStatus() === NULL): ?>
+    <?php if($postLikes === NULL): ?>
     <?php $postLikeStatus = "neutral"; ?>
     <?php else: ?>
     <?php $postLikeStatus = $postLikes->getStatus(); ?>
@@ -156,8 +156,10 @@ $posts = $post->getAllPosts($limit);
     import {stageImages, imageScroll} from "/Reddit/script/image.js?v=<?php echo time(); ?>";
     import {generalSearch} from "/Reddit/script/search.js?v=<?php echo time(); ?>";
 
+    <?php if(isset($_SESSION['user_id'])): ?> 
     likeStatus();
     manageLikes();
+    <?php endif; ?>
     stageImages();
     imageScroll();
     generalSearch();

@@ -28,13 +28,13 @@ class UserRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO user (username, email, password, bio, avatar, time, karma)
         VALUES (:username, :email, :password, :bio, :avatar, :time, :karma)");
-        $stmt->bindParam(':username',$user->getUsername());
-        $stmt->bindParam(':email',$user->getEmail());
-        $stmt->bindParam(':password',$user->getPassword());
-        $stmt->bindParam(':bio',$user->getBio());
-        $stmt->bindParam(':avatar',$user->getAvatar());
-        $stmt->bindParam(':time',$user->getTime());
-        $stmt->bindParam(':karma',$user->getKarma());
+        $stmt->bindValue(':username',$user->getUsername(), \PDO::PARAM_STR);
+        $stmt->bindValue(':email',$user->getEmail(), \PDO::PARAM_STR);
+        $stmt->bindValue(':password',$user->getPassword(), \PDO::PARAM_STR);
+        $stmt->bindValue(':bio',$user->getBio(), \PDO::PARAM_STR);
+        $stmt->bindValue(':avatar',$user->getAvatar(), \PDO::PARAM_STR);
+        $stmt->bindValue(':time',$user->getTime(), \PDO::PARAM_STR);
+        $stmt->bindValue(':karma',$user->getKarma(), \PDO::PARAM_INT);
 
         $stmt->execute();
     }
@@ -83,13 +83,13 @@ class UserRepository extends Db
         karma = :karma,
         time = :time
         WHERE id = :id");
-        $stmt->bindParam(':username',$user->getUsername());
-        $stmt->bindParam(':email',$user->getEmail());
-        $stmt->bindParam(':password',$user->getPassword());
-        $stmt->bindParam(':bio',$user->getBio());
-        $stmt->bindParam(':avatar',$user->getAvatar());
-        $stmt->bindParam(':karma',$user->getKarma());
-        $stmt->bindParam(':time',$user->getTime());
+        $stmt->bindValue(':username',$user->getUsername(), \PDO::PARAM_STR);
+        $stmt->bindValue(':email',$user->getEmail(), \PDO::PARAM_STR);
+        $stmt->bindValue(':password',$user->getPassword(), \PDO::PARAM_STR);
+        $stmt->bindValue(':bio',$user->getBio(), \PDO::PARAM_STR);
+        $stmt->bindValue(':avatar',$user->getAvatar(), \PDO::PARAM_STR);
+        $stmt->bindValue(':karma',$user->getKarma(), \PDO::PARAM_INT);
+        $stmt->bindValue(':time',$user->getTime(), \PDO::PARAM_STR);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
     }

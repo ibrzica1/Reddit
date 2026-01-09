@@ -58,11 +58,11 @@ class CommentRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, comment_id, time)
         VALUES (:text, :user_id, :post_id, :comment_id, :time)");
-        $stmt->bindParam(':text',$comment->getText());
-        $stmt->bindParam(':user_id',$comment->getUser_id());
-        $stmt->bindParam(':post_id',$comment->getPost_id());
-        $stmt->bindParam(':comment_id',$comment->getComment_id());
-        $stmt->bindParam(':time',$comment->getTime());
+        $stmt->bindValue(':text',$comment->getText(), \PDO::PARAM_STR);
+        $stmt->bindValue(':user_id',$comment->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id',$comment->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':comment_id',$comment->getComment_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':time',$comment->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -71,10 +71,10 @@ class CommentRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO comment (text, user_id, post_id, time)
         VALUES (:text, :user_id, :post_id, :time)");
-        $stmt->bindParam(':text',$comment->getText());
-        $stmt->bindParam(':user_id',$comment->getUser_id());
-        $stmt->bindParam(':post_id',$comment->getPost_id());
-        $stmt->bindParam(':time',$comment->getTime());
+        $stmt->bindValue(':text',$comment->getText(), \PDO::PARAM_STR);
+        $stmt->bindValue(':user_id',$comment->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id',$comment->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':time',$comment->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }

@@ -6,6 +6,7 @@ use Reddit\services\SessionService;
 use Reddit\models\Like;
 use Reddit\services\KarmaService;
 use Reddit\repositories\LikeRepository;
+use Reddit\controllers\NotificationController;
 
 class LikeController extends LikeRepository
 {
@@ -178,7 +179,7 @@ class LikeController extends LikeRepository
         $karmaService = new KarmaService();
         $likeItem = $this->getLike("post_id",$postId,$userId);
 
-        if($likeItem === null)
+        if($likeItem === null || empty($likeItem))
         {
             $status = "liked";
             
@@ -193,9 +194,12 @@ class LikeController extends LikeRepository
             $this->addLikePost($newLike);
             $karmaService->updateUserKarma($userId);
             $likeId = $this->connection->lastInsertId();
+            error_log('LIKE ID: ' . $likeId);
             $notificationController->likePostNotification($userId,$likeId,$postId);
             $newCount = $this->getLikeCount("post_id",$postId);
+             error_log('COUNT: ' . $newCount);
             $data = [$newCount,$status];
+            error_log('DATA: ' . $data[1]);
             return $data;
         }
 
@@ -233,6 +237,7 @@ class LikeController extends LikeRepository
     public function deleteLikeController($likeId)
     {
         $session = new SessionService();
+        $notificationController = new NotificationController();
 
         if(!isset($likeId))
         {
@@ -243,5 +248,6 @@ class LikeController extends LikeRepository
         }
 
         $this->deleteLike($likeId);
+        $notificationController->deleteNotifications("like_id",$likeId);
     }
 }

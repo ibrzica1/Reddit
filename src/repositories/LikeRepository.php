@@ -65,9 +65,9 @@ class LikeRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO likes (user_id,comment_id,status)
         VALUES (:user_id, :comment_id, :status)");
-        $stmt->bindParam(':user_id', $like->getUser_id());
-        $stmt->bindParam(':comment_id', $like->getComment_id());
-        $stmt->bindParam(':status', $like->getStatus());
+        $stmt->bindValue(':user_id', $like->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':comment_id', $like->getComment_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':status', $like->getStatus(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }
@@ -76,9 +76,9 @@ class LikeRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO likes (user_id,post_id,status)
         VALUES (:user_id, :post_id, :status)");
-        $stmt->bindParam(':user_id', $like->getUser_id());
-        $stmt->bindParam(':post_id', $like->getPost_id());
-        $stmt->bindParam(':status', $like->getStatus());
+        $stmt->bindValue(':user_id', $like->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':post_id', $like->getPost_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':status', $like->getStatus(), \PDO::PARAM_STR);
 
         $stmt->execute();
     }

@@ -65,11 +65,11 @@ class PostRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, text, user_id, community_id, time)
         VALUES (:title, :text, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$post->getTitle());
-        $stmt->bindParam(':text',$post->getText());
-        $stmt->bindParam(':user_id',$post->getUser_id());
-        $stmt->bindParam(':community_id',$post->getCommunity_id());
-        $stmt->bindParam(':time',$post->getTime());
+        $stmt->bindValue(':title',$post->getTitle(), \PDO::PARAM_STR);
+        $stmt->bindValue(':text',$post->getText(), \PDO::PARAM_STR);
+        $stmt->bindValue(':user_id',$post->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':community_id',$post->getCommunity_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':time',$post->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
 
@@ -80,10 +80,10 @@ class PostRepository extends Db
     {
         $stmt = $this->connection->prepare("INSERT INTO post (title, user_id, community_id, time)
         VALUES (:title, :user_id, :community_id, :time)");
-        $stmt->bindParam(':title',$post->getTitle());
-        $stmt->bindParam(':user_id',$post->getUser_id());
-        $stmt->bindParam(':community_id',$post->getCommunity_id());
-        $stmt->bindParam(':time',$post->getTime());
+        $stmt->bindValue(':title',$post->getTitle(), \PDO::PARAM_STR);
+        $stmt->bindValue(':user_id',$post->getUser_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':community_id',$post->getCommunity_id(), \PDO::PARAM_INT);
+        $stmt->bindValue(':time',$post->getTime(), \PDO::PARAM_STR);
 
         $stmt->execute();
 

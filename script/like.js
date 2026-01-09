@@ -21,11 +21,11 @@ export function manageLikes()
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             if(data.status === "success") {
                 let newCount = data.new_count < 0 ? 0 : data.new_count;
                 count.textContent = newCount;
                 const status = data.like_status; 
-                console.log(status);
             if (status === "liked") {
                 container.style.backgroundColor = "rgba(223, 120, 120, 1)";
                 upBtn.style.backgroundColor = "rgba(220, 55, 55, 1)";
@@ -53,7 +53,7 @@ export function likeStatus()
         const status = container.dataset.status;
         const upBtn = document.getElementById(`up-${type}-${id}`);
         const downBtn = document.getElementById(`down-${type}-${id}`);
-
+        console.log(status);
         if(status === "liked")
         {
             container.style.backgroundColor = "rgba(223, 120, 120, 1)";

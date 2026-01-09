@@ -57,12 +57,16 @@ export function deleteCommunity()
 {
     const deleteBtn = document.querySelector('.delete-container');
 
-    deleteBtn.addEventListener('click',()=>{
-        if(confirm("Are you sure you want do delete this community"))
-        {
-            deleteBtn.disabled = false;
-        }
-    });
+    if(deleteBtn)
+    {
+        deleteBtn.addEventListener('click',()=>{
+            if(confirm("Are you sure you want do delete this community"))
+            {
+                deleteBtn.disabled = false;
+            }
+        });
+    }
+    
 }
 
 export function toggleNotification()
