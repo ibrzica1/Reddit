@@ -243,8 +243,12 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $commentPost = $post->getPostById($commentItem->getPost_id()); ?>
     <?php $commentCommunity = $community->getCommunity("id",$commentPost->getCommunity_id()); ?>
     <?php $commentCommunityImg = $image->getCommunityImage($commentCommunity->getId()); ?>
-    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->getUser_id());  ?>
-    <?php $commentLikeStatus = $commentLikes?->getStatus() ? "neutral" : $commentLikes?->getStatus() ?>
+    <?php $commentLikes = $like->getLike("comment_id",$commId,$userId);  ?>
+    <?php if($commentLikes === NULL): ?>
+    <?php $commentLikeStatus = "neutral"; ?>
+    <?php else: ?>
+    <?php $commentLikeStatus = $commentLikes->getStatus(); ?>
+    <?php  endif;  ?>
 
     <div class="single-comment">
         <div class="post-info">

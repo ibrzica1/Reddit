@@ -43,7 +43,12 @@ $postUserId = $selectedPost->getUser_id();
 $postUser = $user->getUserById($postUserId);
 $userId = $session->getFromSession("user_id");
 $postLikes = $like->getLike("post_id",$postId,$userId);
-$likeStatus = $postLikes?->getStatus() ? "neutral" : $postLikes?->getStatus();
+if($postLikes === NULL){
+    $likeStatus = "neutral";
+}
+else {
+    $likeStatus = $postLikes->getStatus();
+}
 $comments = $comment->getComments("post_id",$postId);
 $imgNum = 0;
 
@@ -179,12 +184,13 @@ $imgNum = 0;
 <?php foreach($comments as $commentItem): ?>
 <?php if(empty($commentItem->getComment_id())): ?>
     <?php $commId = $commentItem->getId(); ?>
-  
     <?php $commentUser = $user->getUserByAttribute("id",$commentItem->getUser_id()) ?>
-    
-    <?php $commentLikes = $like->getLike("comment_id",$commId,$commentItem->getUser_id())  ?>
-  
-    <?php $commentLikeStatus = $commentLikes?->getStatus() ? "neutral" : $commentLikes?->getStatus() ?>
+    <?php $commentLikes = $like->getLike("comment_id",$commId,$userId)  ?>
+    <?php if($commentLikes === NULL): ?>
+    <?php $commentLikeStatus = "neutral"; ?>
+    <?php else: ?>
+    <?php $commentLikeStatus = $commentLikes->getStatus(); ?>
+    <?php  endif;  ?>
     
     <div class="single-comment">
         <div class="comment-author-info">
@@ -224,8 +230,12 @@ $imgNum = 0;
         <?php if($replyItem->getComment_id() === $commentItem->getId()): ?>
         <?php $replyId = $replyItem->getId(); ?>
         <?php $replyUser = $user->getUserByAttribute("id",$replyItem->getUser_id()) ?>
-        <?php $replyLikes = $like->getLike("comment_id",$replyId,$replyItem->getUser_id())  ?>
-        <?php $replyLikeStatus = $replyLikes?->getStatus() ? "neutral" : $replyLikes?->getStatus() ?>
+        <?php $replyLikes = $like->getLike("comment_id",$replyId,$userId)  ?>
+        <?php if($replyLikes === NULL): ?>
+        <?php $replyLikeStatus = "neutral"; ?>
+        <?php else: ?>
+        <?php $replyLikeStatus = $replyLikes->getStatus(); ?>
+        <?php  endif;  ?>
             <div class="single-comment">
             <div class="comment-author-info">
                 <img src="../images/avatars/<?= $replyUser->getAvatar() ?>.webp" class="comment-avatar">
