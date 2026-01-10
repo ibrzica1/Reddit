@@ -109,8 +109,12 @@ $communityPosts = $post->getPost("community_id",$communityId);
     <?php foreach($communityPosts as $postItem): ?>
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>
     <?php $postId = $postItem->getId(); ?>
-    <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
-    <?php $postLikeStatus = $postLikes?->getStatus() ? "neutral" : $postLikes?->getStatus() ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$userId); ?>
+    <?php if($postLikes === NULL): ?>
+    <?php $postLikeStatus = "neutral"; ?>
+    <?php else: ?>
+    <?php $postLikeStatus = $postLikes->getStatus(); ?>
+    <?php  endif;  ?>
     <?php $postImages = []; ?>
     <div class="post-container">
     <div class="post-user-container">

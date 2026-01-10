@@ -194,12 +194,9 @@ class LikeController extends LikeRepository
             $this->addLikePost($newLike);
             $karmaService->updateUserKarma($userId);
             $likeId = $this->connection->lastInsertId();
-            error_log('LIKE ID: ' . $likeId);
             $notificationController->likePostNotification($userId,$likeId,$postId);
             $newCount = $this->getLikeCount("post_id",$postId);
-             error_log('COUNT: ' . $newCount);
             $data = [$newCount,$status];
-            error_log('DATA: ' . $data[1]);
             return $data;
         }
 

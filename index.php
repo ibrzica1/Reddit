@@ -90,7 +90,7 @@ $posts = $post->getAllPosts($limit);
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>   
     <?php $postId = $postItem->getId(); ?>
     
-    <?php $postLikes = $like->getLike("post_id",$postId,$postItem->getUser_id()); ?>
+    <?php $postLikes = $like->getLike("post_id",$postId,$userId); ?>
     <?php if($postLikes === NULL): ?>
     <?php $postLikeStatus = "neutral"; ?>
     <?php else: ?>

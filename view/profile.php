@@ -162,8 +162,13 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $postCommunity = $community->getCommunity("id",$commId); ?>
     <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$userId) ?>
+    
     <?php $likeId = $postLikes?->getUser_id() ? 0 : $postLikes?->getUser_id(); ?>
-    <?php $likeStatus = $postLikes?->getStatus() ? "neutral" : $postLikes?->getStatus() ?>
+    <?php if($postLikes === NULL): ?>
+    <?php $postLikeStatus = "neutral"; ?>
+    <?php else: ?>
+    <?php $postLikeStatus = $postLikes->getStatus(); ?>
+    <?php  endif;  ?>
     <?php $postImages = []; ?>
     
     <?php $communityImg = $image->getCommunityImage($postItem->getCommunity_id()) ?>
@@ -194,7 +199,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     </div>
     <div class="post-button-container">
     <div class="like-comment-btns">
-        <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $likeStatus ?>">
+        <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $postLikeStatus ?>">
             <button class="up-btn" id="up-post-<?= $postId ?>" data-post-id="<?= $postId ?>">
             <img src="../images/icons/arrow-up.png">
             </button>

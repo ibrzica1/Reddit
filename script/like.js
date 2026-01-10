@@ -21,7 +21,6 @@ export function manageLikes()
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if(data.status === "success") {
                 let newCount = data.new_count < 0 ? 0 : data.new_count;
                 count.textContent = newCount;
@@ -49,11 +48,13 @@ export function likeStatus()
     const containers = document.querySelectorAll('.like-btn');
     containers.forEach((container) => {
         const id = container.dataset.id;
+        console.log("id: ",id);
         const type = container.dataset.type;
+        console.log("type: ",type);
         const status = container.dataset.status;
+        console.log("status: ",status);
         const upBtn = document.getElementById(`up-${type}-${id}`);
         const downBtn = document.getElementById(`down-${type}-${id}`);
-        console.log(status);
         if(status === "liked")
         {
             container.style.backgroundColor = "rgba(223, 120, 120, 1)";
