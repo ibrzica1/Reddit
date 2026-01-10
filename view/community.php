@@ -10,6 +10,7 @@ use Reddit\repositories\CommentRepository;
 use Reddit\repositories\PostRepository;
 use Reddit\repositories\ImageRepository;
 use Reddit\repositories\LikeRepository;
+use Reddit\repositories\NotificationRepository;
 
 $session = new SessionService();
 $time = new TimeService();
@@ -19,6 +20,7 @@ $post = new PostRepository();
 $comment = new CommentRepository();
 $user = new UserRepository();
 $like = new LikeRepository();
+$notification = new NotificationRepository();
 
 if(!$session->sessionExists("username"))
 {

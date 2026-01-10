@@ -161,9 +161,17 @@ class NotificationController extends NotificationRepository
         exit();
     }
 
+    public function markNottSeen($nottId,$type,$href)
+    {
+        $seen = "true";
+        $this->changeSeenStatus($nottId,$seen);
+        
+
+    }
+
     public function deleteUserNott($userId)
     {
-        $this->deleteNotifications("user_id",$userId);
+        $this->deleteNotifications("reciever_id",$userId);
 
         header("Location: view/notification.php");
         exit();

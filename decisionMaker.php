@@ -328,6 +328,18 @@ if(isset($_POST['delete-all-nott']))
   $notificationController->deleteUserNott($userId);
 }
 
+if(isset($_POST['change-seen-nott']) &&
+  isset($_POST['type']) &&
+  isset($_POST['href']))
+{
+  $nottId = $_POST['change-seen-nott'];
+  $type = $_POST['type'];
+  $href = $_POST['href'];
+
+  $notificationController = new NotificationController();
+  $notificationController->markNottSeen($nottId,$type,$href);
+}
+
 if(isset($_GET['community-image']))
 {
   header("Content-Type: application/json");

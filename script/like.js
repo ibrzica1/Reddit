@@ -48,11 +48,8 @@ export function likeStatus()
     const containers = document.querySelectorAll('.like-btn');
     containers.forEach((container) => {
         const id = container.dataset.id;
-        console.log("id: ",id);
         const type = container.dataset.type;
-        console.log("type: ",type);
         const status = container.dataset.status;
-        console.log("status: ",status);
         const upBtn = document.getElementById(`up-${type}-${id}`);
         const downBtn = document.getElementById(`down-${type}-${id}`);
         if(status === "liked")

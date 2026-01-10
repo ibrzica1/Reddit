@@ -33,12 +33,12 @@ $nottNumber = count($notifications);
     <?php foreach($notifications as $notificationItem): ?>
         
     <?php $senderInfo = $user->getUserByAttribute("id",$notificationItem->getSender_id()); ?>
-    <?php if($notificationItem->getSeen() == "false"): ?>
-    <?php if($notificationItem->getType() == "like"): ?>
+    <?php if($notificationItem->getSeen() === "false"): ?>
+    <?php if($notificationItem->getType() === "like"): ?>
     <?php if(!empty($notificationItem->getPost_id())): ?>
     <?php $notificationPost = $post->getPostById($notificationItem->getPost_id()) ?>
     <a href="community.php?comm_id=<?= $notificationPost->getCommunity_id() ?>&nott_id=<?= $notificationItem->getId() ?>" 
-    onclick="<?php $notification->changeSeenStatus($notificationItem->getId(),"true") ?>" class="single-notification">
+    class="single-notification">
     <div class="sender-avatar">
     <img src="/Reddit/images/avatars/<?= $senderInfo->getAvatar() ?>.webp">
     </div>
@@ -86,7 +86,7 @@ $nottNumber = count($notifications);
     <?php endif; ?>
     <?php endforeach; ?>
     <?php endif; ?>
-    <a href="notification.php" class="see-all-nott">see all notifications</a>
+    <a href="/Reddit/view/notification.php" class="see-all-nott">see all notifications</a>
 </div>
 
 <script type="module">

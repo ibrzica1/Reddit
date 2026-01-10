@@ -19,8 +19,6 @@ $comment = new CommentRepository();
 $notification = new NotificationRepository();
 
 $userId = $session->getFromSession("user_id");
-$notifications = $notification->unreadNotifications($userId);
-$nottNumber = count($notifications);
 $allNotifications = $notification->getUserNotifications($userId);
 
 ?>
@@ -82,11 +80,12 @@ $allNotifications = $notification->getUserNotifications($userId);
     <?php else: ?>
     <?php foreach($allNotifications as $singleNott): ?>
     <?php $senderInf = $user->getUserByAttribute("id",$singleNott->getSender_id()); ?>
-    <?php if($singleNott->getType() == "like"): ?>
+    <?php if($singleNott->getType() === "like"): ?>
     <?php if(!empty($singleNott->getPost_id())): ?>
     <?php $notificationPos = $post->getPostById($singleNott->getPost_id()) ?>
-    <a href="community.php?comm_id=<?= $notificationPos->getCommunity_id() ?>&nott_id=<?= $singleNott->getId() ?>" 
-    onclick="<?php $notification->changeSeenStatus($singleNott->getId(),"true") ?>" class="single-nott" id="singleNot-<?= $singleNott->getId() ?>">
+    <div class="single-nott" 
+    id="singleNot-<?= $singleNott->getId() ?>" data-seen="<?= $singleNott->getSeen() ?>"
+    data-id="<?= $singleNott->getId() ?>" data-type="<?= $singleNott->getType() ?>-post" data-href="<?= $notificationPos->getCommunity_id() ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
@@ -95,10 +94,12 @@ $allNotifications = $notification->getUserNotifications($userId);
         <h4><?= $notificationPos->getTitle() ?></h4>
         <h4><?= $time->calculateTime($singleNott->getTime()) ?></h4>
     </div>  
-    </a>
+    </div>
     <?php else: ?>
     <?php $notificationCommen = $comment->getComment("id",$singleNott->getComment_id()) ?>
-    <a href="comment.php?post_id=<?= $notificationCommen->getPost_id() ?>&nott_id=<?= $singleNott->getId() ?>" class="single-nott" id="singleNot-<?= $singleNott->getId() ?>">
+    <div class="single-nott" id="singleNot-<?= $singleNott->getId() ?>"
+    data-seen="<?= $singleNott->getSeen() ?>"
+    data-id="<?= $singleNott->getId() ?>" data-type="<?= $singleNott->getType() ?>-comment" data-href="<?= $notificationCommen->getPost_id() ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
@@ -107,11 +108,12 @@ $allNotifications = $notification->getUserNotifications($userId);
         <h4><?= $notificationCommen->getText() ?></h4>
         <h4><?= $time->calculateTime($singleNott->getTime()) ?></h4>
     </div>
-    </a>
+    </div>
     <?php endif; ?>
-    <?php elseif($singleNott->getType() == "comment"): ?>
+    <?php elseif($singleNott->getType() === "comment"): ?>
     <?php $notificationPos = $post->getPostById($singleNott->getPost_id()); ?>
-    <a href="comment.php?post_id=<?= $notificationPos->getId()?>&nott_id=<?= $singleNott->getId() ?>" class="single-nott" id="singleNot-<?= $singleNott->getId() ?>">
+    <div class="single-nott" id="singleNot-<?= $singleNott->getId() ?>" data-seen="<?= $singleNott->getSeen() ?>"
+    data-id="<?= $singleNott->getId() ?>" data-type="<?= $singleNott->getType() ?>" data-href="<?= $notificationPos->getId()?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
@@ -120,10 +122,11 @@ $allNotifications = $notification->getUserNotifications($userId);
         <h4><?= $notificationPos->getTitle()?></h4>
         <h4><?= $time->calculateTime($singleNott->getTime()) ?></h4>
     </div>
-    </a>
-    <?php elseif($singleNott->getType() == "post"): ?>
+    </div>
+    <?php elseif($singleNott->getType() === "post"): ?>
     <?php $notificationCommunit = $community->getCommunity("id",$singleNott->getCommunity_id()); ?>
-    <a href="community.php?comm_id=<?= $notificationCommunit->getId() ?>&nott_id=<?= $singleNott->getId() ?>" class="single-nott" id="singleNot-<?= $singleNott->getId() ?>">
+    <div class="single-nott" id="singleNot-<?= $singleNott->getId() ?>" data-seen="<?= $singleNott->getSeen() ?>"
+    data-id="<?= $singleNott->getId() ?>" data-type="<?= $singleNott->getType() ?>" data-href="<?= $notificationCommunit->getId() ?>">
     <div class="sender-nott-avatar">
         <img src="../images/avatars/<?= $senderInf->getAvatar() ?>.webp">
     </div>
@@ -132,7 +135,7 @@ $allNotifications = $notification->getUserNotifications($userId);
         <h4><?= $notificationCommunit->getName() ?></h4>
         <h4><?= $time->calculateTime($singleNott->getTime()) ?></h4>
     </div>
-    </a>
+    </div>
     <?php else: ?>
     <?php endif; ?>
     <?php endforeach; ?>
@@ -143,8 +146,13 @@ $allNotifications = $notification->getUserNotifications($userId);
     
 <script type="module">
     import {toggleNotification} from "../script/tools.js?v=<?php echo time(); ?>";
-    import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";  
+    import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>"; 
+    import {notificationSeen} from "../script/notification.js?v=<?php echo time(); ?>";
+
+    const containers = document.querySelectorAll(".single-nott");
+
     
+    notificationSeen();
     generalSearch();
 
 </script>
