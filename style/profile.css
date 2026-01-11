@@ -542,10 +542,11 @@ body{
 
 .single-comment {
     background-color: white;
+    border: 1px solid rgb(212, 212, 212);
     padding: 12px 10px;
     margin-left: 5px; 
     padding-left: 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     margin-bottom: 10px;
 }
 
@@ -578,13 +579,14 @@ body{
 .comment-user-info {
     display: flex;
     justify-content: left;
+    gap: 10px;
     width: 80%;
     height: 20px;
     margin-left: 34px;
 }
 
 .comment-user-info h3 {
-    font-size: 13px;
+    font-size: 11px;
     margin: 0;
 }
 
@@ -604,6 +606,8 @@ body{
 
 .comment-actions {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     margin-left: 34px;
 }
 
@@ -633,6 +637,11 @@ body{
 .comment-reply-btn p {
     font-size: 14px;
     margin-left: 4px;
+}
+
+.left-buttons{
+    display: flex;
+    flex-direction: row;
 }
 
 .sidebar-card {

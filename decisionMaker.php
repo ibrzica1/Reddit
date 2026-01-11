@@ -278,17 +278,30 @@ if(isset($_POST['comment-dislike']))
   exit();
 }
 
-if(isset($_POST['post-delete']))
+if(isset($_POST['post-delete']) &&
+  isset($_POST['location']))
 {
   $postId = $_POST['post-delete'];
   $location = $_POST['location'];
 
   $postController = new PostController();
-  $postController->deletePostController($postId,$location);
+  $postController->deletePostController($postId);
 
   header("Location: view/$location.php");
   exit();
+}
 
+if(isset($_POST['comment-delete']) &&
+  isset($_POST['location']))
+{
+  $commentId = $_POST['comment-delete'];
+  $location = $_POST['location'];
+
+  $commentController = new CommentController();
+  $commentController->deleteCommentController($commentId);
+
+  header("Location: view/$location.php");
+  exit();
 }
 
 if(isset($_POST['comment_text']) && isset($_POST['post_id']))

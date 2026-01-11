@@ -256,6 +256,7 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p class="comment-community-name">r/<?= $commentCommunity->getName() ?></p>
             <p class="post-title"><?= $commentPost->getTitle() ?></p>
         </div>
+        
         <div class="comment-user-info">
             <h3><?= $commentUser->getUsername() ?></h3>
             <p>commented <?= $time->calculateTime($commentItem->getTime()) ?></p>
@@ -264,6 +265,7 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p><?= $commentItem->getText() ?></p>
         </div>
         <div class="comment-actions">
+            <div class="left-buttons">
             <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">
                 <button class="up-btn" id="up-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-up.png">
@@ -277,6 +279,17 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <img src="../images/icons/bubble.png">
                 <p>Reply</p>
             </a>
+            </div>
+            <?php if($commentItem->getUser_id() == $userId): ?>
+            <form action="../decisionMaker.php" method="post" class="delete-comment-form" data-id="<?= $commId ?>">
+                <input type="hidden" name="location" value="profile">
+                <input type="hidden" name="comment-delete" value="<?= $commId ?>">
+                <button type="submit" class="delete-btn" id="delete-comment-<?= $commId ?>" 
+                onclick="return confirm('Are you sure you want to delete this comment?')">
+                <img src="../images/icons/set.png">
+                </button>
+            </form>
+            <?php endif; ?>
             
         </div>
     </div>

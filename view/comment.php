@@ -114,7 +114,7 @@ $imgNum = 0;
             </div>
         </div>
     </div>
-    <?php if($selectedPost->getUser_id() == $userId): ?>
+    <?php if($selectedPost->getUser_id() === $userId): ?>
         <form action="../decisionMaker.php" method="post" onsubmit="return confirm('Are you sure you want to delete this post?')">
             <input type="hidden" name="location" value="profile">
             <input type="hidden" name="post-delete" value="<?= $postId ?>">
@@ -202,6 +202,7 @@ $imgNum = 0;
             <p><?= $commentItem->getText() ?></p>
         </div>
         <div class="comment-actions">
+            <div class="left-buttons">
             <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">
                 <button class="up-btn" id="up-comment-<?= $commId ?>" data-comm-id="<?= $commId ?>">
                 <img src="../images/icons/arrow-up.png">
@@ -213,6 +214,17 @@ $imgNum = 0;
             </div>
             <button class="comment-reply-btn" id="commentReplyBtn-<?= $commId ?>">
                 Reply</button>
+            </div>
+            <?php if($commentItem->getUser_id() == $userId): ?>
+            <form action="../decisionMaker.php" method="post" class="delete-comment-form" data-id="<?= $commId ?>">
+                <input type="hidden" name="location" value="profile">
+                <input type="hidden" name="comment-delete" value="<?= $commId ?>">
+                <button type="submit" class="delete-btn" id="delete-comment-<?= $commId ?>" 
+                onclick="return confirm('Are you sure you want to delete this comment?')">
+                <img src="../images/icons/set.png">
+                </button>
+            </form>
+            <?php endif; ?>
         </div>
         <form action="../decisionMaker.php" method="post" class="reply-form" id="replyForm-<?= $commId ?>" data-id="<?= $commId ?>">
             <input type="hidden" name="post_id" value="<?= $postId ?>">
@@ -225,6 +237,7 @@ $imgNum = 0;
                     Submit</button>
             </div>
         </form>
+        
         <div class="reply-comments-grid">
         <?php foreach($comments as $replyItem): ?>
         <?php if($replyItem->getComment_id() === $commentItem->getId()): ?>
@@ -255,6 +268,16 @@ $imgNum = 0;
                 <img src="../images/icons/arrow-down.png">
                 </button>
             </div>
+            <?php if($replyItem->getUser_id() == $userId): ?>
+            <form action="../decisionMaker.php" method="post" class="delete-comment-form" data-id="<?= $replyId ?>">
+                <input type="hidden" name="location" value="profile">
+                <input type="hidden" name="comment-delete" value="<?= $replyId ?>">
+                <button type="submit" class="delete-btn" id="delete-comment-<?= $replyId ?>" 
+                onclick="return confirm('Are you sure you want to delete this reply?')">
+                <img src="../images/icons/set.png">
+                </button>
+            </form>
+            <?php endif; ?>
         </div>  
         </div>
         <?php endif; ?>

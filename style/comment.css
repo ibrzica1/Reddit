@@ -402,9 +402,16 @@
 .comment-actions {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-left: 25px;
+    padding-right: 10px;
     font-size: 12px;
     margin-top: 16px;
+}
+
+.left-buttons{
+    display: flex;
+    flex-direction: row;
 }
 
 .comment-votes {
