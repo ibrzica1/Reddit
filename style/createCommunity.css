@@ -27,6 +27,17 @@ body {
   margin-bottom: 40px;
 }
 
+.message-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-container p{
+  font-weight: 700;
+  color: rgb(159, 0, 0);
+}
+
 .form-container {
   display: flex;
   justify-content: space-between;

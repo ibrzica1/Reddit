@@ -13,7 +13,7 @@ use Reddit\controllers\PostController;
 
 class CommunityController extends CommunityRepository
 {
-    public function createCommunity($name, $description, $files)
+    public function createCommunity(string $name,string $description,array $files): void
     {
         $session = new SessionService();
         $timeStamp = new TimeService();
@@ -22,7 +22,7 @@ class CommunityController extends CommunityRepository
         $user_id = $session->getFromSession('user_id');
         $time = $timeStamp->time;
 
-        if(!isset($name))
+        if(!isset($name) || $name === "")
         {
         $message = "You didnt send name";
         $session->setSession("message",$message);
@@ -30,7 +30,7 @@ class CommunityController extends CommunityRepository
         exit();
         }
 
-        if(!isset($description))
+        if(!isset($description) || $description === "")
         {
         $message = "You didnt send description";
         $session->setSession("message",$message);
@@ -38,7 +38,9 @@ class CommunityController extends CommunityRepository
         exit();
         }
 
-        if(!isset($files))
+        if(!isset($files) ||
+        !is_array($files) ||
+        $files['error'] === UPLOAD_ERR_NO_FILE)
         {
         $message = "You didnt send files";
         $session->setSession("message",$message);
