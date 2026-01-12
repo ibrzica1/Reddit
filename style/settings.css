@@ -14,6 +14,18 @@
   padding-bottom: 10px;
 }
 
+.message-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.message-container p{
+  font-weight: 700;
+  color: rgb(159, 0, 0);
+}
+
 .fields-container {
   display: flex;
   flex-direction: column;
@@ -106,16 +118,6 @@ form button:hover {
   text-align: center;
 }
         
-.message {
-  display: inline-block;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 .avatar-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);

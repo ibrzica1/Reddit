@@ -185,7 +185,8 @@ class UserController extends UserRepository
     $id = $session->getFromSession("user_id");
     $user = $this->getUserById($id);
 
-    if(!isset($username))
+    if(!isset($username) ||
+      $username === "")
     {
       $message = "You didnt send username";
       $session->setSession("message",$message);
@@ -240,7 +241,8 @@ class UserController extends UserRepository
     $id = $session->getFromSession("user_id");
     $user = $this->getUserById($id);
 
-    if(!isset($email))
+    if(!isset($email) ||
+      $email === "")
     {
       $message = "You didnt send email";
       $session->setSession("message",$message);
@@ -286,21 +288,24 @@ class UserController extends UserRepository
     $id = $session->getFromSession("user_id");
     $user = $this->getUserById($id);
 
-    if(!isset($oldPass))
+    if(!isset($oldPass) ||
+      $oldPass === "")
     {
       $message = "You didnt send old password";
       $session->setSession("message",$message);
       header("Location: view/settings.php");
       exit();
     }
-    if(!isset($newPass))
+    if(!isset($newPass) ||
+      $newPass === "")
     {
       $message = "You didnt send new password";
       $session->setSession("message",$message);
       header("Location: view/settings.php");
       exit();
     }
-    if(!isset($confirmPass))
+    if(!isset($confirmPass) ||
+      $confirmPass === "")
     {
       $message = "You didnt send confirm password";
       $session->setSession("message",$message);
@@ -373,7 +378,8 @@ class UserController extends UserRepository
     $id = $session->getFromSession("user_id");
     $user = $this->getUserById($id);
 
-    if(!isset($bio))
+    if(!isset($bio) ||
+      $bio === "")
     {
       $message = "You didnt send new bio";
       $session->setSession("message",$message);
@@ -401,7 +407,8 @@ class UserController extends UserRepository
     $id = $session->getFromSession("user_id");
     $user = $this->getUserById($id);
 
-    if(!isset($avatar))
+    if(!isset($avatar) ||
+      $avatar === "")
     {
       $message = "You didnt send avatar value";
       $session->setSession("message",$message);
