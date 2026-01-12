@@ -32,7 +32,8 @@ $profile = $user->getUserById($userId);
 
 $username = $session->getFromSession("username");
 $timeCreated = $profile->getTime();
-$accountAge = $time->calculateTime($timeCreated[0]); 
+
+$accountAge = $time->calculateTime($timeCreated); 
 $bio = $profile->getBio();
 $karma = $profile->getKarma();
 $activeTab = $_GET['tab'] ?? "posts";
@@ -88,9 +89,9 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <div class="username-section">
                     <h1>u/<?= $username ?></h1>
                 </div>
-                <a href="settings.php">
-                    <button class="edit-profile-btn">Edit Profile</button>
-                </a>
+            <a href="settings.php">
+                <button class="edit-profile-btn">Edit Profile</button>
+            </a>
             </div>
             <a href="createPost.php">
                 <button class="new-post-btn">Create Post</button>
