@@ -27,7 +27,7 @@ class PostController extends PostRepository
         $user_id = $session->getFromSession('user_id');
         $time = $timeStamp->time;
     
-        if(!isset($title))
+        if($title === "")
         {
         $message = "You didnt send title";
         $session->setSession("message",$message);
@@ -35,15 +35,7 @@ class PostController extends PostRepository
         exit();
         }
 
-        if(!isset($text))
-        {
-        $message = "You didnt send text";
-        $session->setSession("message",$message);
-        header("Location: view/createPost.php");
-        exit();
-        }
-
-        if(!isset($communityId) || empty($communityId))
+        if($communityId === 0)
         {
         $message = "You didnt send community Id";
         $session->setSession("message",$message);
@@ -84,7 +76,7 @@ class PostController extends PostRepository
         
     }
 
-    public function imagePost($title, $files,$communityId)
+    public function imagePost(string $title,array $files,int $communityId): void
     {
         $session = new SessionService();
         $image = new ImageRepository();
@@ -94,7 +86,7 @@ class PostController extends PostRepository
         $userId = $session->getFromSession('user_id');
         $time = $timeStamp->time;
 
-        if(!isset($title))
+        if($title === "")
         {
         $message = "You didnt send title";
         $session->setSession("message",$message);
@@ -102,15 +94,7 @@ class PostController extends PostRepository
         exit();
         }
 
-        if(!isset($files))
-        {
-        $message = "You didnt send files";
-        $session->setSession("message",$message);
-        header("Location: view/createPost.php");
-        exit();
-        }
-
-        if(!isset($communityId))
+        if($communityId === 0)
         {
         $message = "You didnt send community Id";
         $session->setSession("message",$message);

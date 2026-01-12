@@ -16,6 +16,17 @@ h2 {
   font-weight: 600;
 }
 
+.message-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-container p{
+  font-weight: 700;
+  color: rgb(159, 0, 0);
+}
+
 .seek-container {
   position: relative;
   display: flex;

@@ -75,28 +75,31 @@ if(isset($_POST['avatar-update']))
   $userController->changeAvatar($avatar);
 }
 
-if(isset($_POST['title']) && 
-isset($_POST['community']) &&
-!empty(trim($_POST['text'])))
+
+if(isset($_POST['create-post']))
 {
-  $title = $_POST['title'];
-  $text = $_POST['text'];
-  $communityId = $_POST['community'];
+  $title = $_POST['title'] ?? "";
+  $communityId = (int)($_POST['community'] ?? 0);
+  $text = trim($_POST['text']) ?? "";
+  $images = $_FILES['image'] ?? NULL;
 
   $postController = new PostController();
-  $postController->textPost($title, $text, $communityId);
-}
 
-if(isset($_POST['title']) && 
-isset($_POST['community']) &&
-!empty($_FILES['image']['name'][0]))
-{
-  $title = $_POST['title'];
-  $images = $_FILES['image'];
-  $communityId = $_POST['community'];
-
-  $postController = new PostController();
-  $postController->imagePost($title, $images, $communityId);
+  if(!empty($text)){
+    $postController->textPost($title, $text, $communityId);
+  }
+  elseif(!empty($images) && 
+  isset($images['error'][0]) &&
+  $images['error'][0] === UPLOAD_ERR_OK){
+    $postController->imagePost($title, $images, $communityId);
+  }
+  else{
+    $message = "You didnt send text or file";
+    $session->setSession("message",$message);
+    header("Location: view/createPost.php");
+    exit();
+  }
+  
 }
 
 if(isset($_POST['name']) && 

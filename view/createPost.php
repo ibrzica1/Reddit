@@ -109,6 +109,7 @@ $userId = $session->getFromSession('user_id');
 
 <div class="form-container">
     <form action="../decisionMaker.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="create-post" value="1">
         <input type="hidden" id="selectedCommunity" name="community" value="<?=$communityId?>">
         <div class="title-container">
             <input type="text" placeholder="Title" id="titleId" name="title">
