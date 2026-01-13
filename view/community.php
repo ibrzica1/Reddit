@@ -40,6 +40,7 @@ $userId = $session->getFromSession("user_id");
 $communityUserId = $selectedCommunity->getUser_id();
 $communityPosts = $post->getPost("community_id",$communityId);
 $createdTime = $time->calculateTime($selectedCommunity->getTime());
+$avatarColor = $session->getFromSession("avatar");
 
 ?>
 
@@ -81,7 +82,7 @@ $createdTime = $time->calculateTime($selectedCommunity->getTime());
 </div>
 
 <div class="body-container">
-    <div class="banner" style="background-image: url('../images/community/banner.jpg');"></div>
+    <div class="banner"></div>
     <div class="title-container">
         <div class="image-container">
             <img src="../images/community/<?=$communityImage->getName()?>">
@@ -195,6 +196,7 @@ $createdTime = $time->calculateTime($selectedCommunity->getTime());
 import {deleteCommunity} from "../script/tools.js?v=<?php echo time(); ?>";
 import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>";
 import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
+import {changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>";
 import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
 
 likeStatus();
@@ -203,6 +205,7 @@ stageImages();
 imageScroll();
 postSearch();
 deleteCommunity();
+changeBanner("<?= $avatarColor ?>");
 
 </script>
 </body>
