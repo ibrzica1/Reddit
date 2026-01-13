@@ -31,7 +31,6 @@ export function checkNameLength()
         let used = nameInput.value.length;
         let remaining = maxLetters - used;
         nameLetters.innerHTML = remaining;
-        namePreview.innerHTML = nameInput.value;
     });
 
     nameInput.addEventListener('input', ()=>{
@@ -40,6 +39,7 @@ export function checkNameLength()
             nameInput.value = nameInput.value.slice(0, maxLetters);
         }
         nameLetters.textContent = maxLetters - nameInput.value.length;
+        namePreview.innerHTML = nameInput.value;
     });
 }
 

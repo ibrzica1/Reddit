@@ -133,11 +133,11 @@ import {togglePostOptions} from "../script/tools.js?v=<?php echo time(); ?>";
 import {postSearch, toggleCommunitySearch, communitySearch} from "../script/search.js?v=<?php echo time(); ?>";
 import {checkTitleLength} from "../script/textLength.js?v=<?php echo time(); ?>";
 
-postSearch();
-toggleCommunitySearch();
-communitySearch();
-checkTitleLength();
-togglePostOptions();
+postSearch(); // When you input something it will search through posts and display results
+toggleCommunitySearch(); // Searches through communities, if found sets community id in the form 
+communitySearch(); // When you input something it will search through communities and display results
+checkTitleLength(); // Checks the length of post title, if its longer then 300 letters, stops the input
+togglePostOptions(); // Displays text or image input when you click Text or Image button
 
 </script>
     

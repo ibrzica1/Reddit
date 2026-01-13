@@ -156,10 +156,10 @@ $userId = $session->getFromSession('user_id');
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
 
-    generalSearch();
-    checkboxesAvatar();
-    toggleEditForms();
-    checkBioLength();
+    generalSearch(); // When you input something it will search through posts, community, users and display results
+    checkboxesAvatar(); // When clicked on avatar that avatar checkbox will be checked other checkboxes will be unchecked
+    toggleEditForms(); // When clicked on edit form will be displayed
+    checkBioLength(); // Checks the length of bio text if its longer then 235 letters stops the input
 
 </script>
 </body>

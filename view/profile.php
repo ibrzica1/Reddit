@@ -332,12 +332,12 @@ $activeTab = $_GET['tab'] ?? "posts";
     import {profileSearch} from "../script/search.js?v=<?php echo time(); ?>";
     import {changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
 
-    likeStatus();
-    manageLikes();
-    stageImages();
-    imageScroll();
-    profileSearch();
-    changeBanner('<?=$profile->getAvatar()?>');
+    likeStatus(); // When page loads, like area will change color on wheter you up-voted or down-voted
+    manageLikes(); // Changes the color of like area when you like or dislike
+    stageImages(); // If there is an image post it will display first image and if there is more then one image it will display right arrow 
+    imageScroll(); // Toggles through album by clicking right or left arrow, if there you reach the last picture right arrow will hide
+    profileSearch(); // When you input something it will search through users contributions and display results
+    changeBanner('<?=$profile->getAvatar()?>'); // Changes banner color with the color of selected avatar
   
 </script>
 

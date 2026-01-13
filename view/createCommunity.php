@@ -106,9 +106,9 @@ $userId = $session->getFromSession('user_id');
     const bellIcon = document.querySelector('.notifications-container');
     const notificationNum = document.querySelector('.notification-number');
 
-    generalSearch();
-    checkDescriptionLength();
-    checkNameLength();
+    generalSearch(); // When you input something it will search through posts, community, users and display results
+    checkDescriptionLength(); // Checks the length of community name, if its longer then 21 letters, stops the input also displays the preview
+    checkNameLength(); // Checks the length of description text if its longer then 500 letters stops the input, also displays the preview
 
 </script>
     

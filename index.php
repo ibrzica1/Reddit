@@ -168,13 +168,13 @@ $posts = $post->getAllPosts($limit);
     import {generalSearch} from "/Reddit/script/search.js?v=<?php echo time(); ?>";
 
     <?php if(isset($_SESSION['user_id'])): ?> 
-    likeStatus();
-    manageLikes();
+    likeStatus(); // When page loads, like area will change color on wheter you up-voted or down-voted
+    manageLikes(); // Changes the color of like area when you like or dislike
     <?php endif; ?>
-    stageImages();
-    imageScroll();
-    generalSearch();
-    loadPosts();
+    stageImages(); // If there is an image post it will display first image and if there is more then one image it will display right arrow
+    imageScroll(); // Toggles through album by clicking right or left arrow, if there you reach the last picture right arrow will hide
+    generalSearch(); // When you input something it will search through posts, community, users and display results
+    loadPosts(); // Loads the newest 10 posts if scrolled to the end loads another 10 posts
     
   </script>
 </body>

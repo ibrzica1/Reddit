@@ -152,8 +152,8 @@ $allNotifications = $notification->getUserNotifications($userId);
     const containers = document.querySelectorAll(".single-nott");
 
     
-    notificationSeen();
-    generalSearch();
+    notificationSeen(); // Checks notifications if they are seen already if not give gray background color, when clicked changes seen status
+    generalSearch(); // When you input something it will search through posts, community, users and display results
 
 </script>
 </body>

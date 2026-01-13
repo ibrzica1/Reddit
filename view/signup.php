@@ -89,7 +89,7 @@ header("Location: ../index.php");
 <script type="module">
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>";
 
-    generalSearch();
+    generalSearch(); // When you input something it will search through posts, community, users and display results
 </script>
 
 </body>

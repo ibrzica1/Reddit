@@ -312,12 +312,12 @@ import {likeStatus, manageLikes} from "../script/like.js?v=<?php echo time(); ?>
 import {stageImages, imageScroll} from "../script/image.js?v=<?php echo time(); ?>";
 import {postSearch} from "../script/search.js?v=<?php echo time(); ?>";
 
-likeStatus();
-manageLikes();
-stageImages();
-imageScroll();
-postSearch();
-toggleReply();
+likeStatus(); // When page loads, like area will change color on wheter you up-voted or down-voted
+manageLikes(); // Changes the color of like area when you like or dislike
+stageImages(); // If there is an image post it will display first image and if there is more then one image it will display right arrow 
+imageScroll(); // Toggles through album by clicking right or left arrow, if there you reach the last picture right arrow will hide
+postSearch();  // When you input something it will search through posts and display results
+toggleReply(); // If you click reply on comment it will open reply form and if you click close it will close it
 
 </script>
 </body>

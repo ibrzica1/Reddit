@@ -1,6 +1,7 @@
 
 export function changeAvatar()
 {
+
     const formInput = document.querySelector(".form-input");
     const avatarOptions = document.querySelectorAll(".image-wrapper");
     const avatarSelected = document.querySelector(".selected-avatar");

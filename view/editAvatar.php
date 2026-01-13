@@ -98,9 +98,9 @@ $userId = $session->getFromSession('user_id');
     import {generalSearch} from "../script/search.js?v=<?php echo time(); ?>"; 
     import {changeAvatar, changeBanner} from "../script/avatar.js?v=<?php echo time(); ?>"; 
 
-    generalSearch(); 
-    changeAvatar();
-    changeBanner('<?=$session->getFromSession('avatar')?>');
+    generalSearch(); // General Search is searching everything community, posts, users and displays results
+    changeAvatar(); // changeAvatar takes value of selected avatar and immidiatly changes avatat
+    changeBanner('<?=$session->getFromSession('avatar')?>'); // changes banner color with the color of selected avatar
 
 </script>
 </body>
