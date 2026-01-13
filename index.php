@@ -89,39 +89,50 @@ $posts = $post->getAllPosts($limit);
     <?php foreach($posts as $postItem): ?>
     <?php $postUser = $user->getUserByAttribute("id",$postItem->getUser_id()); ?>   
     <?php $postId = $postItem->getId(); ?>
-    
     <?php $postLikes = $like->getLike("post_id",$postId,$userId); ?>
+    <?php $postCommunity = $community->getCommunity("id",$postItem->getCommunity_id()); ?>
+    <?php $communityImg = $image->getCommunityImage($postCommunity->getId()); ?>
     <?php if($postLikes === NULL): ?>
     <?php $postLikeStatus = "neutral"; ?>
     <?php else: ?>
     <?php $postLikeStatus = $postLikes->getStatus(); ?>
     <?php  endif;  ?>
     <?php $postImages = []; ?>
-    <div class="post-container">
+    <div class="post-container" data-id="<?= $postId ?>">
     <div class="post-user-container">
-        <img src="images/avatars/<?=$postUser->getAvatar()?>.webp">
-        <p><span>u/</span><?= $postUser->getUsername() ?></p>
-        <h3><?= $time->calculateTime($postItem->getTime()); ?></h3>
+        <a href="view/community.php?comm_id=<?= $postCommunity->getId(); ?>" 
+        class="post-comm-img-container">
+            <img src="images/community/<?=$communityImg->getName();?>">
+        </a>
+        <div class="post-info-wrapper">
+          <a href="view/profile.php?tab=posts&id_user=<?=$postUser->getId()?>">
+            <p><span>r/</span><?= $postUser->getUsername(); ?></p>
+          </a>
+          <div class="i-dont-know-what-to-name-these-blody-containers">
+            <p><span>u/</span><?= $postCommunity->getName(); ?></p>
+            <h3><?= $time->calculateTime($postItem->getTime()); ?></h3>
+          </div>  
+        </div>
     </div>
-    <div class="post-content-container">
+    <a href="view/comment.php?post_id=<?= $postId ?>" class="post-content-container">
         <h3><?= $postItem->getTitle() ?></h3>
-    <?php if(!empty($postItem->getText())): ?>
-        <p><?= $postItem->getText() ?></p>
-    <?php else: ?>
-    <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
-    <?php $imgCount = count($postImages); ?>
-    <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
-        <input type="hidden" id="index-<?= $postId ?>" value="0">
-        <div class="left-arrow" id="leftArrow-<?= $postId ?>">
-            <img src="images/icons/arrowLeft.png">
+        <?php if(!empty($postItem->getText())): ?>
+            <p><?= $postItem->getText() ?></p>
+        <?php else: ?>
+        <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
+        <?php $imgCount = count($postImages); ?>
+        <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+            <input type="hidden" id="index-<?= $postId ?>" value="0">
+            <div class="left-arrow" id="leftArrow-<?= $postId ?>">
+                <img src="images/icons/arrowLeft.png">
+            </div>
+            <img src="images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
+            <div class="right-arrow" id="rightArrow-<?= $postId ?>">
+                <img src="images/icons/arrowRight.png">
+            </div>
         </div>
-        <img src="images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
-        <div class="right-arrow" id="rightArrow-<?= $postId ?>">
-            <img src="images/icons/arrowRight.png">
-        </div>
-    </div>
-    <?php endif; ?>  
-    </div>
+        <?php endif; ?> 
+    </a>
     <div class="post-button-container">
         <div class="like-comment-btns">
         <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $postLikeStatus ?>">

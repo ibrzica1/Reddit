@@ -39,7 +39,7 @@ $communityImage = $image->getCommunityImage($communityId);
 $userId = $session->getFromSession("user_id");
 $communityUserId = $selectedCommunity->getUser_id();
 $communityPosts = $post->getPost("community_id",$communityId);
-
+$createdTime = $time->calculateTime($selectedCommunity->getTime());
 
 ?>
 
@@ -183,7 +183,7 @@ $communityPosts = $post->getPost("community_id",$communityId);
 
             <div class="created">
                 <img src="../images/icons/cake.png">
-                <p>Created: <?=$selectedCommunity->getTime()?></p>
+                <p>Created: <?=$createdTime?></p>
             </div>
         </div>
     </aside>

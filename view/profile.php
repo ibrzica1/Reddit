@@ -26,13 +26,16 @@ if(!$session->sessionExists("username"))
     header("Location: ../index.php");
 }
 
+if(isset($_GET['id_user'])){
+    $userId = $_GET['id_user'];
+}
+else{
+    $userId = $session->getFromSession('user_id');
+}
 $user = new UserRepository();
-$userId = $session->getFromSession('user_id');
 $profile = $user->getUserById($userId);
-
-$username = $session->getFromSession("username");
+$username = $profile->getUsername();
 $timeCreated = $profile->getTime();
-
 $accountAge = $time->calculateTime($timeCreated); 
 $bio = $profile->getBio();
 $karma = $profile->getKarma();
@@ -84,7 +87,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     <div class="profile-header">
         <div class="banner"></div>
         <div class="profile-card">
-            <img src="../images/avatars/<?= $session->getFromSession('avatar')?>.webp" alt="Avatar" class="profile-avatar"> 
+            <img src="../images/avatars/<?= $profile->getAvatar()?>.webp" alt="Avatar" class="profile-avatar"> 
             <div class="profile-info-content">
                 <div class="username-section">
                     <h1>u/<?= $username ?></h1>
@@ -110,9 +113,9 @@ $activeTab = $_GET['tab'] ?? "posts";
 <div class="content-wrapper">
 <main class="main-content">
     <nav class="profile-nav">
-        <a href="profile.php?tab=posts" id="posts">POSTS</a>
-        <a href="profile.php?tab=comments" id="comments">COMMENTS</a>
-        <a href="profile.php?tab=communities" id="communities">COMMUNITIES</a>
+        <a href="profile.php?tab=posts&id_user=<?= $userId ?>" id="posts">POSTS</a>
+        <a href="profile.php?tab=comments&id_user=<?= $userId ?>" id="comments">COMMENTS</a>
+        <a href="profile.php?tab=communities&id_user=<?= $userId ?>" id="communities">COMMUNITIES</a>
     </nav>
     
 <div class="content-container">
@@ -332,7 +335,7 @@ $activeTab = $_GET['tab'] ?? "posts";
     stageImages();
     imageScroll();
     profileSearch();
-    changeBanner('<?=$session->getFromSession('avatar')?>');
+    changeBanner('<?=$profile->getAvatar()?>');
   
 </script>
 

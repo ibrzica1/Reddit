@@ -26,51 +26,92 @@ body{
     border-radius: 6px;
     padding: 6px 12px;
     margin-left: 10px;
-}
-
-.post-container:hover {
-    background-color: rgb(234, 239, 247);
-    cursor: pointer;
+    text-decoration: none;
 }
 
 .post-user-container {
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: rgb(103, 103, 103);
+    padding-top: 6px;
+    padding-left: 4px;
 }
 
-.post-user-container img {
-    width: 28px;
-    height: 28px;
+.post-user-wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    margin: 0;
+}
+
+.post-comm-img-container{
+    display: flex;
+    align-items: center;
+}
+
+.post-comm-img-container:hover{
+    cursor: pointer;
+}
+
+.post-comm-img-container img {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
 }
 
-.post-user-container p {
-    font-size: 14px;
-    font-weight: 600;
+.post-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
     margin-left: 10px;
 }
 
-.post-user-container span {
+.post-info-wrapper a{
+    text-decoration: none;
+}
+
+.post-info-wrapper p {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 10px;
+    color: rgb(83, 83, 83);
+    margin: 0;
+}
+
+.post-info-wrapper span {
     color: rgb(220, 81, 0);
 }
 
-.post-user-container h3 {
+.i-dont-know-what-to-name-these-blody-containers h3 {
     font-size: 12px;
     font-weight: 400;
     margin-left: 20px;
     color: #888;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.i-dont-know-what-to-name-these-blody-containers{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .post-content-container {
     display: flex;
     flex-direction: column;
-    
+    text-decoration: none;
 }
 
 .post-content-container h3 {
     font-size: 18px;
     font-weight: 600;
     margin: 0;
+    margin-top: 6px;
+    color: rgb(81, 81, 81);
 }
 
 .post-content-container p {
