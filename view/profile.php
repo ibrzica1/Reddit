@@ -166,7 +166,6 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php $postCommunity = $community->getCommunity("id",$commId); ?>
     <?php $postId = $postItem->getId(); ?>
     <?php $postLikes = $like->getLike("post_id",$postId,$userId) ?>
-    
     <?php $likeId = $postLikes?->getUser_id() ? 0 : $postLikes?->getUser_id(); ?>
     <?php if($postLikes === NULL): ?>
     <?php $postLikeStatus = "neutral"; ?>
@@ -182,25 +181,25 @@ $activeTab = $_GET['tab'] ?? "posts";
         <p><span>u/</span><?= $postCommunity->getName() ?></p>
         <h3><?= $time->calculateTime($postItem->getTime()); ?></h3>
     </a>
-    <div class="post-content-container">
-    <h3><?= $postItem->getTitle() ?></h3>
-    <?php if(!empty($postItem->getText())): ?>
-        <p><?= $postItem->getText() ?></p> 
-    <?php else: ?>
-    <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
-    <?php $imgCount = count($postImages); ?>
-        <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
-            <input type="hidden" id="index-<?= $postId ?>" value="0">
-            <div class="left-arrow" id="leftArrow-<?= $postId ?>">
-                <img src="../images/icons/arrowLeft.png">
+    <a href="comment.php?post_id=<?= $postId ?>" class="post-content-container">
+        <h3><?= $postItem->getTitle() ?></h3>
+        <?php if(!empty($postItem->getText())): ?>
+            <p><?= $postItem->getText() ?></p> 
+        <?php else: ?>
+        <?php $postImages = $image->getUploadedImages("post_id",$postId); ?>
+        <?php $imgCount = count($postImages); ?>
+            <div class="image" data-images='<?= json_encode($postImages) ?>' data-id="<?= $postId ?>">
+                <input type="hidden" id="index-<?= $postId ?>" value="0">
+                <div class="left-arrow" id="leftArrow-<?= $postId ?>">
+                    <img src="../images/icons/arrowLeft.png">
+                </div>
+                <img src="../images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
+                <div class="right-arrow" id="rightArrow-<?= $postId ?>">
+                    <img src="../images/icons/arrowRight.png">
+                </div>
             </div>
-            <img src="../images/uploaded/<?= $postImages[0]->getName() ?>" id="imageDisplay-<?= $postId ?>">
-            <div class="right-arrow" id="rightArrow-<?= $postId ?>">
-                <img src="../images/icons/arrowRight.png">
-            </div>
-        </div>
-    <?php endif; ?>
-    </div>
+        <?php endif; ?>
+    </a>
     <div class="post-button-container">
     <div class="like-comment-btns">
         <div class="like-btn" id="like-post-<?= $postId ?>" data-id="<?= $postId ?>" data-type="post" data-status="<?= $postLikeStatus ?>">
@@ -255,19 +254,22 @@ $activeTab = $_GET['tab'] ?? "posts";
     <?php  endif;  ?>
 
     <div class="single-comment">
-        <div class="post-info">
+    <div class="post-info">
+        <a href="community.php?comm_id=<?=$commentCommunity->getId();?>" class="post-community-image">
             <img src="../images/community/<?= $commentCommunityImg->getName() ?>" class="community-img">
-            <p class="comment-community-name">r/<?= $commentCommunity->getName() ?></p>
-            <p class="post-title"><?= $commentPost->getTitle() ?></p>
-        </div>
-        
+        </a>
         <div class="comment-user-info">
-            <h3><?= $commentUser->getUsername() ?></h3>
-            <p>commented <?= $time->calculateTime($commentItem->getTime()) ?></p>
+            <p class="comment-community-name"><span>r/</span><?= $commentCommunity->getName() ?></p>
+            <div class="comment-user">
+                <h3><span>u/</span><?= $commentUser->getUsername() ?></h3>
+                <p>commented <?= $time->calculateTime($commentItem->getTime()) ?></p>
+            </div>
         </div>
-        <div class="comment-content">
-            <p><?= $commentItem->getText() ?></p>
-        </div>
+    </div>
+    <a href="comment.php?post_id=<?= $commentPost->getId(); ?>" 
+    class="comment-content">
+        <p><?= $commentItem->getText() ?></p>
+    </a>
         <div class="comment-actions">
             <div class="left-buttons">
             <div class="like-btn" id="like-comment-<?= $commId ?>" data-id="<?= $commId ?>" data-type="comment" data-status="<?= $commentLikeStatus ?>">

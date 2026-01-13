@@ -328,8 +328,8 @@ body{
 }
 
 .post-user-container img {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
 }
 
@@ -353,13 +353,14 @@ body{
 .post-content-container {
     display: flex;
     flex-direction: column;
-    
+    text-decoration: none;
 }
 
 .post-content-container h3 {
     font-size: 18px;
     font-weight: 600;
     margin: 0;
+    color: #464646;
 }
 
 .post-content-container p {
@@ -543,9 +544,10 @@ body{
 .single-comment {
     background-color: white;
     border: 1px solid rgb(212, 212, 212);
-    padding: 12px 10px;
-    margin-left: 5px; 
-    padding-left: 10px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 16px;
+    padding-right: 6px;
     border-radius: 6px;
     margin-bottom: 10px;
 }
@@ -553,9 +555,15 @@ body{
 .post-info {
     display: flex;
     align-items: center;
+
 }
 
-.post-info img {
+.post-community-image{
+    display: flex;
+    align-items: center;
+}
+
+.post-community-image img {
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -578,16 +586,19 @@ body{
 
 .comment-user-info {
     display: flex;
-    justify-content: left;
-    gap: 10px;
-    width: 80%;
-    height: 20px;
-    margin-left: 34px;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.comment-user {
+    display: flex;
+    gap: 6px;
 }
 
 .comment-user-info h3 {
     font-size: 11px;
     margin: 0;
+    color: #464646;
 }
 
 .comment-user-info p {
@@ -596,19 +607,23 @@ body{
     margin: 0;
 }
 
+.comment-user-info span{
+    color: rgb(220, 81, 0);
+}
+
 .comment-content {
-    margin-left: 34px;
+    text-decoration: none;
 }
 
 .comment-content p {
     font-size: 16px;
+    color: #1A1A1B;
 }
 
 .comment-actions {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: 34px;
 }
 
 .comment-reply-btn {
