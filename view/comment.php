@@ -28,7 +28,7 @@ if(!$session->sessionExists("username"))
 }
 
 $getPost = $_GET['post_id'];
-if(!empty($_GET['nott_id']))
+if(!empty($_GET['nott_id'])) // If comming to this page by clicking on notification, it will cgange that notification status to seen
 {
     $notificationId = $_GET['nott_id'];
     if(!empty($notificationId)) $notification->changeSeenStatus($notificationId,"true");

@@ -90,7 +90,6 @@ $userId = $session->getFromSession('user_id');
             <p class="prw-name">r/<span class="prw-name-span">
                 communityname
             </span></p>
-            <p>1 weekly visitor - 1 weekly contributor</p>
             <p class="prw-description">
                 Your community description
             </p>
