@@ -92,10 +92,13 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <div class="username-section">
                     <h1>u/<?= $username ?></h1>
                 </div>
+        <?php if($userId === $session->getFromSession('user_id')): ?>
             <a href="settings.php">
                 <button class="edit-profile-btn">Edit Profile</button>
             </a>
+        <?php endif; ?>
             </div>
+        <?php if($userId === $session->getFromSession('user_id')): ?>
             <a href="createPost.php">
                 <button class="new-post-btn">Create Post</button>
             </a>
@@ -103,6 +106,7 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <img src="../images/icons/add.png">
                 <p>Start a Community</p>
             </a>
+        <?php endif; ?>
         </div>
     </div>
 
@@ -141,13 +145,15 @@ $activeTab = $_GET['tab'] ?? "posts";
         <p class="community-desc"><?= $community->getDescription() ?></p>
         <p class="community-time">Created <?= $time->calculateTime($community->getTime()); ?></p>
     </div>
+<?php if($community->getUser_id() === intval($userId) &&
+    intval($userId) === $session->getFromSession('user_id')): ?>
     <form action="../decisionMaker.php" method="post">
         <input type="hidden" name="delete-community" value="<?=$community->getId()?>">
         <button class="delete-container" onclick='confirm("Are you sure you want do delete this community")'>
             <img src="../images/icons/set.png">
         </button>
     </form>
-    
+<?php endif; ?>  
 </div>
     <?php endforeach; ?>
     <?php endif; ?>
@@ -216,7 +222,8 @@ $activeTab = $_GET['tab'] ?? "posts";
             <p><?= $comment->getCommentCount("post_id",$postId) ?></p>
         </a>
     </div>
-    <?php if($postItem->getUser_id() == $userId): ?>
+    <?php if($postItem->getUser_id() === intval($userId) && 
+    intval($userId) === $session->getFromSession('user_id')): ?>
     <form action="../decisionMaker.php" method="post" class="delete-post-form" data-id="<?= $postId ?>">
         <input type="hidden" name="location" value="profile">
         <input type="hidden" name="post-delete" value="<?= $postId ?>">
@@ -286,7 +293,8 @@ $activeTab = $_GET['tab'] ?? "posts";
                 <p>Reply</p>
             </a>
             </div>
-            <?php if($commentItem->getUser_id() == $userId): ?>
+            <?php if($commentItem->getUser_id() === intval($userId) && 
+            intval($userId) === $session->getFromSession('user_id')): ?>
             <form action="../decisionMaker.php" method="post" class="delete-comment-form" data-id="<?= $commId ?>">
                 <input type="hidden" name="location" value="profile">
                 <input type="hidden" name="comment-delete" value="<?= $commId ?>">

@@ -37,7 +37,7 @@ $nottNumber = count($notifications);
     <?php if($notificationItem->getType() === "like"): ?>
     <?php if(!empty($notificationItem->getPost_id())): ?>
     <?php $notificationPost = $post->getPostById($notificationItem->getPost_id()) ?>
-    <a href="community.php?comm_id=<?= $notificationPost->getCommunity_id() ?>&nott_id=<?= $notificationItem->getId() ?>" 
+    <a href="/Reddit/view/community.php?comm_id=<?= $notificationPost->getCommunity_id() ?>&nott_id=<?= $notificationItem->getId() ?>" 
     class="single-notification">
     <div class="sender-avatar">
     <img src="/Reddit/images/avatars/<?= $senderInfo->getAvatar() ?>.webp">
@@ -49,7 +49,7 @@ $nottNumber = count($notifications);
     </a>
     <?php else: ?>
     <?php $notificationComment = $comment->getComment("id",$notificationItem->getComment_id()) ?>
-    <a href="comment.php?post_id=<?= $notificationComment->getPost_id() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
+    <a href="/Reddit/view/comment.php?post_id=<?= $notificationComment->getPost_id() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
     <div class="sender-avatar">
     <img src="/Reddit/images/avatars/<?= $senderInfo->getAvatar() ?>.webp">
     </div>
@@ -61,7 +61,7 @@ $nottNumber = count($notifications);
     <?php endif; ?>
     <?php elseif($notificationItem->getType() == "comment"): ?>
     <?php $notificationPost = $post->getPostById($notificationItem->getPost_id()); ?>
-    <a href="comment.php?post_id=<?= $notificationPost->getId() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
+    <a href="/Reddit/view/comment.php?post_id=<?= $notificationPost->getId() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
     <div class="sender-avatar">
     <img src="/Reddit/images/avatars/<?= $senderInfo->getAvatar() ?>.webp">
     </div>
@@ -72,7 +72,7 @@ $nottNumber = count($notifications);
     </a>
     <?php elseif($notificationItem->getType() == "post"): ?>
     <?php $notificationCommunity = $community->getCommunity("id",$notificationItem->getCommunity_id()); ?>
-    <a href="community.php?comm_id=<?= $notificationCommunity->getId() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
+    <a href="/Reddit/view/community.php?comm_id=<?= $notificationCommunity->getId() ?>&nott_id=<?= $notificationItem->getId() ?>" class="single-notification">
     <div class="sender-avatar">
     <img src="/Reddit/images/avatars/<?= $senderInfo->getAvatar() ?>.webp">
     </div>
